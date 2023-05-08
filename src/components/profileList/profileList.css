@@ -1,0 +1,41 @@
+.triangle {
+  position: absolute;
+  right: 0px;
+  top: -5px;
+  width: 0.2rem;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid white;
+  rotate: 180deg;
+}
+.profile-list {
+  position: absolute;
+  top: 3rem;
+  right: 5rem;
+  background-color: white;
+  color: black;
+}
+.profile-list:focus-visible {
+  outline: none;
+}
+.profile-list-details {
+  pointer-events: none;
+}
+.profile-list-modal {
+  position: absolute;
+}
+.profile-list-icon {
+  color: var(--special-color);
+  font-size: 1.2rem;
+}
+
+.profile-list-modal .css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+  opacity: 0 !important;
+}
+
+@media (max-width: 770px) {
+  .profile-list {
+    right: 2rem;
+  }
+}

@@ -1,0 +1,124 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: var(--text-secondary); */
+  font-weight: 550;
+  position: absolute;
+  padding: 1rem 1.5rem;
+  width: 100%;
+}
+.nav-left-links {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  list-style: none;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+.nav-link {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 1rem;
+
+  margin-top: 0.36rem;
+}
+.nav-link:hover {
+  transition: all 0.1s;
+  color: var(--special-color);
+}
+
+.nav-headline {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+}
+
+.nav-right-links {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.nav-favorite-icon {
+  color: var(--text-secondary);
+  font-size: 2rem;
+}
+.nav-favorite-icon:hover {
+  color: var(--special-color);
+  transition: all 0.16s;
+}
+
+.nav-login-and-sign-up {
+  display: flex;
+  gap: 1rem;
+  margin-right: 1rem;
+}
+.nav-user-and-list {
+  position: relative;
+}
+.nav-user {
+  position: relative;
+  display: flex;
+  gap: 0.4rem;
+  color: white;
+  align-items: center;
+  font-size: 1rem;
+}
+.nav-user:hover {
+  color: var(--special-color);
+  cursor: pointer;
+}
+
+.nav-login-and-sign-up button {
+  border: none;
+  color: var(--text-secondary);
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: 550;
+}
+.nav-login-and-sign-up button:focus-visible {
+  outline: none;
+}
+.nav-login-and-sign-up button:hover {
+  cursor: pointer;
+  transition: all 0.1s;
+  color: var(--special-color);
+}
+.nav-hamburger-icon {
+  display: none;
+}
+@media (max-width: 770px) {
+  .nav-login-and-sign-up {
+    display: none;
+  }
+  .nav-favorite-icon {
+    display: none;
+  }
+  .nav-link {
+    display: none;
+  }
+  .nav-hamburger-icon {
+    display: inline-block;
+    font-size: 1.6rem;
+    margin-top: 0.3rem;
+    color: var(--text-secondary);
+    padding: 0.8rem 0;
+  }
+  .nav-hamburger-icon:hover {
+    cursor: pointer;
+    color: var(--special-color);
+    transition: all 0.1s;
+  }
+  .nav-login-and-sign-up {
+    gap: 0rem;
+    padding: 1.5rem 0rem 1.5rem 0rem;
+    margin-right: 0rem;
+  }
+
+  .navbar {
+    padding: 0rem 1.5rem;
+  }
+}

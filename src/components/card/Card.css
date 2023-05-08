@@ -1,0 +1,107 @@
+.card-container {
+  position: relative;
+}
+.card-container:hover {
+  cursor: pointer;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-10px);
+  transition: all 0.4s;
+}
+.card {
+  width: clamp(10rem, 22vw, 18rem);
+  aspect-ratio: 1/1.4;
+  position: relative;
+  border-radius: 8px;
+  /* background-image: url("../../utils/images/dogCard.avif");
+  background-size: cover;
+  background-position: 50% 40%;
+  background-repeat: no-repeat; */
+}
+
+.card-image {
+  background-image: url("../../utils/images/dogCard.avif");
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  border-radius: 8px 8px 0 0;
+  width: 100%;
+  height: 80%;
+}
+.card-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--special-color);
+  background-color: white;
+  width: 100%;
+  height: 26%;
+  margin-top: -6%;
+  border-radius: 0 0 7px 7px;
+  border-radius: 20% 20% 0 0;
+}
+.card-favorite-icon {
+  position: absolute;
+  right: 3%;
+  top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #ffffff1a;
+}
+.card-favorite-icon:hover {
+  background-color: #ffffff85;
+}
+.card-favorite-icon-clicked {
+  position: absolute;
+  right: 3%;
+  top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--special-color);
+  font-size: 1.4rem;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #ffffff4d;
+}
+.card-favorite-icon-clicked:hover {
+  background-color: #ffffff1a;
+}
+.card-trash-icon {
+  position: absolute;
+  right: 5px;
+  top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #ffffff1a;
+}
+.card-trash-icon:hover {
+  background-color: #ffffff85;
+}
+.card-edit-icon {
+  position: absolute;
+  left: 5px;
+  top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #ffffff1a;
+}
+.card-edit-icon:hover {
+  background-color: #ffffff85;
+}

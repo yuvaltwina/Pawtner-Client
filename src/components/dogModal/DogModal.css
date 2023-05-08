@@ -1,0 +1,137 @@
+.dogmodal-container {
+  position: relative;
+}
+.dogmodal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 30rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(19rem, 80vw, 70rem);
+  /* width: 80vw;
+  min-width: 19rem;
+  max-width: 80rem; */
+  height: 53rem;
+  background-color: var(--text-secondary);
+  border-radius: 15px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  gap: 1rem;
+}
+.dogmodal:focus-visible {
+  outline: -webkit-focus-ring-color auto 0px;
+}
+.dogmodal-dog-text {
+  text-align: center;
+  padding: 1rem 2rem 1rem 2rem;
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  height: 100%;
+  line-height: 1.6;
+}
+.dogmodal-headline {
+  font-size: 2.2rem;
+}
+.dogmodal-dog-info {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.dogmodal-dog-highlight {
+  color: var(--special-color);
+}
+.dogmodal-dog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  width: 100%;
+  padding: 1rem 0;
+  /* height: 10%; */
+  background-color: var(--special-color);
+}
+.dogmodal-dog-footer-info {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 230px;
+  padding: 1rem;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 0.5rem;
+}
+.dogmodal-dog-footer-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.39rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ffffff1a;
+}
+.dogmodal-favorite-icon {
+  /* position: absolute;
+  right: 3%;
+  top: 0.5rem; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  width: 70px;
+  height: 40px;
+  margin: 1rem;
+  border-radius: 50%;
+  background-color: #0200001c;
+}
+.dogmodal-favorite-icon:hover {
+  background-color: rgba(2, 0, 0, 0.07);
+  cursor: pointer;
+}
+.dogmodal-favorite-icon-clicked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  width: 70px;
+  height: 40px;
+  margin: 1rem;
+  border-radius: 50%;
+  color: var(--special-color);
+  background-color: #cbcbcb35;
+}
+.dogmodal-favorite-icon-clicked:hover {
+  background-color: #cbcbcb19;
+  cursor: pointer;
+}
+.dog-modal-exit-icon {
+  position: absolute;
+  z-index: 100;
+  top: 2%;
+  right: 2%;
+  font-size: 2.5rem;
+  color: var(--special-color);
+  opacity: 0.7;
+}
+.dog-modal-exit-icon:hover {
+  cursor: pointer;
+  color: var(--special-color);
+  opacity: 1;
+}
+/* .css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+  opacity: 0.5 !important;
+  background: black !important;
+} */
+
+@media (max-width: 450px) {
+  .dogmodal {
+    height: 100vh;
+    width: 100vw;
+    top: 50%;
+  }
+}

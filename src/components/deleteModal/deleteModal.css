@@ -1,0 +1,77 @@
+.delete-modal-container {
+  position: relative;
+}
+.delete-modal {
+  position: absolute;
+  top: 25%;
+  right: 50%;
+  transform: translate(50%, 50%);
+  height: 17rem;
+  width: 25rem;
+  background-color: white;
+  color: var(--special-color);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2.1rem 1rem 2rem 1rem;
+  text-align: center;
+}
+.delete-modal-headline {
+  font-size: 1.6rem;
+}
+.delete-modal-subtitle {
+  font-size: 1.1rem;
+}
+.delete-modal-buttons-container {
+  display: flex;
+  gap: 3rem;
+}
+.delete-modal-cancel {
+  width: 6rem;
+  text-align: center;
+  font-size: 1rem;
+  padding: 1rem;
+  font-weight: 600;
+  color: white;
+  background-color: var(--special-color);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+.delete-modal-cancel:hover {
+  cursor: pointer;
+  color: var(--special-color);
+  background-color: white;
+  border: 1px solid black;
+}
+.delete-modal-delete {
+  width: 6rem;
+  border: 1px solid transparent;
+  text-align: center;
+  font-size: 1rem;
+  padding: 1rem;
+  font-weight: 600;
+  color: white;
+  background-color: red;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+.delete-modal-delete:hover {
+  cursor: pointer;
+  color: red;
+  background-color: white;
+  border: 1px solid black;
+}
+@media (max-width: 450px) {
+  .delete-modal {
+    top: 0%;
+    right: 50%;
+    transform: translate(50%, 50%);
+    height: 20rem;
+    width: 18rem;
+  }
+}

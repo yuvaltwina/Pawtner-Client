@@ -1,0 +1,37 @@
+.login-modal {
+  position: absolute;
+  top: 25rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(22rem, 50vw, 40rem);
+  height: 39.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--text-secondary);
+  border-radius: 15px;
+  overflow: hidden;
+
+  background-color: var(--text-secondary);
+  gap: 1rem;
+  padding: 3.5rem 1rem;
+}
+.login-modal-exit-icon {
+  position: absolute;
+  top: 2%;
+  right: 3%;
+  font-size: 1.7rem;
+  color: var(--special-color);
+  opacity: 0.7;
+}
+.login-modal-exit-icon:hover {
+  cursor: pointer;
+  color: var(--special-color);
+  opacity: 1;
+}
+@media (max-width: 450px) {
+  .login-modal {
+    height: 100vh !important;
+    width: 100vw !important;
+    top: 50%;
+  }
+}

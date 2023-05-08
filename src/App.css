@@ -1,0 +1,39 @@
+:root {
+  --inline-padding: clamp(30px, 4vw, 120px);
+  --text-primary: #102542;
+  --background-color: rgb(238, 237, 231);
+  --text-secondary: #f4f4f4;
+  --special-color: rgb(255 114 15);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Heebo, Helvetica, sans-serif;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background-color: var(--text-secondary);
+}
+.app {
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
