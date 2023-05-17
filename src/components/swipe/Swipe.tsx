@@ -33,6 +33,7 @@ function Swipe({ IMAGE }: { IMAGE: String[] }) {
       className="mySwiper"
     >
       {IMAGE.map((singleImage) => {
+        console.log(singleImage);
         return (
           //fix the key ! its not individual
           <SwiperSlide key={Math.random() * Math.random()}>

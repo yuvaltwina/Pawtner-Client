@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./myDogs.css";
 import { DOGS_LIST } from "../../utils/data/data";
-import AddModal from "../../components/addModal/AddModal";
+import AddModal from "../../components/modals/addModal/AddModal";
 import Card from "../../components/card/Card";
 
 function MyDogs() {

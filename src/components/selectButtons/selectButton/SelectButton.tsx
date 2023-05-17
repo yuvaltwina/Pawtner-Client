@@ -1,12 +1,13 @@
-import * as React from "react";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import ListItemText from "@mui/material/ListItemText";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
-import "./SelectButton.css";
+import * as React from 'react';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+import './SelectButton.css';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -28,9 +29,8 @@ export default function MultipleSelectCheckmarks(allProps: any) {
     } = event;
     setPreferencesList((prev: any) => ({
       ...prev,
-      [category]: typeof value === "string" ? value.split(",") : value,
+      [category]: typeof value === 'string' ? value.split(',') : value,
     }));
-    // On autofill we get a stringified value.
   };
 
   return (
@@ -44,7 +44,7 @@ export default function MultipleSelectCheckmarks(allProps: any) {
           value={preferencesList[category]}
           onChange={handleChange}
           input={<OutlinedInput label={category} />}
-          renderValue={(selected) => selected.join(", ")}
+          renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
         >
           {valuesArray.map((value: string) => (

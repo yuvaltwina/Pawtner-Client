@@ -1,5 +1,4 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -10,7 +9,6 @@ import DraftsIcon from "@mui/icons-material/Drafts";
 import { FiLogOut } from "react-icons/Fi";
 import { FaRegUser } from "react-icons/fa";
 import { useGlobalContext } from "../../hooks/useContext";
-import Cookies from "js-cookie";
 import Modal from "@mui/material/Modal";
 import "./profileList.css";
 
@@ -24,7 +22,6 @@ export default function BasicList({
   setIsProfileList: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
-    setUserDetails,
     userDetails: { username, email },
   } = useGlobalContext();
 

@@ -1,18 +1,21 @@
 import React from "react";
 import "./notFound.css";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/navbar/Navbar";
+
+const ERROR_STATUS_TEXT = "404";
+const TITLE_TEXT = "page not found";
+const SUBTITLE_TEXT =
+  "Seems you have wondered into the unknown, please click the button below to go back ";
+const END_TEXT = "Thank you ";
+
 function NotFound() {
   return (
     <div className="not-found-background">
       <div className="not-found-container">
-        <h1>404</h1>
-        <h3>page not found</h3>
-        <p>
-          Seems you have wondered into the unknown, please click the button
-          below to go back
-        </p>
-        <p>Thank you</p>
+        <h1>{ERROR_STATUS_TEXT}</h1>
+        <h3>{TITLE_TEXT}</h3>
+        <p>{SUBTITLE_TEXT}</p>
+        <p>{END_TEXT}</p>
         <Link to={"/"}>
           <button className="not-found-button">Go back</button>
         </Link>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./AuthModal.css";
 import Modal from "@mui/material/Modal";
 import ForgotPasswordPage from "./forgotPasswordPage/ForgotPasswordPage";
@@ -42,26 +42,6 @@ export default function BasicModal({
 
     return <LoginPage navigate={navigate} closeModal={closeModal} />;
   };
-
-  // const pagesArr = [
-  //   {
-  //     pageName: SIGN_UP,
-  //     componentToRender: <SignUpPage navigate={() => setModalPage(SIGN_UP)} />,
-  //   },
-  //   {
-  //     pageName: FORGOT_PASSWORD,
-  //     componentToRender: (
-  //       <ForgotPasswordPage navigate={() => setModalPage(FORGOT_PASSWORD)} />
-  //     ),
-  //   },
-  //   {
-  //     pageName: LOGIN,
-  //     componentToRender: <SignUpPage navigate={() => setModalPage(LOGIN)} />,
-  //   },
-  // ];
-
-  // const { componentToRender } =
-  //   pagesArr.find(({ pageName }) => pageName === modalPage) || {};
 
   return (
     <div>

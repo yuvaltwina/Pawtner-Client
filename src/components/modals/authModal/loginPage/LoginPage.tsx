@@ -1,10 +1,10 @@
 import "./LoginPage.css";
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
-import { Navigate } from "../../../utils/types/type";
-import { SERVER_URL } from "../../../utils/data/data";
+import { Navigate } from "../../../../utils/types/type";
+import { SERVER_URL } from "../../../../utils/data/data";
 import axios from "axios";
-import { useGlobalContext } from "../../../hooks/useContext";
+import { useGlobalContext } from "../../../../hooks/useContext";
 import Cookies from "js-cookie";
 const LOGIN_BUTTON_TEXT = "LOGIN";
 const SIGN_UP_TEXT = "Need an account?";
@@ -24,19 +24,11 @@ function LoginPage({
     isError: false,
     errorMessage: "",
   });
-
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { setUserDetails } = useGlobalContext();
 
   const { email, password } = loginData;
 
-  const onChange = ({
-    target: { value, id },
-  }: {
-    target: { value: string; id: string };
-  }) => {
-    setLoginData((prevState) => ({ ...prevState, [id]: value }));
-  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmiting(true);
@@ -73,6 +65,14 @@ function LoginPage({
       setIsSubmiting(false);
       return;
     }
+  };
+
+  const onChange = ({
+    target: { value, id },
+  }: {
+    target: { value: string; id: string };
+  }) => {
+    setLoginData((prevState) => ({ ...prevState, [id]: value }));
   };
 
   return (

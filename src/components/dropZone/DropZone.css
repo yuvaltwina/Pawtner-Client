@@ -1,0 +1,103 @@
+.dropzone {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 80%;
+  min-width: 17rem;
+  height: 100%;
+  padding: 1rem 1rem;
+  text-align: center;
+  position: relative;
+  justify-content: center;
+  border: 1px dashed grey;
+}
+.dropzone-error {
+  border: 1px dashed red;
+}
+.dropzone-before-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+.dropzone-before-icon {
+  /* color: var(--special-color); */
+  font-size: 2.5rem;
+  color: rgb(87, 85, 85);
+}
+.dropzone-before-title {
+  font-size: 1.2rem;
+  margin: 0.5rem 0rem;
+  color: rgb(103, 101, 101);
+}
+.dropzone-before-subtitle {
+  font-size: 0.9rem;
+  color: rgb(144, 143, 143);
+}
+.dropzone-full-space {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.dropzone-squre {
+  width: clamp(5rem, 10vw, 7rem);
+  min-width: 4.5rem;
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  border: 1px dashed rgb(174, 172, 172);
+  color: rgb(174, 172, 172);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dropzone-plus-icon {
+  font-size: clamp(2rem, 10vw, 3rem);
+}
+.dropzone-image {
+  width: 100%;
+  aspect-ratio: 1/1;
+}
+.dropzone-image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: clamp(4.5rem, 10vw, 7rem);
+  min-width: 2rem;
+  aspect-ratio: 1/1;
+  z-index: 5;
+  padding: 0.7rem;
+  border: 1px solid rgb(174, 172, 172);
+  border-radius: 10px;
+}
+.dropzone-images-container {
+  display: flex;
+  gap: 1rem;
+}
+.dropzone-delete-icon {
+  position: absolute;
+  right: 0%;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: var(--special-color);
+  background-color: rgba(183, 185, 186, 0.704);
+}
+.dropzone-delete-icon:hover {
+  background-color: #ffffff85;
+  cursor: pointer;
+}
+.notvalid {
+  border: 3px dashed red;
+}
+.valid {
+  border: 3px dashed rgb(5, 215, 5);
+}
+/* "dropzone-full-space" : "dropzone-squre"; */

@@ -2,28 +2,72 @@
   "root": true,
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "node": true
   },
+  "ignorePatterns": ["vite.config.ts"],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "react-hooks"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
-  ],
-  "rules": {
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { "argsIgnorePattern": "^_" }
-    ]
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "tsconfigRootDir": ".",
+    "project": ["./tsconfig.json"],
+    "plugins": ["react", "@typescript-eslint"],
+    "extends": [
+      "eslint:recommended",
+      "airbnb/hooks",
+      "airbnb-typescript",
+      "plugin:react/recommended",
+      "plugin:react/jsx-runtime",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking",
+      "plugin:prettier/recommended",
+      "plugin:import/recommended"
+    ],
+
+    "rules": {
+      "linebreak-style": "off",
+      // Configure prettier
+      "prettier/prettier": [
+        "error",
+        {
+          "printWidth": 80,
+          "endOfLine": "lf",
+          "singleQuote": true,
+          "tabWidth": 2,
+          "indentStyle": "space",
+          "useTabs": true,
+          "trailingComma": "es5"
+        }
+      ],
+      // Disallow the any type.
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/ban-types": [
+        "error",
+        {
+          "extendDefaults": true,
+          "types": {
+            "{}": false
+          }
+        }
+      ]
+    },
+    "react-hooks/exhaustive-deps": "off",
+    // Enforce the use of the shorthand syntax.
+    "object-shorthand": "error",
+    "no-console": "warn",
+    "settings": {
+      "react": {
+        "version": "detect"
+      },
+      "import/resolver": {
+        "typescript": {
+          "project": "./tsconfig.json"
+        }
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ import { VscHeartFilled } from "react-icons/vsc";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaRegUser } from "react-icons/fa";
 import Drawer from "../drawer/Drawer";
-import LoginModal from "../authModal/AuthModal";
+import LoginModal from "../modals/authModal/AuthModal";
 import { useGlobalContext } from "../../hooks/useContext";
 import Cookies from "js-cookie";
 import ProfileList from "../profileList/ProfileList";
@@ -32,7 +32,6 @@ function Navbar() {
           className="nav-user-and-list"
           onClick={() => {
             setIsProfileList(!isProfileList);
-            // logout();
           }}
         >
           <span className="nav-user">

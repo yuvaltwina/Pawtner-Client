@@ -1,46 +1,61 @@
 import { useState } from "react";
-import { SELECT_BUTTONS_DATA } from "../../../utils/data/data";
 import { Category, PrefrencesButtonValuesObj } from "../../../utils/types/type";
 import SelectButton from "../selectButton/SelectButton";
 
-const preferencesListInitialObj = SELECT_BUTTONS_DATA.reduce(
-  (
-    preferencesListInitial: PrefrencesButtonValuesObj,
-    { category }: Category
-  ) => {
-    preferencesListInitial[category] = [];
-    return preferencesListInitial;
-  },
-  {}
-);
+//להחליף את האני בטייפ הנכון
+const preferencesListInitialObj = (
+  list: [
+    {
+      category: string;
+      valuesArray: string[];
+    }
+  ]
+) => {
+  const preferencesListInitial = list.reduce(
+    (
+      preferencesListInitial: PrefrencesButtonValuesObj,
+      { category }: Category
+    ) => {
+      preferencesListInitial[category] = [];
+      return preferencesListInitial;
+    },
+    {}
+  );
+  return preferencesListInitial;
+};
 
 function SelectButtonList({
   divClass,
   spanClass,
+  list,
 }: {
   divClass: string;
   spanClass: string;
+  list: any;
 }) {
   const [preferencesList, setPreferencesList] = useState<{}>(
-    preferencesListInitialObj
+    preferencesListInitialObj(list)
   );
-  const displaySelectButtons = SELECT_BUTTONS_DATA.map((selectbutton) => {
-    const {
-      category,
-      valuesArray,
-    }: { category: string; valuesArray: string[] } = selectbutton;
-    return (
-      <span className={spanClass} key={category}>
-        <SelectButton
-          allProps={{}}
-          preferencesList={preferencesList}
-          setPreferencesList={setPreferencesList}
-          category={category}
-          valuesArray={valuesArray}
-        />
-      </span>
-    );
-  });
+
+  const displaySelectButtons = list.map(
+    (selectbutton: { category: string; valuesArray: string[] }) => {
+      const {
+        category,
+        valuesArray,
+      }: { category: string; valuesArray: string[] } = selectbutton;
+      return (
+        <span className={spanClass} key={category}>
+          <SelectButton
+            allProps={{}}
+            preferencesList={preferencesList}
+            setPreferencesList={setPreferencesList}
+            category={category}
+            valuesArray={valuesArray}
+          />
+        </span>
+      );
+    }
+  );
   return <div className={divClass}>{displaySelectButtons}</div>;
 }
 

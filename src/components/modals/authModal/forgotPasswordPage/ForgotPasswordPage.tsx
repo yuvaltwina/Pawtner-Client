@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import "./ForgotPasswordPage.css";
-import { Navigate } from "../../../utils/types/type";
+import { Navigate } from "../../../../utils/types/type";
 import {
   EMAIL_REGEX,
   EMAIL_ERROR_MESSAGE,
   SERVER_URL,
-} from "../../../utils/data/data";
+} from "../../../../utils/data/data";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 

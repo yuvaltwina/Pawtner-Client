@@ -19,7 +19,6 @@ body {
   background-color: var(--text-secondary);
 }
 .app {
-  height: 95vh;
   display: flex;
   flex-direction: column;
 }

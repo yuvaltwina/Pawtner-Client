@@ -3,8 +3,8 @@ import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { MdFavorite } from "react-icons/md";
 import { HiTrash } from "react-icons/hi";
 import { GrEdit } from "react-icons/gr";
-import DogModal from "../dogModal/DogModal";
-import DeleteModal from "../deleteModal/DeleteModal";
+import DogModal from "../modals/dogModal/DogModal";
+import DeleteModal from "../modals/deleteModal/DeleteModal";
 import "./Card.css";
 
 type singleDogType = {

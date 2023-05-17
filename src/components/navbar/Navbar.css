@@ -104,6 +104,7 @@
     display: inline-block;
     font-size: 1.6rem;
     margin-top: 0.3rem;
+    margin-right: -1rem;
     color: var(--text-secondary);
     padding: 0.8rem 0;
   }

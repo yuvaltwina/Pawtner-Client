@@ -1,7 +1,5 @@
 import "./DogModal.css";
 import * as React from "react";
-import { MdFavorite } from "react-icons/md";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { AiOutlineMail } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
 import { MdLocationOn } from "react-icons/md";
@@ -9,7 +7,7 @@ import { MdOutlinePhoneIphone } from "react-icons/md";
 import { RiCloseFill } from "react-icons/ri";
 
 import Modal from "@mui/material/Modal";
-import Swipe from "../swipe/Swipe";
+import Swipe from "../../swipe/Swipe";
 
 type singleDogType = {
   NAME: string;
@@ -55,13 +53,32 @@ export default function BasicModal({
   setOpenDogModal: React.Dispatch<React.SetStateAction<boolean>>;
   singleDog: singleDogType;
 }) {
+  //לשנות את המיקום לעיר לפי הזיפ קוד
   const { NAME, BREED, GENDER, AGE, SIZE, LOCATION, IMAGE, TEXT } = singleDog;
+  const DOG_INFO_LIST = [
+    {
+      category: "Breed",
+      value: BREED,
+    },
+    {
+      category: "Gender",
+      value: GENDER,
+    },
+    {
+      category: "Age",
+      value: AGE,
+    },
+    {
+      category: "Size",
+      value: SIZE,
+    },
+  ];
 
-  const displayDogSpecificInfo = (text: string, info: string) => {
+  const displayDogSpecificInfo = (value: string, category: string) => {
     return (
-      <h3>
-        {text}
-        <span className="dogmodal-dog-highlight">{info}</span>
+      <h3 key={category}>
+        {value}
+        <span className="dogmodal-dog-highlight">{category}</span>
       </h3>
     );
   };
@@ -83,6 +100,11 @@ export default function BasicModal({
     return contactInfoItems;
   };
 
+  const displayDogInfo = DOG_INFO_LIST.map((specificInfo) => {
+    const { category, value } = specificInfo;
+    return displayDogSpecificInfo(`${category} : `, value);
+  });
+
   return (
     <Modal
       open={openDogModal}
@@ -100,12 +122,7 @@ export default function BasicModal({
         <span className="dogmodal-headline">
           {displayDogSpecificInfo("About ", NAME)}
         </span>
-        <section className="dogmodal-dog-info">
-          {displayDogSpecificInfo("Breed : ", BREED)}
-          {displayDogSpecificInfo("Gender : ", GENDER)}
-          {displayDogSpecificInfo("Age : ", AGE)}
-          {displayDogSpecificInfo("Size : ", SIZE)}
-        </section>
+        <section className="dogmodal-dog-info">{displayDogInfo}</section>
         <p className="dogmodal-dog-text">{TEXT}</p>
         <section className="dogmodal-dog-footer">{footerUserDetails()}</section>
       </div>
