@@ -4,36 +4,52 @@ import { RiCloseFill, RiFolderAddLine } from 'react-icons/ri';
 import './DropZone.css';
 import { toast } from 'react-hot-toast';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { getBase64 } from '../../utils/data/functions';
+import { DogFormData, EditDogFormData } from '../../utils/types/type';
 
 const MAX_SIZE = 5 * 1024 * 1024;
+//לשנות לאיקס גדול ולעשות פיל לריבוע
 
 function DropZone({
-  images,
-  setImages,
+  data,
+  setData,
   isError,
 }: {
-  images: { file: File; url: string }[];
-  setImages: React.Dispatch<
-    React.SetStateAction<{ file: File; url: string }[]>
-  >;
+  data: DogFormData;
+  setData: React.Dispatch<React.SetStateAction<DogFormData>>;
   isError: boolean;
 }) {
+  // const imagesUrl = isEditing ? (data as EditDogFormData).imagesUrl : null;
+  const { images } = data;
   const isImageExist = images.length > 0;
+
+  const addNewImage = (result: string, isError: boolean, file: File) => {
+    if (isError) {
+      //איך לטפל בארור בצורה טובה יותר?
+      toast.error(`error: ${result}`);
+    } else {
+      const newImage = {
+        base64String: result,
+        url: URL.createObjectURL(file),
+      };
+      setData((prevState) => ({
+        ...prevState,
+        images: [...prevState.images, newImage],
+      }));
+    }
+  };
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
+      const newFile = acceptedFiles[0];
       if (images.length > 2) {
         return;
       }
-      if (!acceptedFiles[0]) {
+      if (!newFile) {
         toast.error(' File exceeded the maximum size or not an image');
         return;
       }
-      const newImage = {
-        file: acceptedFiles[0],
-        url: URL.createObjectURL(acceptedFiles[0]),
-      };
-      setImages((prevImages) => [...prevImages, newImage]);
+      getBase64(newFile, addNewImage);
     },
     [images]
   );
@@ -76,14 +92,18 @@ function DropZone({
   };
 
   const handleDelete = (url: string) => {
-    const newImage = images.filter((image) => image.url !== url);
-    setImages(newImage);
+    const imagesAfterDelete = images.filter((image) => image.url !== url);
+    setData((prevState) => ({
+      ...prevState,
+      images: imagesAfterDelete,
+    }));
   };
 
   const displayImages = () => {
     if (!isImageExist) {
       return;
     }
+
     const displayImages = images.map((image) => {
       const { url } = image;
       return (

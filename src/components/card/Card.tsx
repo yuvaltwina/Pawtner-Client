@@ -1,41 +1,54 @@
-import React, { useState } from "react";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import { MdFavorite } from "react-icons/md";
-import { HiTrash } from "react-icons/hi";
-import { GrEdit } from "react-icons/gr";
-import DogModal from "../modals/dogModal/DogModal";
-import DeleteModal from "../modals/deleteModal/DeleteModal";
-import "./Card.css";
-
-type singleDogType = {
-  NAME: string;
-  BREED: string;
-  GENDER: string;
-  AGE: string;
-  SIZE: string;
-  LOCATION: string;
-  IMAGE: string[];
-  TEXT: string;
-};
-
+import { useState } from 'react';
+import { MdOutlineFavoriteBorder } from 'react-icons/md';
+import { MdFavorite } from 'react-icons/md';
+import { HiTrash } from 'react-icons/hi';
+import DogModal from '../modals/dogModal/DogModal';
+import DeleteModal from '../modals/deleteModal/DeleteModal';
+import './Card.css';
+import { EditDogFormData, SingleDogFullData } from '../../utils/types/type';
+import { TfiPencilAlt } from 'react-icons/tfi';
+import AddModal from '../../components/modals/addModal/AddModal';
+import { dogFavoriteAction } from '../../utils/data/functions';
+import { useGlobalContext } from '../../hooks/useContext';
 function Card({
-  singleDog: { NAME, BREED, GENDER, AGE, SIZE, LOCATION, IMAGE, TEXT },
+  singleDog,
   needFavorite = false,
   needEditAndTrash = false,
+  dogsArray,
+  setDogsArray,
 }: {
-  singleDog: singleDogType;
+  singleDog: SingleDogFullData;
   needFavorite?: boolean;
   needEditAndTrash?: boolean;
+  dogsArray?: SingleDogFullData[];
+  setDogsArray?: React.Dispatch<React.SetStateAction<SingleDogFullData[]>>;
 }) {
   const [openDogModal, setOpenDogModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [isfavorite, setIsFavorite] = useState(false);
+  const { name, breed, gender, age, size, about, city, imagesUrl, _id } =
+    singleDog;
 
+  const {
+    userDetails: { username },
+  } = useGlobalContext();
+
+  const editDogData: EditDogFormData = {
+    name,
+    breed,
+    gender,
+    age,
+    size,
+    about,
+    city,
+    images: [],
+  };
   const favoriteClickHandler = () => {
+    dogFavoriteAction(_id, 'add', username);
     setIsFavorite(!isfavorite);
-
     console.log(
-      `${isfavorite ? "deleted from favorites" : "added to favorites"}`
+      `${isfavorite ? 'deleted from favorites' : 'added to favorites'}`
     );
   };
 
@@ -63,8 +76,13 @@ function Card({
 
   const displayEditAndTrash = needEditAndTrash && (
     <div>
-      <span className="card-edit-icon" onClick={() => {}}>
-        <GrEdit className="card-favorite-icon-clicked-hey" />
+      <span
+        className="card-edit-icon"
+        onClick={() => {
+          setOpenEditModal(true);
+        }}
+      >
+        <TfiPencilAlt />
       </span>
       <span
         className="card-trash-icon"
@@ -72,34 +90,55 @@ function Card({
           setOpenDeleteModal(true);
         }}
       >
-        <HiTrash className="card-favorite-icon-clicked-hey" />
+        <HiTrash />
       </span>
     </div>
   );
-
   return (
-    <div className="card-container">
-      <div
-        className="card"
-        onClick={() => {
-          setOpenDogModal(true);
-        }}
-      >
-        <div className="card-image"></div>
-        <div className="card-name">{NAME}</div>
+    <>
+      {openDogModal && (
+        <DogModal
+          openDogModal={openDogModal}
+          setOpenDogModal={setOpenDogModal}
+          singleDog={singleDog}
+        />
+      )}
+      {/* לשנות את הקונדישן */}
+      {dogsArray && setDogsArray && openDeleteModal && (
+        <DeleteModal
+          openDeleteModal={openDeleteModal}
+          setOpenDeleteModal={setOpenDeleteModal}
+          dogId={_id}
+          setMyDogs={setDogsArray}
+          myDogs={dogsArray}
+        />
+      )}
+      {openEditModal && (
+        <AddModal
+          openAddModal={openEditModal}
+          setOpenAddModal={setOpenEditModal}
+          editDogData={editDogData}
+          dogId={_id}
+        />
+      )}
+      <div className="card-container">
+        <div
+          className="card"
+          onClick={() => {
+            setOpenDogModal(true);
+          }}
+        >
+          <div
+            className="card-image"
+            style={{ backgroundImage: `url(${imagesUrl[0]})` }}
+          ></div>
+          <div className="card-name">{name}</div>
+        </div>
+
+        {displayFavoriteIcon}
+        {displayEditAndTrash}
       </div>
-      <DogModal
-        openDogModal={openDogModal}
-        setOpenDogModal={setOpenDogModal}
-        singleDog={{ NAME, BREED, GENDER, AGE, SIZE, LOCATION, IMAGE, TEXT }}
-      />
-      <DeleteModal
-        openDeleteModal={openDeleteModal}
-        setOpenDeleteModal={setOpenDeleteModal}
-      />
-      {displayFavoriteIcon}
-      {displayEditAndTrash}
-    </div>
+    </>
   );
 }
 

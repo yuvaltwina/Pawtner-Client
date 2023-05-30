@@ -1,19 +1,19 @@
-import * as React from "react";
-import "./Drawer.css";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import Divider from "@mui/material/Divider";
-import { Link } from "react-router-dom";
-import { AiOutlineHome } from "react-icons/ai";
-import { TbDog } from "react-icons/Tb";
-import { AiOutlineHeart } from "react-icons/ai";
-import { BiLogInCircle } from "react-icons/bi";
-import { FiLogOut } from "react-icons/Fi";
-import { FiBookOpen } from "react-icons/Fi";
-import { useGlobalContext } from "../../hooks/useContext";
+import * as React from 'react';
+import './Drawer.css';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import Divider from '@mui/material/Divider';
+import { Link } from 'react-router-dom';
+import { AiOutlineHome } from 'react-icons/ai';
+import { TbDog } from 'react-icons/Tb';
+import { AiOutlineHeart } from 'react-icons/ai';
+import { BiLogInCircle } from 'react-icons/bi';
+import { FiLogOut } from 'react-icons/Fi';
+import { FiBookOpen } from 'react-icons/Fi';
+import { useGlobalContext } from '../../hooks/useContext';
 
 const DRAWER_LINKS_GENERATOR = (
   link: String,
@@ -32,20 +32,20 @@ const DRAWER_LINKS_GENERATOR = (
 
 const DRAWER_LINKS = [
   {
-    page: "home",
-    link: DRAWER_LINKS_GENERATOR("", "Home", <AiOutlineHome />),
+    page: 'home',
+    link: DRAWER_LINKS_GENERATOR('', 'Home', <AiOutlineHome />),
   },
   {
-    page: "mydogs",
-    link: DRAWER_LINKS_GENERATOR("mydogs", "My Dogs", <TbDog />),
+    page: 'mydogs',
+    link: DRAWER_LINKS_GENERATOR('mydogs', 'My Dogs', <TbDog />),
   },
   {
-    page: "favorites",
-    link: DRAWER_LINKS_GENERATOR("favorites", "Favorites", <AiOutlineHeart />),
+    page: 'favorites',
+    link: DRAWER_LINKS_GENERATOR('favorites', 'Favorites', <AiOutlineHeart />),
   },
   {
-    page: "breeds",
-    link: DRAWER_LINKS_GENERATOR("breeds", "About Breeds", <FiBookOpen />),
+    page: 'breeds',
+    link: DRAWER_LINKS_GENERATOR('breeds', 'About Breeds', <FiBookOpen />),
   },
 ];
 interface TemporaryDrawer {
@@ -62,7 +62,7 @@ export default function TemporaryDrawer({
   logout,
 }: TemporaryDrawer) {
   const {
-    userDetails: { username, email, isLoggedIn },
+    userDetails: { username, email, phoneNumber, isLoggedIn },
   } = useGlobalContext();
 
   const displayHeadLine = () => {
@@ -72,6 +72,7 @@ export default function TemporaryDrawer({
           <span className="drawer-headline-details">
             <h1 className="drawer-headline-username">{username}</h1>
             <h3 className="drawer-headline-email">{email}</h3>
+            <h3 className="drawer-headline-email">{phoneNumber}</h3>
           </span>
           <Divider />
         </div>

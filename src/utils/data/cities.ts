@@ -1,4 +1,6 @@
-export const cities = [
+import { capitalizeOnlyFirstChars } from './functions';
+
+const cities = [
   {
     city_symbol: '967',
     hebrew_name: "אבו ג'ווייעד שבט(",
@@ -759,6 +761,7 @@ export const cities = [
     hebrew_name: "ביר הדאג' ",
     english_name: 'BIR HADAGE ',
   },
+
   {
     city_symbol: '368 ',
     hebrew_name: 'ביריה ',
@@ -2012,7 +2015,7 @@ export const cities = [
   {
     city_symbol: '3400 ',
     hebrew_name: 'חברון ',
-    english_name: ' ',
+    english_name: 'HEVRON ',
   },
   {
     city_symbol: '717 ',
@@ -2632,7 +2635,7 @@ export const cities = [
   {
     city_symbol: '1329 ',
     hebrew_name: 'יתיר ',
-    english_name: ' ',
+    english_name: 'YATIR',
   },
   {
     city_symbol: '504 ',
@@ -2717,7 +2720,7 @@ export const cities = [
   {
     city_symbol: '1331 ',
     hebrew_name: 'כמאנה ',
-    english_name: ' ',
+    english_name: 'KAMANA',
   },
   {
     city_symbol: '1291 ',
@@ -3213,11 +3216,6 @@ export const cities = [
     city_symbol: '3656 ',
     hebrew_name: 'כרמל ',
     english_name: 'KARMEL ',
-  },
-  {
-    city_symbol: '0 ',
-    hebrew_name: 'לא רשום ',
-    english_name: ' ',
   },
   {
     city_symbol: '1207 ',
@@ -4582,7 +4580,7 @@ export const cities = [
   {
     city_symbol: '3777 ',
     hebrew_name: 'סנסנה ',
-    english_name: ' ',
+    english_name: 'SANSANA ',
   },
   {
     city_symbol: '419 ',
@@ -5408,11 +5406,6 @@ export const cities = [
     city_symbol: '1243 ',
     hebrew_name: 'קציר ',
     english_name: 'QAZIR ',
-  },
-  {
-    city_symbol: '1347 ',
-    hebrew_name: 'קצר א-סר ',
-    english_name: ' ',
   },
   {
     city_symbol: '4100 ',
@@ -6355,3 +6348,8 @@ export const cities = [
     english_name: 'TARUM',
   },
 ];
+
+let citiesWithDuplicates: string[] = cities.map((city) =>
+  capitalizeOnlyFirstChars(city.english_name).trim()
+);
+export const cityOptions = [...new Set(citiesWithDuplicates)].sort();

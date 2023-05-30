@@ -18,6 +18,9 @@
   overflow-y: auto;
   gap: 1rem;
 }
+.addmodal:focus-visible {
+  outline: none;
+}
 .addmodal-headline {
   color: var(--special-color);
   font-size: clamp(2.2rem, 5vw, 3.5rem);
@@ -39,7 +42,7 @@
   width: 100%;
 }
 .addmodal-preferences-button {
-  width: clamp(17rem, 45%, 40rem);
+  width: clamp(17rem, 45%, 21rem);
 }
 /* .addmodal-input-field {
 }

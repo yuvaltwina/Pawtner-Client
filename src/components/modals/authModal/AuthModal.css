@@ -4,7 +4,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: clamp(22rem, 50vw, 40rem);
-  height: 35rem;
+  height: 38rem;
   overflow-x: hidden;
   overflow-y: auto;
   background-color: var(--text-secondary);

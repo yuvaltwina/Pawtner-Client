@@ -25,9 +25,10 @@
 .profile-list-modal {
   position: absolute;
 }
+
 .profile-list-icon {
   color: var(--special-color);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .profile-list-modal .css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {

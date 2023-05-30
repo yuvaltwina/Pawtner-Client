@@ -1,17 +1,20 @@
-import Navbar from "./components/navbar/Navbar";
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import Primary from "./pages/primary/Primary";
-import Favorites from "./pages/favorites/Favorites";
-import Breeds from "./pages/breeds/Breeds";
-import NotFound from "./pages/notFound/NotFound";
-import MyDogs from "./pages/myDogs/MyDogs";
-import { Toaster } from "react-hot-toast";
-import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
+import Navbar from './components/navbar/Navbar';
+import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import Primary from './pages/primary/Primary';
+import Favorites from './pages/favorites/Favorites';
+import Breeds from './pages/breeds/Breeds';
+import NotFound from './pages/notFound/NotFound';
+import MyDogs from './pages/myDogs/MyDogs';
+import { Toaster } from 'react-hot-toast';
+import ForgotPassword from './pages/forgotPassword/ForgotPassword';
 
 //missions
-// 1- add check login token as middlewere
 // 2 - change the look of the logout
+//3 change the fonts
+//אפשר לחכות שהכל יטען לפני שזה מציג משהו ?
+//למזה זה נתקע כשמותחים
+//on logout move the website to homepage
 function App() {
   return (
     <div className="App">

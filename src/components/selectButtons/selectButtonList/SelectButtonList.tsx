@@ -1,42 +1,29 @@
-import { useState } from "react";
-import { Category, PrefrencesButtonValuesObj } from "../../../utils/types/type";
-import SelectButton from "../selectButton/SelectButton";
+import { useState } from 'react';
+import { filterDataInitialObjectType } from '../../../utils/types/type';
+import SelectButton from '../selectButton/SelectButton';
+import { Autocomplete, TextField } from '@mui/material';
+import { cityOptions } from '../../../utils/data/cities';
 
 //להחליף את האני בטייפ הנכון
-const preferencesListInitialObj = (
-  list: [
-    {
-      category: string;
-      valuesArray: string[];
-    }
-  ]
-) => {
-  const preferencesListInitial = list.reduce(
-    (
-      preferencesListInitial: PrefrencesButtonValuesObj,
-      { category }: Category
-    ) => {
-      preferencesListInitial[category] = [];
-      return preferencesListInitial;
-    },
-    {}
-  );
-  return preferencesListInitial;
-};
 
 function SelectButtonList({
-  divClass,
-  spanClass,
   list,
+  setPreferencesList,
+  preferencesList,
 }: {
-  divClass: string;
-  spanClass: string;
-  list: any;
+  list: { category: string; valuesArray: string[] }[];
+  setPreferencesList: React.Dispatch<
+    React.SetStateAction<filterDataInitialObjectType>
+  >;
+  preferencesList: filterDataInitialObjectType;
 }) {
-  const [preferencesList, setPreferencesList] = useState<{}>(
-    preferencesListInitialObj(list)
-  );
-
+  const cityOnChange = ({
+    target: { value, id },
+  }: {
+    target: { value: string[]; id: string };
+  }) => {
+    setPreferencesList((prevState) => ({ ...prevState, [id]: value }));
+  };
   const displaySelectButtons = list.map(
     (selectbutton: { category: string; valuesArray: string[] }) => {
       const {
@@ -44,7 +31,7 @@ function SelectButtonList({
         valuesArray,
       }: { category: string; valuesArray: string[] } = selectbutton;
       return (
-        <span className={spanClass} key={category}>
+        <span className={'primary-preferences-button'} key={category}>
           <SelectButton
             allProps={{}}
             preferencesList={preferencesList}
@@ -56,7 +43,23 @@ function SelectButtonList({
       );
     }
   );
-  return <div className={divClass}>{displaySelectButtons}</div>;
+  return (
+    <div className={'primary-preferences-buttons-container'}>
+      {displaySelectButtons}
+      <Autocomplete
+        multiple
+        limitTags={1}
+        disablePortal
+        options={cityOptions}
+        value={preferencesList.city || null}
+        className={'primary-preferences-button'}
+        onChange={(event, value) => {
+          value && cityOnChange({ target: { id: 'city', value } });
+        }}
+        renderInput={(params) => <TextField {...params} label="CITY" />}
+      />
+    </div>
+  );
 }
 
 export default SelectButtonList;

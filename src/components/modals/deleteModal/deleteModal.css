@@ -1,6 +1,7 @@
 .delete-modal-container {
   position: relative;
 }
+
 .delete-modal {
   position: absolute;
   top: 25%;
@@ -16,6 +17,9 @@
   gap: 1.5rem;
   padding: 2.1rem 1rem 2rem 1rem;
   text-align: center;
+}
+.delete-modal:focus-visible {
+  outline: none;
 }
 .delete-modal-headline {
   font-size: 1.6rem;

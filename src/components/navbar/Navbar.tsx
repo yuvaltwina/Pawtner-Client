@@ -1,15 +1,16 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import "./Navbar.css";
-import { VscHeartFilled } from "react-icons/vsc";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { FaRegUser } from "react-icons/fa";
-import Drawer from "../drawer/Drawer";
-import LoginModal from "../modals/authModal/AuthModal";
-import { useGlobalContext } from "../../hooks/useContext";
-import Cookies from "js-cookie";
-import ProfileList from "../profileList/ProfileList";
+import React from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Navbar.css';
+import { VscHeartFilled } from 'react-icons/vsc';
+import { RxHamburgerMenu } from 'react-icons/rx';
+import { FaRegUser } from 'react-icons/fa';
+import Drawer from '../drawer/Drawer';
+import LoginModal from '../modals/authModal/AuthModal';
+import { useGlobalContext } from '../../hooks/useContext';
+import Cookies from 'js-cookie';
+import ProfileList from '../profileList/ProfileList';
+import { reloadAfterSecond } from '../../utils/data/functions';
 
 function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -22,8 +23,14 @@ function Navbar() {
 
   const logout = () => {
     //need to clear also the jwt?
-    Cookies.remove("login");
-    setUserDetails({ username: "", isLoggedIn: false, email: "" });
+    Cookies.remove('login');
+    setUserDetails({
+      username: '',
+      isLoggedIn: false,
+      email: '',
+      phoneNumber: '',
+    });
+    reloadAfterSecond();
   };
   const displayLogin = () => {
     if (isLoggedIn) {
@@ -59,21 +66,22 @@ function Navbar() {
       </button>
     );
   };
+  //לקחת את הלינקים מאובגקט
   return (
     <div className="navbar">
       <div className="nav-left-links">
-        <Link className="nav-headline" to={"/"}>
+        <Link className="nav-headline" to={'/'}>
           Pawtner
         </Link>
-        <Link className="nav-link" to={"/breeds"}>
+        <Link className="nav-link" to={'/breeds'}>
           About Breeds
         </Link>
-        <Link className="nav-link" to={"/myDogs"}>
+        <Link className="nav-link" to={'/myDogs'}>
           My Dogs
         </Link>
       </div>
       <div className="nav-right-links">
-        <Link to={"/favorites"}>
+        <Link to={'/favorites'}>
           <VscHeartFilled className="nav-favorite-icon" />
         </Link>
         <span

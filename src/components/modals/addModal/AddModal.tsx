@@ -1,24 +1,24 @@
 import './addModal.css';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useState } from 'react';
-import Modal from '@mui/material/Modal';
 import { ADD_DOG_SELECT_BUTTONS, SERVER_URL } from '../../../utils/data/data';
 import SelectOneButton from '../../selectButtons/selectOneButton/selectOneButton';
 import TextField from '@mui/material/TextField';
 import DropZone from '../../dropZone/DropZone';
 import { RiCloseFill } from 'react-icons/ri';
-import { DogFormData } from '../../../utils/types/type';
-import { cities } from '../../../utils/data/cities';
-import { capitalizeOnlyFirstChars } from '../../../utils/data/functions';
+import { DogFormData, EditDogFormData } from '../../../utils/types/type';
+import { cityOptions } from '../../../utils/data/cities';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { Modal } from '@mui/material';
+import { reloadAfterSecond } from '../../../utils/data/functions';
 
-const ABOUT_WIDTH = 'clamp(17rem,80%,100rem)';
-const INPUTS_WIDTH = 'clamp(17rem,45%,30rem)';
-const NAME_REGEX = /^[a-zA-Z]{2,12}$/; //letters 2-12
+const ABOUT_WIDTH = 'clamp(17rem,80%,44rem)';
+const INPUTS_WIDTH = 'clamp(17rem,45%,21rem)';
+const NAME_REGEX = /^(?=.*[a-zA-Z].*[a-zA-Z])[a-zA-Z\s]{2,12}$/; //atleast letters 2-12 can contain whitespace
 const ABOUT_REGEX = /^.{15,200}$/; // 15-200 chars
 
-const DATA_LIST = {
+const DATA_LIST: DogFormData = {
   breed: '',
   gender: '',
   age: '',
@@ -26,7 +26,7 @@ const DATA_LIST = {
   name: '',
   about: '',
   city: '',
-  //there is also images
+  images: [],
 };
 const DATA_ERROR_LIST = {
   breed: '',
@@ -38,22 +38,26 @@ const DATA_ERROR_LIST = {
   city: '',
   images: '',
 };
-
+//לעשות מודל רספונסיבי
+//לשנות שהשורות לא יגדל כשאני בוחר טקסט
+//לשנות שזה לא יעשה רענן אלה יעשה פטץ שוב
 export default function BasicModal({
   openAddModal,
   setOpenAddModal,
+  editDogData,
+  dogId = '',
 }: {
   openAddModal: boolean;
   setOpenAddModal: React.Dispatch<React.SetStateAction<boolean>>;
+  editDogData?: EditDogFormData;
+  dogId?: string;
 }) {
-  const [data, setData] = useState(DATA_LIST);
-  const [images, setImages] = useState<{ file: File; url: string }[]>([]);
+  const isEditing = !!editDogData;
+  const [data, setData] = useState(!!isEditing ? editDogData : DATA_LIST);
   const [errors, setErrors] = useState(DATA_ERROR_LIST);
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const { name, about, images } = data;
 
-  const { name, about } = data;
-  // לעשות סינון של כלבים לפי עיר
-  //לעשות מודל רספונסיבי
   const onChange = ({
     target: { value, id },
   }: {
@@ -62,30 +66,21 @@ export default function BasicModal({
     setData((prevState) => ({ ...prevState, [id]: value }));
   };
 
-  const citiesWithDuplicates: string[] = cities.map((city) =>
-    capitalizeOnlyFirstChars(city.english_name).trim()
-  );
-  const cityOptions = [...new Set(citiesWithDuplicates)];
-
   const displaySelectButtons = () => {
-    const selectButtons = ADD_DOG_SELECT_BUTTONS.map(
-      (selectbutton: { category: string; valuesArray: string[] }) => {
-        const {
-          category,
-          valuesArray,
-        }: { category: string; valuesArray: string[] } = selectbutton;
-        return (
-          <span className="addmodal-preferences-button" key={category}>
-            <SelectOneButton
-              category={category}
-              valuesArray={valuesArray}
-              setData={setData}
-            />
-            <p></p>
-          </span>
-        );
-      }
-    );
+    const selectButtons = ADD_DOG_SELECT_BUTTONS.map((selectbutton) => {
+      const { category, valuesArray } = selectbutton;
+      return (
+        <span className="addmodal-preferences-button" key={category}>
+          <SelectOneButton
+            category={category}
+            valuesArray={valuesArray}
+            setData={setData}
+            initialValue={data[category] as string}
+          />
+          <p></p>
+        </span>
+      );
+    });
     return selectButtons;
   };
   const displayDataFields = () => {
@@ -104,26 +99,35 @@ export default function BasicModal({
           required
           sx={{ width: INPUTS_WIDTH }}
         />
+
         <Autocomplete
           disablePortal
           options={cityOptions}
+          value={data.city || null}
           sx={{ width: INPUTS_WIDTH }}
           onChange={(event, value) => {
             value && onChange({ target: { id: 'city', value } });
           }}
           renderInput={(params) => (
-            <TextField {...params} label="CITY" required />
+            <>
+              {/* <VirtualizedList /> */}
+              <TextField {...params} label="CITY" required />
+            </>
           )}
         />
         {selectButtons}
       </span>
     );
   };
-
+  const closeModal = () => {
+    setOpenAddModal(false);
+    setErrors(DATA_ERROR_LIST);
+    setData(DATA_LIST);
+  };
   const errorsCheck = () => {
     let errorMessage = '';
     let errCategory = '';
-    if (!(images.length > 0)) {
+    if (images.length <= 0 && !isEditing) {
       errorMessage = 'Atleast one image is required';
       errCategory = 'images';
     }
@@ -142,7 +146,26 @@ export default function BasicModal({
     const isError = Boolean(errorMessage);
     return isError;
   };
-  //לשלוח את המידע לבאקאנד שישמור את הכלב
+  const handleServerResponse = (serverRespone: string) => {
+    if (serverRespone === 'dog created successfully') {
+      toast.success('Dog post created successfully!', { duration: 4000 });
+      reloadAfterSecond();
+      closeModal();
+      return;
+    }
+    if (serverRespone === 'dog edited successfully') {
+      closeModal();
+      toast.success('Dog post edited successfully!');
+      reloadAfterSecond();
+      return;
+    }
+    if (serverRespone === 'unauthorized') {
+      toast.error('Unauthorized please login first');
+      return;
+    }
+    toast.error('Something went wrong please try again later');
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmiting(true);
@@ -152,36 +175,29 @@ export default function BasicModal({
       return;
     }
     try {
-      console.log(images);
       const serverResponse = await axios.post(
-        SERVER_URL + '/dog/addDog',
-        // data,
-        { images }
+        SERVER_URL + `/dog/${isEditing ? 'editDog' : 'addDog'}`,
+        {
+          data,
+          _id: isEditing ? dogId : '',
+        },
+        {
+          withCredentials: true,
+        }
       );
-      const isServerVerified =
-        serverResponse.data?.message === 'dog created successfully';
-      if (isServerVerified) {
-        toast.success('Dog post created successfully!');
-        setData(DATA_LIST);
-        setImages([]);
-        setOpenAddModal(false);
-      } else {
-        console.log(1);
-        toast.error('Something went wrong please try again later');
-      }
+      const serverResponseMessage = serverResponse.data?.message || '';
+      handleServerResponse(serverResponseMessage);
     } catch (err: any) {
-      const serverError = err.response?.data?.message || '';
-      console.log(serverError);
-      toast.error('Something went wrong please try again later');
+      const serverErrorMessage = err.response?.data?.message || '';
+      handleServerResponse(serverErrorMessage);
     }
     setErrors(DATA_ERROR_LIST);
     setIsSubmiting(false);
   };
-
   return (
     <Modal
       open={openAddModal}
-      onClose={() => setOpenAddModal(false)}
+      onClose={() => closeModal()}
       className="addmodal-container"
     >
       <div className="addmodal">
@@ -202,16 +218,23 @@ export default function BasicModal({
             autoComplete="on"
             required
           />
-          <DropZone
-            images={images}
-            setImages={setImages}
-            isError={Boolean(errors.images)}
-          />
-          <p className="addmodal-dropzone-error">{errors.images}</p>
+          {!isEditing && (
+            <>
+              <DropZone
+                data={data as DogFormData}
+                setData={
+                  setData as React.Dispatch<React.SetStateAction<DogFormData>>
+                }
+                isError={Boolean(errors.images)}
+              />
+              <p className="addmodal-dropzone-error">{errors.images}</p>{' '}
+            </>
+          )}
+
           <RiCloseFill
             className="addmodal-exit-icon"
             onClick={() => {
-              setOpenAddModal(false);
+              closeModal();
             }}
           />
           <button

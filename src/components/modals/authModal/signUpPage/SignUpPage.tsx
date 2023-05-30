@@ -10,17 +10,28 @@ import {
 } from '../../../../utils/data/data';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-
+const PHONE_NUMBER_REGEX = /^[0-9]{10,12}$/;
 const USER_NAME_REGEX = /^[a-zA-Z][a-zA-Z0-9]{3,11}$/; //allows only letters and numbers in the string, and the first character must be a letter 4-12 charcters.
 const USER_NAME_ERROR_MESSAGE =
   ' Only letters and numbers, first character must be a letter. 4-12 charcters long';
 const PASSWORD_ERROR_MESSAGE =
   ' Atleast 8 characters , Needs to contain letters and numbers.';
 const CONFIRM_PASSWORD_ERROR_MESSAGE = 'Passwords not match';
+const PHONE_NUMBER_ERROR_MESSAGE = 'Please provide a valid phone number';
+
 const USER_NAME_ERROR = 'usernameError';
 const PASSWORD_ERROR = 'passwordError';
 const CONFIRM_PASSWORD_ERROR = 'confirmPasswordError';
 const EMAIL_ERROR = 'emailError';
+const PHONE_NUMBER_ERROR = 'phoneNumberError';
+
+const INITIAL_DATA_LIST = {
+  username: '',
+  email: '',
+  phoneNumber: '',
+  password: '',
+  confirmPassword: '',
+};
 
 function SignUpPage({
   navigate,
@@ -29,26 +40,24 @@ function SignUpPage({
   navigate: Navigate;
   closeModal: () => void;
 }) {
-  const [signUpData, setsignUpData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const [signUpData, setsignUpData] = useState(INITIAL_DATA_LIST);
   const [signUpError, setsignUpError] = useState({
     usernameError: false,
     emailError: false,
     passwordError: false,
+    phoneNumberError: false,
     confirmPasswordError: false,
     errorMessage: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { username, email, password, confirmPassword } = signUpData;
+  const { username, email, password, phoneNumber, confirmPassword } =
+    signUpData;
   const {
     usernameError,
     emailError,
     passwordError,
+    phoneNumberError,
     confirmPasswordError,
     errorMessage,
   } = signUpError;
@@ -58,6 +67,7 @@ function SignUpPage({
       usernameError: category === USER_NAME_ERROR ? true : false,
       passwordError: category === PASSWORD_ERROR ? true : false,
       emailError: category === EMAIL_ERROR ? true : false,
+      phoneNumberError: category === PHONE_NUMBER_ERROR ? true : false,
       confirmPasswordError: category === CONFIRM_PASSWORD_ERROR ? true : false,
       errorMessage: errorText,
     });
@@ -65,6 +75,10 @@ function SignUpPage({
   const validateSignUpData = () => {
     if (!username.match(USER_NAME_REGEX)) {
       ChangesignUpErrorTo(USER_NAME_ERROR, USER_NAME_ERROR_MESSAGE);
+      return false;
+    }
+    if (!phoneNumber.match(PHONE_NUMBER_REGEX)) {
+      ChangesignUpErrorTo(PHONE_NUMBER_ERROR, PHONE_NUMBER_ERROR_MESSAGE);
       return false;
     }
     if (!email.match(EMAIL_REGEX)) {
@@ -97,7 +111,7 @@ function SignUpPage({
     try {
       const verificationEmailResponse = await axios.post(
         SERVER_URL + '/user/verification',
-        { username, password, email }
+        { username, password, email, phoneNumber }
       );
       const isServerVerified =
         verificationEmailResponse.data?.message ===
@@ -105,12 +119,7 @@ function SignUpPage({
 
       if (isServerVerified) {
         toast.success('Verification mail sent to your email');
-        setsignUpData({
-          username: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-        });
+        setsignUpData(INITIAL_DATA_LIST);
         closeModal();
       } else {
         toast.error('Something went wrong please try again later');
@@ -127,6 +136,7 @@ function SignUpPage({
         setIsSubmitting(false);
         return;
       }
+      console.log(serverError);
       toast.error('Something went wrong please try again later');
     }
     //הוצאתי את החלק הזה מהקאץ
@@ -153,6 +163,17 @@ function SignUpPage({
           onChange={onChange}
           id="username"
           label="User Name"
+          className="signup-modal-input"
+          autoComplete="on"
+          required
+        ></TextField>
+        <TextField
+          error={phoneNumberError}
+          helperText={phoneNumberError ? errorMessage : ''}
+          value={phoneNumber}
+          onChange={onChange}
+          id="phoneNumber"
+          label="Phone Number"
           className="signup-modal-input"
           autoComplete="on"
           required

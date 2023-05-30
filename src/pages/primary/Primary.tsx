@@ -1,27 +1,77 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Primary.css';
 import Card from '../../components/card/Card';
 import SelectButtonList from '../../components/selectButtons/selectButtonList/SelectButtonList';
-import { DOGS_LIST } from '../../utils/data/data';
 import { SELECT_BUTTONS_DATA } from '../../utils/data/data';
-
+import axios, { CancelToken, CancelTokenSource } from 'axios';
+import { fetchDogsArray } from '../../utils/data/functions';
+import {
+  SingleDogFullData,
+  filterDataInitialObjectType,
+} from '../../utils/types/type';
+import { toast } from 'react-hot-toast';
+import { useGlobalContext } from '../../hooks/useContext';
 const DOG_HEADER_TITLE_TEXT = 'Find your new best friend';
 const DOG_HEADER_SUBTITLE_TEXT =
   '   browse dogs from our network and find your new buddy';
 const DOG_PREFENCES_HEADLINE_TEXT = 'What are you looking for ?';
 const DOG_CARDS_HEADLINE_TEXT = 'Dogs Available for ';
-const SUBMIT_BUTTON_TEXT = 'SUBMIT';
-const INPUTS_WIDTH = 'clamp(17rem,45%,30rem)';
+//להוסיף מינימום גודל מבחינת עיצוב לכלבים למקרה שזה לא מוצא בחחיפוש
+//conditional loading , dont load all the dogs at once
+//לפתור את הבעיה עם הטייפ  סקרפיט
+// כשמשנים את הרוחב של העמוד זה מתרנדר לאט למה והאם יש איך לשפר
+const filterDataInitialObject: filterDataInitialObjectType = {
+  breed: [],
+  gender: [],
+  size: [],
+  age: [],
+  city: [],
+};
 
 export function Primary() {
-  const handSubmit = () => {
-    console.log(1);
-  };
-  // lllllllllllllllllllllllllllllllllllllllll לתקן KEY
-  const displayCards = DOGS_LIST.map((singleDog) => {
+  const [filterData, setFilterData] = useState(filterDataInitialObject);
+  const [allDogs, setAllDogs] = useState<SingleDogFullData[]>([]);
+  const [filteredDogs, setFilteredDogs] = useState<SingleDogFullData[]>([]);
+  //להעביר להוק נפרד
+  useEffect(() => {
+    let source = axios.CancelToken.source();
+    const getDogs = async () => {
+      const serverLastRoute = 'getAllDogs';
+      const arrayOfDogs = await fetchDogsArray(serverLastRoute, source);
+      if (!arrayOfDogs) {
+        toast.error('Something went wrong');
+        return;
+      }
+      setAllDogs(arrayOfDogs);
+      setFilteredDogs(arrayOfDogs);
+    };
+    getDogs();
+    return () => {
+      source.cancel();
+    };
+  }, [setAllDogs, setFilteredDogs]);
+
+  useEffect(() => {
+    const filteredArr = allDogs.filter((dog) => {
+      let isPassing = false;
+      for (const key in filterData) {
+        type keyType = keyof filterDataInitialObjectType; // יש דרך יותר טובה לעשות את זה?
+        isPassing =
+          filterData[key as keyType].includes(dog[key as keyType]) ||
+          filterData[key as keyType].length === 0;
+        if (isPassing === false) {
+          return isPassing;
+        }
+      }
+      return isPassing;
+    });
+    setFilteredDogs(filteredArr);
+  }, [filterData, setFilteredDogs]);
+
+  const displayCards = filteredDogs.map((singleDog) => {
     return (
       <Card
-        key={singleDog.TEXT + Math.random()}
+        key={singleDog._id}
         singleDog={singleDog}
         needFavorite={true}
       ></Card>
@@ -33,31 +83,24 @@ export function Primary() {
       <p className="primary-header-pargraph">{DOG_HEADER_SUBTITLE_TEXT} </p>
     </div>
   );
-
   return (
     <div className="primary">
       {displayHeader}
       <section className="primary-preferences">
+        <h3 className="primary-preferences-headline">
+          {DOG_PREFENCES_HEADLINE_TEXT}
+        </h3>
+        <div className="primary-form">
+          <SelectButtonList
+            list={SELECT_BUTTONS_DATA}
+            setPreferencesList={setFilterData}
+            preferencesList={filterData}
+          />
+        </div>
         <img
           className="primary-preferences-img"
           src="src\utils\images\4253264.png"
         />
-        <h3 className="primary-preferences-headline">
-          {DOG_PREFENCES_HEADLINE_TEXT}
-        </h3>
-        <SelectButtonList
-          divClass="primary-preferences-buttons-container"
-          spanClass="primary-preferences-button"
-          list={SELECT_BUTTONS_DATA}
-        />
-        <button
-          onClick={() => {
-            handSubmit();
-          }}
-          className="primary-preferences-submit"
-        >
-          {SUBMIT_BUTTON_TEXT}
-        </button>
       </section>
       <section className="primary-adoption">
         <h1 className="primary-adoption-headline">

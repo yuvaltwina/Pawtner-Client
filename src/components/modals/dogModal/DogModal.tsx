@@ -1,48 +1,14 @@
-import "./DogModal.css";
-import * as React from "react";
-import { AiOutlineMail } from "react-icons/ai";
-import { BsFillPersonFill } from "react-icons/bs";
-import { MdLocationOn } from "react-icons/md";
-import { MdOutlinePhoneIphone } from "react-icons/md";
-import { RiCloseFill } from "react-icons/ri";
-
-import Modal from "@mui/material/Modal";
-import Swipe from "../../swipe/Swipe";
-
-type singleDogType = {
-  NAME: string;
-  BREED: string;
-  GENDER: string;
-  AGE: string;
-  SIZE: string;
-  LOCATION: string;
-  IMAGE: string[];
-  TEXT: string;
-};
-
-export const USER_CONTACTS_LIST = [
-  {
-    header: "User :",
-    pargraph: "Yuval Twina",
-    icon: <BsFillPersonFill />,
-  },
-  {
-    header: "Address :",
-    pargraph: "User Location",
-    icon: <MdLocationOn />,
-  },
-  {
-    header: "Phone :",
-    pargraph: "052-2341-235",
-    icon: <MdOutlinePhoneIphone />,
-  },
-
-  {
-    header: "Email :",
-    pargraph: "dsafsdf@gmail.com",
-    icon: <AiOutlineMail />,
-  },
-];
+import './DogModal.css';
+import * as React from 'react';
+import { AiOutlineMail } from 'react-icons/ai';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { MdLocationOn } from 'react-icons/md';
+import { MdOutlinePhoneIphone } from 'react-icons/md';
+import { RiCloseFill } from 'react-icons/ri';
+import Swipe from '../../swipe/Swipe';
+import { SingleDogFullData } from '../../../utils/types/type';
+import { phoneNumberFormating } from '../../../utils/data/functions';
+import { Modal } from '@mui/material';
 
 export default function BasicModal({
   openDogModal,
@@ -51,29 +17,63 @@ export default function BasicModal({
 }: {
   openDogModal: boolean;
   setOpenDogModal: React.Dispatch<React.SetStateAction<boolean>>;
-  singleDog: singleDogType;
+  singleDog: SingleDogFullData;
 }) {
-  //לשנות את המיקום לעיר לפי הזיפ קוד
-  const { NAME, BREED, GENDER, AGE, SIZE, LOCATION, IMAGE, TEXT } = singleDog;
+  const {
+    about,
+    age,
+    breed,
+    city,
+    email,
+    gender,
+    imagesUrl,
+    likedBy,
+    name,
+    phoneNumber,
+    size,
+    username,
+  } = singleDog;
   const DOG_INFO_LIST = [
     {
-      category: "Breed",
-      value: BREED,
+      category: 'Breed',
+      value: breed,
     },
     {
-      category: "Gender",
-      value: GENDER,
+      category: 'Gender',
+      value: gender,
     },
     {
-      category: "Age",
-      value: AGE,
+      category: 'Age',
+      value: age,
     },
     {
-      category: "Size",
-      value: SIZE,
+      category: 'Size',
+      value: size,
     },
   ];
+  const USER_CONTACTS_LIST = [
+    {
+      header: 'User :',
+      pargraph: username,
+      icon: <BsFillPersonFill />,
+    },
+    {
+      header: 'City :',
+      pargraph: city,
+      icon: <MdLocationOn />,
+    },
+    {
+      header: 'Phone :',
+      pargraph: phoneNumberFormating(phoneNumber),
+      icon: <MdOutlinePhoneIphone />,
+    },
 
+    {
+      header: 'Email :',
+      pargraph: email,
+      icon: <AiOutlineMail />,
+    },
+  ];
   const displayDogSpecificInfo = (value: string, category: string) => {
     return (
       <h3 key={category}>
@@ -112,7 +112,7 @@ export default function BasicModal({
       className="dogmodal-container"
     >
       <div className="dogmodal">
-        <Swipe IMAGE={IMAGE} />
+        <Swipe imagesUrl={imagesUrl} />
         <RiCloseFill
           className="dog-modal-exit-icon"
           onClick={() => {
@@ -120,10 +120,10 @@ export default function BasicModal({
           }}
         />
         <span className="dogmodal-headline">
-          {displayDogSpecificInfo("About ", NAME)}
+          {displayDogSpecificInfo('About ', name)}
         </span>
         <section className="dogmodal-dog-info">{displayDogInfo}</section>
-        <p className="dogmodal-dog-text">{TEXT}</p>
+        <p className="dogmodal-dog-text">{about}</p>
         <section className="dogmodal-dog-footer">{footerUserDetails()}</section>
       </div>
     </Modal>

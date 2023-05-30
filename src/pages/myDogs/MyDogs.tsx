@@ -1,47 +1,78 @@
-import { useState } from "react";
-import "./myDogs.css";
-import { DOGS_LIST } from "../../utils/data/data";
-import AddModal from "../../components/modals/addModal/AddModal";
-import Card from "../../components/card/Card";
+import { useState, useEffect } from 'react';
+import './myDogs.css';
+import AddModal from '../../components/modals/addModal/AddModal';
+import Card from '../../components/card/Card';
+import axios from 'axios';
+import { SingleDogFullData } from '../../utils/types/type';
+import { fetchDogsArray } from '../../utils/data/functions';
+import { toast } from 'react-hot-toast';
 
 function MyDogs() {
   const [openAddModal, setOpenAddModal] = useState(false);
-
-  const displayCards = DOGS_LIST.map((singleDog) => {
+  const [myDogs, setMyDogs] = useState<SingleDogFullData[]>([]);
+  //לתקן את הרענון ביצירת כלב
+  //להעביר להוק נפרד
+  useEffect(() => {
+    let source = axios.CancelToken.source();
+    const getDogs = async () => {
+      const serverLastRoute = 'getMyDogs';
+      const arrayOfDogs = await fetchDogsArray(serverLastRoute, source);
+      if (!arrayOfDogs) {
+        toast.error('Something went wrong');
+        return;
+      }
+      setMyDogs(arrayOfDogs);
+    };
+    getDogs();
+    return () => {
+      source.cancel();
+    };
+  }, [setMyDogs]);
+  const displayCards = myDogs.map((singleDog) => {
+    const { _id: id } = singleDog;
     return (
       <Card
-        key={singleDog.TEXT + Math.random()}
+        key={id}
         singleDog={singleDog}
         needEditAndTrash={true}
+        setDogsArray={setMyDogs}
+        dogsArray={myDogs}
       ></Card>
     );
   });
   return (
-    <div className="mydogs">
-      <section className="mydogs-header">
-        <h1 className="mydogs-header-headline">Share your amazing dogs!</h1>
-        <p className="mydogs-header-subtitle">
-          so other people will be able to adopt them
-        </p>
-      </section>
-      <section className="mydogs-dogs">
-        <h1 className="mydogs-dogs-headline">
-          My Dogs (<span className="headlight">0</span>)
-        </h1>
-        <div className="mydogs-cards-container">
-          <button
-            className="mydogs-add"
-            onClick={() => {
-              setOpenAddModal(true);
-            }}
-          >
-            <span className="mydogs-add-plus">+</span>
-          </button>
-          {displayCards}
-        </div>
-      </section>
-      <AddModal openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
-    </div>
+    <>
+      {openAddModal && (
+        <AddModal
+          openAddModal={openAddModal}
+          setOpenAddModal={setOpenAddModal}
+        />
+      )}
+      <div className="mydogs">
+        <section className="mydogs-header">
+          <h1 className="mydogs-header-headline">Share your amazing dogs!</h1>
+          <p className="mydogs-header-subtitle">
+            so other people will be able to adopt them
+          </p>
+        </section>
+        <section className="mydogs-dogs">
+          <h1 className="mydogs-dogs-headline">
+            My Dogs (<span className="headlight">{myDogs.length}</span>)
+          </h1>
+          <div className="mydogs-cards-container">
+            <button
+              className="mydogs-add"
+              onClick={() => {
+                setOpenAddModal(true);
+              }}
+            >
+              <span className="mydogs-add-plus">+</span>
+            </button>
+            {displayCards}
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
 

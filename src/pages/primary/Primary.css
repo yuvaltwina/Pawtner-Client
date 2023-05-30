@@ -11,7 +11,7 @@
   align-items: center;
   width: 100%;
   padding: 3rem 0;
-  background-image: url("../../utils/images/dogRun.avif");
+  background-image: url('../../utils/images/dogRun.avif');
   background-size: cover;
   background-position: 50% 68%;
   background-repeat: no-repeat;
@@ -28,7 +28,6 @@
   margin-bottom: 4rem;
   font-weight: 540;
 }
-
 .primary-preferences {
   display: flex;
   flex-direction: column;
@@ -39,17 +38,24 @@
   background-color: white;
   padding: 1rem 2rem 2rem 2rem;
   margin-top: -4rem;
+  max-width: 1790px;
 }
 
 .primary-preferences-img {
-  width: 3.6rem;
+  width: 3.8rem;
+  margin-top: 2rem;
 }
 .primary-preferences-headline {
   font-size: clamp(1.3rem, 2.5vw, 2.8rem);
   text-align: center;
-  margin: 3rem 0rem;
+  margin: 2rem 0rem;
 }
-
+.primary-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .primary-preferences-buttons-container {
   display: flex;
   flex-direction: row;
@@ -63,39 +69,7 @@
   max-width: 20rem;
   min-width: 11rem;
 }
-.primary-preferences-submit {
-  margin: auto;
-  display: inline-block;
-  width: 10rem;
-  border-radius: 2em;
-  align-items: center;
-  margin-top: 2rem;
-  background-color: var(--special-color);
-  border: 2px solid var(--special-color);
-  box-sizing: border-box;
-  color: white;
-  cursor: pointer;
-  fill: #000;
-  font-family: Inter, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  height: 48px;
-  justify-content: center;
-  letter-spacing: -0.8px;
-  line-height: 24px;
-  outline: 0;
-  padding: 0 17px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.3s;
-  touch-action: manipulation;
-  letter-spacing: 1px;
-}
-.primary-preferences-submit:hover {
-  background-color: #ffffff;
-  border-color: var(--special-color);
-  color: var(--special-color);
-}
+
 .primary-adoption {
   display: flex;
   flex-direction: column;
@@ -124,6 +98,7 @@
   justify-content: center;
   gap: 1.2rem;
   padding: 0.9rem;
+  margin-bottom: 5rem;
 }
 .card-favorite-icon {
   position: absolute;
@@ -163,13 +138,6 @@
 .primary-card {
   position: relative;
 }
-/* .window {
-  margin-top: 10rem;
-  margin-bottom: 20rem;
-  width: 100%;
-}
-.window-image {
-  width: 100%;
-  height: 20rem;
-  top: 1rem;
+/* .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
+
 } */

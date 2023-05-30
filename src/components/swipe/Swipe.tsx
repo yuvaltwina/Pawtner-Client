@@ -1,13 +1,13 @@
-import "swiper/css/effect-coverflow";
-import "./Swipe.css";
-import "swiper/css";
-import "swiper/css/pagination";
+import 'swiper/css/effect-coverflow';
+import './Swipe.css';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
-import { EffectCoverflow, Pagination } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-import React from "react";
-import dogCard from "../../utils/images/dogCard.avif";
+import React from 'react';
+import dogCard from '../../utils/images/dogCard.avif';
 
 // Import Swiper React components
 
@@ -15,10 +15,10 @@ import dogCard from "../../utils/images/dogCard.avif";
 
 //untill i have backend
 
-function Swipe({ IMAGE }: { IMAGE: String[] }) {
+function Swipe({ imagesUrl }: { imagesUrl: String[] }) {
   return (
     <Swiper
-      effect={"coverflow"}
+      effect={'coverflow'}
       grabCursor={true}
       centeredSlides={true}
       slidesPerView={1}
@@ -32,12 +32,11 @@ function Swipe({ IMAGE }: { IMAGE: String[] }) {
       initialSlide={1}
       className="mySwiper"
     >
-      {IMAGE.map((singleImage) => {
-        console.log(singleImage);
+      {imagesUrl.map((singleImageUrl) => {
         return (
           //fix the key ! its not individual
-          <SwiperSlide key={Math.random() * Math.random()}>
-            <img className="swipe-image" src={dogCard}></img>
+          <SwiperSlide key={singleImageUrl as string}>
+            <img className="swipe-image" src={singleImageUrl as string}></img>
           </SwiperSlide>
         );
       })}

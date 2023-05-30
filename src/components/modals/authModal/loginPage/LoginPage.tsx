@@ -1,13 +1,14 @@
-import "./LoginPage.css";
-import React, { useState, useEffect } from "react";
-import TextField from "@mui/material/TextField";
-import { Navigate } from "../../../../utils/types/type";
-import { SERVER_URL } from "../../../../utils/data/data";
-import axios from "axios";
-import { useGlobalContext } from "../../../../hooks/useContext";
-import Cookies from "js-cookie";
-const LOGIN_BUTTON_TEXT = "LOGIN";
-const SIGN_UP_TEXT = "Need an account?";
+import './LoginPage.css';
+import React, { useState, useEffect } from 'react';
+import TextField from '@mui/material/TextField';
+import { Navigate } from '../../../../utils/types/type';
+import { SERVER_URL } from '../../../../utils/data/data';
+import axios from 'axios';
+import { useGlobalContext } from '../../../../hooks/useContext';
+import Cookies from 'js-cookie';
+import { reloadAfterSecond } from '../../../../utils/data/functions';
+const LOGIN_BUTTON_TEXT = 'LOGIN';
+const SIGN_UP_TEXT = 'Need an account?';
 
 function LoginPage({
   navigate,
@@ -17,12 +18,12 @@ function LoginPage({
   closeModal: () => void;
 }) {
   const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [loginError, setLoginError] = useState({
     isError: false,
-    errorMessage: "",
+    errorMessage: '',
   });
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { setUserDetails } = useGlobalContext();
@@ -33,30 +34,30 @@ function LoginPage({
     e.preventDefault();
     setIsSubmiting(true);
     try {
-      const loginResponse = await axios.post(SERVER_URL + "/user/login", {
+      const loginResponse = await axios.post(SERVER_URL + '/user/login', {
         email,
         password,
       });
       const resMessage = loginResponse.data?.message;
 
-      if (resMessage === "Successfully logged in") {
+      if (resMessage === 'Successfully logged in') {
         const {
           loginToken,
-          userFrontDetails: { username, email },
+          userFrontDetails: { username, email, phoneNumber },
         } = loginResponse.data.data;
-        Cookies.set("login", loginToken, { expires: 7 });
-        setUserDetails({ username, email, isLoggedIn: true });
+        Cookies.set('login', loginToken, { expires: 7 });
+        setUserDetails({ username, email, phoneNumber, isLoggedIn: true });
         closeModal();
       }
       setIsSubmiting(false);
     } catch (err: any) {
       const resMessage = err.response?.data?.message;
-      let errorMessage = "Something went wrong please try again later";
-      if (resMessage === "unauthorized") {
-        errorMessage = "Wrong email or password";
+      let errorMessage = 'Something went wrong please try again later';
+      if (resMessage === 'unauthorized') {
+        errorMessage = 'Wrong email or password';
       }
-      if (resMessage === "not verified") {
-        errorMessage = "User not verified";
+      if (resMessage === 'not verified') {
+        errorMessage = 'User not verified';
       }
       setLoginError({
         isError: true,

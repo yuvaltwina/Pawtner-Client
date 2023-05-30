@@ -1,16 +1,17 @@
-import * as React from "react";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import { FiLogOut } from "react-icons/Fi";
-import { FaRegUser } from "react-icons/fa";
-import { useGlobalContext } from "../../hooks/useContext";
-import Modal from "@mui/material/Modal";
-import "./profileList.css";
+import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import { FiLogOut } from 'react-icons/Fi';
+import { FaRegUser } from 'react-icons/fa';
+import { MdSmartphone } from 'react-icons/md';
+import { useGlobalContext } from '../../hooks/useContext';
+import Modal from '@mui/material/Modal';
+import './profileList.css';
 
 export default function BasicList({
   logout,
@@ -22,9 +23,40 @@ export default function BasicList({
   setIsProfileList: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
-    userDetails: { username, email },
+    userDetails: { username, email, phoneNumber },
   } = useGlobalContext();
 
+  const itemsList = [
+    {
+      icon: <FaRegUser className="profile-list-icon" />,
+      category: username,
+      id: 'username',
+    },
+    {
+      icon: <DraftsIcon className="profile-list-icon" />,
+      category: email,
+      id: 'email',
+    },
+    {
+      icon: <MdSmartphone className="profile-list-icon" />,
+      category: phoneNumber,
+      id: 'phoneNumber',
+    },
+  ];
+  const displayListItems = () => {
+    const displayItems = itemsList.map((singleItem) => {
+      const { icon, category, id } = singleItem;
+      return (
+        <ListItem disablePadding key={id}>
+          <ListItemButton>
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText primary={category} />
+          </ListItemButton>
+        </ListItem>
+      );
+    });
+    return <List>{displayItems}</List>;
+  };
   return (
     <Modal
       open={isProfileList}
@@ -33,26 +65,7 @@ export default function BasicList({
     >
       <div className="profile-list">
         <span className="triangle"></span>
-        <nav className="profile-list-details">
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <FaRegUser className="profile-list-icon" />
-                </ListItemIcon>
-                <ListItemText primary={username} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <DraftsIcon className="profile-list-icon" />
-                </ListItemIcon>
-                <ListItemText primary={email} />
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </nav>
+        <nav className="profile-list-details">{displayListItems()}</nav>
         <Divider />
         <nav aria-label="secondary mailbox folders">
           <List>

@@ -1,6 +1,7 @@
 .mydogs {
   background-color: var(--background-color);
   height: 100%;
+  min-height: 100vh;
 }
 .mydogs-header-headline {
   color: var(--text-secondary);
@@ -21,7 +22,7 @@
   align-items: center;
   width: 100%;
   padding: 3rem 0;
-  background-image: url("../../utils/images/mydogs.avif");
+  background-image: url('../../utils/images/mydogs.avif');
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -58,11 +59,6 @@
   border-radius: 8px;
   border: 1px solid rgb(114, 114, 114);
   background-color: rgba(255, 114, 15, 0.85);
-
-  /* background-image: url("../../utils/images/mydogs-add-card.jpg");
-  background-size: cover;
-  background-position: 50% 50%;
-  background-repeat: no-repeat; */
 }
 .mydogs-add:hover {
   cursor: pointer;
@@ -74,9 +70,7 @@
   font-size: 5rem;
   color: white;
 }
-/*sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssן*/
 .card-image {
-  background-image: url("../../utils/images/dogCard.avif");
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;

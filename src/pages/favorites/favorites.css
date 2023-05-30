@@ -1,0 +1,30 @@
+.favorites {
+  background-color: var(--background-color);
+  height: 100%;
+  min-height: 100vh;
+}
+.favorites-header-headline {
+  color: var(--text-secondary);
+  font-size: clamp(1.4rem, 2.5vw, 5rem);
+}
+.favorites-header-subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(0.8rem, 1.8vw, 4rem);
+  margin-bottom: 4rem;
+  font-weight: 540;
+}
+
+/*התמונה לא רספנוסיבית מספיק טוב צריך לתקן*/
+.favorites-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 3rem 0;
+  background-image: url('../../utils/images/myDogs.avif');
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  height: clamp(30rem, 55vw, 35rem);
+}
