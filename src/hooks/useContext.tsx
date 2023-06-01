@@ -9,8 +9,10 @@ import React, {
 } from 'react';
 import { toast } from 'react-hot-toast';
 import { SERVER_URL } from '../utils/data/data';
-import { SingleDogFullData } from '../utils/types/type';
+import { SingleDogFullData, userTokenData } from '../utils/types/type';
 import { fetchDogsArray } from '../utils/data/functions';
+import { decodeToken, useJwt } from 'react-jwt';
+
 interface IAppContext {
   userDetails: {
     username: string;
@@ -26,48 +28,39 @@ interface IAppContext {
       isLoggedIn: boolean;
     }>
   >;
-  allDogsArray: SingleDogFullData[];
-  setAllDogsArray: React.Dispatch<React.SetStateAction<SingleDogFullData[]>>;
 }
+const getUserDetailsInitial = () => {
+  const loginToken = Cookies.get('login');
+  let UserDetailsInitialValue = {
+    username: '',
+    email: '',
+    phoneNumber: '',
+    isLoggedIn: false,
+  };
+  if (loginToken) {
+    const userTokenData: userTokenData | null = decodeToken(loginToken);
+    if (
+      userTokenData?.username &&
+      userTokenData?.email &&
+      userTokenData?.phoneNumber
+    ) {
+      UserDetailsInitialValue = {
+        username: userTokenData.username,
+        email: userTokenData.email,
+        phoneNumber: userTokenData.phoneNumber,
+        isLoggedIn: false,
+      };
+    }
+  }
+  return UserDetailsInitialValue;
+};
 const AppContext = React.createContext<IAppContext>({
-  userDetails: {
-    username: '',
-    email: '',
-    phoneNumber: '',
-    isLoggedIn: false,
-  },
+  userDetails: getUserDetailsInitial(),
   setUserDetails: () => {},
-  allDogsArray: [],
-  setAllDogsArray: () => {},
 });
-
+//לתקן את זה שיש פה 2 יוז אפקט
 const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [userDetails, setUserDetails] = useState({
-    username: '',
-    email: '',
-    phoneNumber: '',
-    isLoggedIn: false,
-  });
-  const [allDogsArray, setAllDogsArray] = useState<SingleDogFullData[]>([]);
-
-  useEffect(() => {
-    let source = axios.CancelToken.source();
-    const getDogs = async () => {
-      console.log('fetch all dogs array from context');
-      const serverLastRoute = 'getAllDogs';
-      const arrayOfDogs = await fetchDogsArray(serverLastRoute, source);
-      if (!arrayOfDogs) {
-        toast.error('Something went wrong');
-        return;
-      }
-      setAllDogsArray(arrayOfDogs);
-    };
-    getDogs();
-    return () => {
-      source.cancel();
-    };
-  }, [setAllDogsArray]);
-
+  const [userDetails, setUserDetails] = useState(getUserDetailsInitial());
   useEffect(() => {
     const verifiedCookie = Cookies.get('verified');
     if (verifiedCookie) {
@@ -78,10 +71,13 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
       }
       Cookies.remove('verified');
     }
+  }, [Cookies]);
+
+  useEffect(() => {
     let source = axios.CancelToken.source();
-    const checkLoginCookie = async () => {
-      const loginToken = Cookies.get('login');
-      if (loginToken) {
+    const loginToken = Cookies.get('login');
+    if (loginToken) {
+      const checkUser = async () => {
         try {
           const loginResponse = await axios.get(
             SERVER_URL + '/user/loginCookie',
@@ -92,30 +88,27 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
           );
           const resMessage = loginResponse.data?.message;
           if (resMessage === 'User exist') {
-            const { phoneNumber, username, email } = loginResponse.data?.data;
-            setUserDetails({
-              username,
-              email,
-              phoneNumber,
-              isLoggedIn: true,
+            setUserDetails((prev) => {
+              return {
+                ...prev,
+                isLoggedIn: true,
+              };
             });
           }
-        } catch (err) {} //should i handle the error diffrently?
-      }
-    };
-    checkLoginCookie();
-    return () => {
-      source.cancel();
-    };
-  }, []);
+        } catch (err) {}
+      };
+      checkUser();
+      return () => {
+        source.cancel();
+      };
+    }
+  }, [setUserDetails, Cookies]);
 
   return (
     <AppContext.Provider
       value={{
         userDetails,
         setUserDetails,
-        allDogsArray,
-        setAllDogsArray,
       }}
     >
       {children}
@@ -128,3 +121,5 @@ export const useGlobalContext = () => {
 };
 
 export { AppContext, AppProvider };
+
+// }

@@ -100,7 +100,8 @@
   padding: 0.9rem;
   margin-bottom: 5rem;
 }
-.card-favorite-icon {
+
+/* .card-favorite-icon {
   position: absolute;
   z-index: 4;
   right: 3%;
@@ -116,8 +117,8 @@
 }
 .card-favorite-icon:hover {
   background-color: #ffffff85;
-}
-.card-favorite-icon-clicked {
+} */
+/* .card-favorite-icon-clicked {
   position: absolute;
   z-index: 4;
   right: 3%;
@@ -134,7 +135,7 @@
 }
 .card-favorite-icon-clicked:hover {
   background-color: #ffffff1a;
-}
+} */
 .primary-card {
   position: relative;
 }

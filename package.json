@@ -30,6 +30,7 @@
     "react-dropzone": "^14.2.3",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.8.0",
+    "react-jwt": "^1.1.8",
     "react-router-dom": "^6.9.0",
     "react-window": "^1.8.9",
     "styled-components": "^5.3.9",

@@ -49,3 +49,8 @@ export interface EditDogFormData {
   city: string;
   images: [];
 }
+export interface userTokenData {
+  username: string;
+  email: string;
+  phoneNumber: string;
+}

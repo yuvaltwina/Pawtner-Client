@@ -57,16 +57,11 @@ export const reloadAfterSecond = () => {
     window.location.reload();
   }, 1000);
 };
-export const dogFavoriteAction = async (
-  dogId: string,
-  action: string,
-  username: string
-) => {
+export const dogFavoriteAction = async (dogId: string, action: string) => {
   try {
     const serverResponse = await axios.post(
       SERVER_URL + `/dog/${action}FavoriteDog`,
       {
-        username,
         dogId,
       },
       {
@@ -106,4 +101,9 @@ export const getFavoriteDogs = async () => {
   } else {
     return [];
   }
+};
+
+export const getDogById = (targetId: string, allDogs: SingleDogFullData[]) => {
+  const dog = allDogs.filter((dog) => dog._id === targetId);
+  return dog[0];
 };

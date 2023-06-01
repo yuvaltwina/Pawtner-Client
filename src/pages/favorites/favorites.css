@@ -6,14 +6,15 @@
 .favorites-header-headline {
   color: var(--text-secondary);
   font-size: clamp(1.4rem, 2.5vw, 5rem);
+  color: var(--special-color);
 }
 .favorites-header-subtitle {
   color: var(--text-secondary);
+  color: var(--special-color);
   font-size: clamp(0.8rem, 1.8vw, 4rem);
-  margin-bottom: 4rem;
+  margin-bottom: 12rem;
   font-weight: 540;
 }
-
 /*התמונה לא רספנוסיבית מספיק טוב צריך לתקן*/
 .favorites-header {
   display: flex;
@@ -22,9 +23,36 @@
   align-items: center;
   width: 100%;
   padding: 3rem 0;
-  background-image: url('../../utils/images/myDogs.avif');
+  background-image: url('../../utils/images/favorites.jpeg');
   background-size: cover;
-  background-position: 50% 50%;
+  background-position: 50% 60%;
   background-repeat: no-repeat;
   height: clamp(30rem, 55vw, 35rem);
+}
+.card-and-icon-container {
+  position: relative;
+}
+.card-and-icon-container:hover {
+  cursor: pointer;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-10px);
+  transition: all 0.4s;
+}
+.card-favorite-icon {
+  position: absolute;
+  z-index: 4;
+  right: 3%;
+  top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--special-color);
+  font-size: 1.4rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ffffff4d;
+}
+.card-favorite-icon:hover {
+  background-color: #b5b5b5bb;
 }

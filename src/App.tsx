@@ -15,6 +15,7 @@ import ForgotPassword from './pages/forgotPassword/ForgotPassword';
 //אפשר לחכות שהכל יטען לפני שזה מציג משהו ?
 //למזה זה נתקע כשמותחים
 //on logout move the website to homepage
+
 function App() {
   return (
     <div className="App">

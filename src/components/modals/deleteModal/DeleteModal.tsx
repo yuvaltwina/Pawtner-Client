@@ -26,15 +26,12 @@ export default function DeleteModal({
   setMyDogs: React.Dispatch<React.SetStateAction<SingleDogFullData[]>>;
 }) {
   const [isSubmiting, setIsSubmiting] = useState(false);
-  const {
-    userDetails: { username },
-  } = useGlobalContext();
   const deleteDog = async () => {
     setIsSubmiting(true);
     try {
       const serverResponse = await axios.post(
         SERVER_URL + '/dog/deleteDog',
-        { username, id: dogId },
+        { id: dogId },
         {
           withCredentials: true,
         }

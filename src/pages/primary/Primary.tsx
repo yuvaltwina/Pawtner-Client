@@ -3,14 +3,15 @@ import './Primary.css';
 import Card from '../../components/card/Card';
 import SelectButtonList from '../../components/selectButtons/selectButtonList/SelectButtonList';
 import { SELECT_BUTTONS_DATA } from '../../utils/data/data';
-import axios, { CancelToken, CancelTokenSource } from 'axios';
-import { fetchDogsArray } from '../../utils/data/functions';
 import {
   SingleDogFullData,
   filterDataInitialObjectType,
 } from '../../utils/types/type';
-import { toast } from 'react-hot-toast';
 import { useGlobalContext } from '../../hooks/useContext';
+import { MdFavorite, MdOutlineFavoriteBorder } from 'react-icons/md';
+import { dogFavoriteAction, fetchDogsArray } from '../../utils/data/functions';
+import { toast } from 'react-hot-toast';
+import axios from 'axios';
 const DOG_HEADER_TITLE_TEXT = 'Find your new best friend';
 const DOG_HEADER_SUBTITLE_TEXT =
   '   browse dogs from our network and find your new buddy';
@@ -29,10 +30,15 @@ const filterDataInitialObject: filterDataInitialObjectType = {
 };
 
 export function Primary() {
-  const [filterData, setFilterData] = useState(filterDataInitialObject);
   const [allDogs, setAllDogs] = useState<SingleDogFullData[]>([]);
+  const [filterData, setFilterData] = useState(filterDataInitialObject);
   const [filteredDogs, setFilteredDogs] = useState<SingleDogFullData[]>([]);
-  //להעביר להוק נפרד
+  const [favoriteDogs, setFavoriteDogs] = useState<string[]>([]);
+  const {
+    userDetails: { username },
+  } = useGlobalContext();
+  //האם צריך כל כף הרבה יוז אפקט
+  //להעביר למקום אחר
   useEffect(() => {
     let source = axios.CancelToken.source();
     const getDogs = async () => {
@@ -52,6 +58,15 @@ export function Primary() {
   }, [setAllDogs, setFilteredDogs]);
 
   useEffect(() => {
+    setFilteredDogs(allDogs);
+    const favoriteDogsFiltered = allDogs.filter((dog) =>
+      dog.likedBy.includes(username)
+    );
+    const favoriteDogsIds = favoriteDogsFiltered.map((dog) => dog._id);
+    setFavoriteDogs(favoriteDogsIds);
+  }, [setFilteredDogs, allDogs]);
+  useEffect(() => {
+    // האם חייב לעשות את זה ביוז אפקט
     const filteredArr = allDogs.filter((dog) => {
       let isPassing = false;
       for (const key in filterData) {
@@ -68,13 +83,41 @@ export function Primary() {
     setFilteredDogs(filteredArr);
   }, [filterData, setFilteredDogs]);
 
+  const favoriteClickHandler = (dogId: string) => {
+    if (favoriteDogs.includes(dogId)) {
+      dogFavoriteAction(dogId, 'delete');
+      const favoriteDogsDelete = favoriteDogs.filter((id) => id !== dogId);
+      setFavoriteDogs(favoriteDogsDelete);
+      return;
+    }
+    dogFavoriteAction(dogId, 'add');
+    const favoriteDogsAdd = [...favoriteDogs, dogId];
+    setFavoriteDogs(favoriteDogsAdd);
+  };
+
+  const displayFavoriteIcon = (dogId: string) => {
+    let favoriteIcon = <MdOutlineFavoriteBorder />;
+    if (favoriteDogs.includes(dogId)) {
+      favoriteIcon = <MdFavorite />;
+    }
+    return (
+      <span
+        className="card-favorite-icon"
+        onClick={() => {
+          favoriteClickHandler(dogId);
+        }}
+      >
+        {favoriteIcon}
+      </span>
+    );
+  };
+
   const displayCards = filteredDogs.map((singleDog) => {
     return (
-      <Card
-        key={singleDog._id}
-        singleDog={singleDog}
-        needFavorite={true}
-      ></Card>
+      <span className="card-and-icon-container" key={singleDog._id}>
+        {displayFavoriteIcon(singleDog._id)}
+        <Card singleDog={singleDog}></Card>
+      </span>
     );
   });
   const displayHeader = (

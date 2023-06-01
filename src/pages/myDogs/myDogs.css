@@ -91,7 +91,7 @@
   border-radius: 0 0 7px 7px;
   border-radius: 20% 20% 0 0;
 }
-.card-favorite-icon {
+/* .card-favorite-icon {
   position: absolute;
   right: 3%;
   top: 0.5rem;
@@ -106,21 +106,4 @@
 }
 .card-favorite-icon:hover {
   background-color: #ffffff85;
-}
-.card-favorite-icon-clicked {
-  position: absolute;
-  right: 3%;
-  top: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--special-color);
-  font-size: 1.4rem;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background-color: #ffffff4d;
-}
-.card-favorite-icon-clicked:hover {
-  background-color: #ffffff1a;
-}
+} */

@@ -1,18 +1,17 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import './favorites.css';
-import axios from 'axios';
 import Card from '../../components/card/Card';
-import { fetchDogsArray } from '../../utils/data/functions';
-import { toast } from 'react-hot-toast';
+import { dogFavoriteAction } from '../../utils/data/functions';
 import { SingleDogFullData } from '../../utils/types/type';
+import { MdFavorite } from 'react-icons/md';
+import axios from 'axios';
 import { SERVER_URL } from '../../utils/data/data';
-import { useGlobalContext } from '../../hooks/useContext';
+import { toast } from 'react-hot-toast';
 
 //add a window in this page
 export function Favorites() {
   const [favoriteDogs, setFavoriteDogs] = useState<SingleDogFullData[]>([]);
-  // להעביר להוק נפרד
-  //לתקן הבקשה השניה נשלחת ולא מתבטלת בזמן
+  //להעביר מקום
   useEffect(() => {
     let source = axios.CancelToken.source();
     const getDogs = async () => {
@@ -40,19 +39,31 @@ export function Favorites() {
       source.cancel();
     };
   }, [setFavoriteDogs]);
-  console.log(favoriteDogs);
-  const displayCards = favoriteDogs.map((singleDog) => {
-    const { _id: id } = singleDog;
-    console.log(id);
-    // return (
-    //   <Card
-    //     key={id}
-    //     singleDog={singleDog}
-    //     needFavorite={true}
-    //     dogsArray={favoriteDogs}
-    //     setDogsArray={setFavoriteDogs}
-    //   ></Card>
-    // );
+
+  const favoriteClickHandler = (favoriteDogId: string) => {
+    const afterRemoveFavorite = favoriteDogs.filter(
+      (dog) => dog._id !== favoriteDogId
+    );
+    setFavoriteDogs(afterRemoveFavorite);
+    dogFavoriteAction(favoriteDogId, 'delete');
+  };
+  const displayCards = favoriteDogs.map((favoriteDog) => {
+    if (!favoriteDog._id) {
+      return;
+    }
+    return (
+      <span className="card-and-icon-container" key={favoriteDog._id}>
+        <span
+          className="card-favorite-icon"
+          onClick={() => {
+            favoriteClickHandler(favoriteDog._id);
+          }}
+        >
+          <MdFavorite />
+        </span>
+        <Card singleDog={favoriteDog}></Card>
+      </span>
+    );
   });
   return (
     <div className="favorites">
@@ -66,9 +77,10 @@ export function Favorites() {
       </section>
       <section className="mydogs-dogs">
         <h1 className="mydogs-dogs-headline">
-          My Favorites (<span className="headlight">0</span>)
+          My Favorites (<span className="headlight">{favoriteDogs.length}</span>
+          )
         </h1>
-        <div className="mydogs-cards-container"> </div>
+        <div className="mydogs-cards-container"> {displayCards}</div>
       </section>
     </div>
   );

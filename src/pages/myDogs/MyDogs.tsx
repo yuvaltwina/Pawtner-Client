@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import './myDogs.css';
 import AddModal from '../../components/modals/addModal/AddModal';
 import Card from '../../components/card/Card';
-import axios from 'axios';
 import { SingleDogFullData } from '../../utils/types/type';
+import axios from 'axios';
 import { fetchDogsArray } from '../../utils/data/functions';
 import { toast } from 'react-hot-toast';
 
@@ -11,7 +11,7 @@ function MyDogs() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [myDogs, setMyDogs] = useState<SingleDogFullData[]>([]);
   //לתקן את הרענון ביצירת כלב
-  //להעביר להוק נפרד
+  //להעביר מקום
   useEffect(() => {
     let source = axios.CancelToken.source();
     const getDogs = async () => {
@@ -28,18 +28,21 @@ function MyDogs() {
       source.cancel();
     };
   }, [setMyDogs]);
+
   const displayCards = myDogs.map((singleDog) => {
     const { _id: id } = singleDog;
     return (
-      <Card
-        key={id}
-        singleDog={singleDog}
-        needEditAndTrash={true}
-        setDogsArray={setMyDogs}
-        dogsArray={myDogs}
-      ></Card>
+      <span className="card-and-icon-container" key={id}>
+        <Card
+          singleDog={singleDog}
+          needEditAndTrash={true}
+          setDogsArray={setMyDogs}
+          dogsArray={myDogs}
+        ></Card>
+      </span>
     );
   });
+
   return (
     <>
       {openAddModal && (
