@@ -18,7 +18,6 @@ function MyDogs() {
       const serverLastRoute = 'getMyDogs';
       const arrayOfDogs = await fetchDogsArray(serverLastRoute, source);
       if (!arrayOfDogs) {
-        toast.error('Something went wrong');
         return;
       }
       setMyDogs(arrayOfDogs);

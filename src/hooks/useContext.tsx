@@ -1,17 +1,10 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import React, {
-  useEffect,
-  useCallback,
-  useContext,
-  ReactNode,
-  useState,
-} from 'react';
+import React, { useEffect, useContext, ReactNode, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { SERVER_URL } from '../utils/data/data';
-import { SingleDogFullData, userTokenData } from '../utils/types/type';
-import { fetchDogsArray } from '../utils/data/functions';
-import { decodeToken, useJwt } from 'react-jwt';
+import { userTokenData } from '../utils/types/type';
+import { decodeToken } from 'react-jwt';
 
 interface IAppContext {
   userDetails: {
@@ -58,7 +51,7 @@ const AppContext = React.createContext<IAppContext>({
   userDetails: getUserDetailsInitial(),
   setUserDetails: () => {},
 });
-//לתקן את זה שיש פה 2 יוז אפקט
+//לתקן את זה שיש פה 2 יוז אפקט להעביר את כולם לאחד נפרד
 const AppProvider = ({ children }: { children: ReactNode }) => {
   const [userDetails, setUserDetails] = useState(getUserDetailsInitial());
   useEffect(() => {

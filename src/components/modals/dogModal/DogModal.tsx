@@ -1,25 +1,34 @@
 import './DogModal.css';
+
 import * as React from 'react';
+
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
 import { MdOutlinePhoneIphone } from 'react-icons/md';
-import { RiCloseFill } from 'react-icons/ri';
-import Swipe from '../../swipe/Swipe';
-import { SingleDogFullData } from '../../../utils/types/type';
-import { phoneNumberFormating } from '../../../utils/data/functions';
 import { Modal } from '@mui/material';
+import { RiCloseFill } from 'react-icons/ri';
+import { SingleDogFullData } from '../../../utils/types/type';
+import Swipe from '../../swipe/Swipe';
+import { phoneNumberFormating } from '../../../utils/data/functions';
+
+const displayDogSpecificInfo = (value: string, category: string) => (
+  <h3 key={category}>
+    {value}
+    <span className="dogmodal-dog-highlight">{category}</span>
+  </h3>
+);
+
+interface PropTypes {
+  openDogModal: boolean;
+  setOpenDogModal: React.Dispatch<React.SetStateAction<boolean>>;
+  singleDog: SingleDogFullData;
+}
 
 export default function BasicModal({
   openDogModal,
   setOpenDogModal,
-  singleDog,
-}: {
-  openDogModal: boolean;
-  setOpenDogModal: React.Dispatch<React.SetStateAction<boolean>>;
-  singleDog: SingleDogFullData;
-}) {
-  const {
+  singleDog: {
     about,
     age,
     breed,
@@ -32,8 +41,10 @@ export default function BasicModal({
     phoneNumber,
     size,
     username,
-  } = singleDog;
-  const DOG_INFO_LIST = [
+  },
+}: PropTypes) {
+  const closeModal = () => setOpenDogModal(false);
+  const dogInfoList = [
     {
       category: 'Breed',
       value: breed,
@@ -51,80 +62,60 @@ export default function BasicModal({
       value: size,
     },
   ];
-  const USER_CONTACTS_LIST = [
+  const userContactsList = [
     {
       header: 'User :',
       pargraph: username,
       icon: <BsFillPersonFill />,
     },
     {
-      header: 'City :',
-      pargraph: city,
-      icon: <MdLocationOn />,
-    },
-    {
       header: 'Phone :',
       pargraph: phoneNumberFormating(phoneNumber),
       icon: <MdOutlinePhoneIphone />,
     },
-
     {
       header: 'Email :',
       pargraph: email,
       icon: <AiOutlineMail />,
     },
+    {
+      header: 'City :',
+      pargraph: city,
+      icon: <MdLocationOn />,
+    },
   ];
-  const displayDogSpecificInfo = (value: string, category: string) => {
-    return (
-      <h3 key={category}>
-        {value}
-        <span className="dogmodal-dog-highlight">{category}</span>
-      </h3>
-    );
-  };
 
-  const footerUserDetails = () => {
-    const contactInfoItems = USER_CONTACTS_LIST.map(
-      ({ icon, header, pargraph }) => {
-        return (
-          <div key={header} className="dogmodal-dog-footer-info">
-            <span className="dogmodal-dog-footer-icon">{icon}</span>
-            <div>
-              <h4>{header}</h4>
-              <p>{pargraph}</p>
-            </div>
-          </div>
-        );
-      }
-    );
-    return contactInfoItems;
-  };
+  const contactInfoItems = userContactsList.map(
+    ({ icon, header, pargraph }) => (
+      <div key={header} className="dogmodal-dog-footer-info">
+        <span className="dogmodal-dog-footer-icon">{icon}</span>
+        <div>
+          <h4>{header}</h4>
+          <p>{pargraph}</p>
+        </div>
+      </div>
+    )
+  );
 
-  const displayDogInfo = DOG_INFO_LIST.map((specificInfo) => {
-    const { category, value } = specificInfo;
-    return displayDogSpecificInfo(`${category} : `, value);
-  });
+  const displayDogInfo = dogInfoList.map(({ category, value }) =>
+    displayDogSpecificInfo(`${category} : `, value)
+  );
 
   return (
     <Modal
       open={openDogModal}
-      onClose={() => setOpenDogModal(false)}
+      onClose={closeModal}
       className="dogmodal-container"
     >
       <div className="dogmodal">
         <Swipe imagesUrl={imagesUrl} />
-        <RiCloseFill
-          className="dog-modal-exit-icon"
-          onClick={() => {
-            setOpenDogModal(false);
-          }}
-        />
+        <RiCloseFill className="dog-modal-exit-icon" onClick={closeModal} />
         <span className="dogmodal-headline">
           {displayDogSpecificInfo('About ', name)}
         </span>
         <section className="dogmodal-dog-info">{displayDogInfo}</section>
         <p className="dogmodal-dog-text">{about}</p>
-        <section className="dogmodal-dog-footer">{footerUserDetails()}</section>
+        <section className="dogmodal-dog-footer">{contactInfoItems}</section>
       </div>
     </Modal>
   );

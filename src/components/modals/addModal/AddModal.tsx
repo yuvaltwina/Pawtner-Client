@@ -146,24 +146,29 @@ export default function BasicModal({
     const isError = Boolean(errorMessage);
     return isError;
   };
-  const handleServerResponse = (serverRespone: string) => {
+  const handleServerResponse = (
+    serverRespone: string,
+    notificationId: string
+  ) => {
     if (serverRespone === 'dog created successfully') {
-      toast.success('Dog post created successfully!', { duration: 4000 });
+      toast.success('Dog post created successfully!', { id: notificationId });
       reloadAfterSecond();
       closeModal();
       return;
     }
     if (serverRespone === 'dog edited successfully') {
       closeModal();
-      toast.success('Dog post edited successfully!');
+      toast.success('Dog post edited successfully!', { id: notificationId });
       reloadAfterSecond();
       return;
     }
     if (serverRespone === 'unauthorized') {
-      toast.error('Unauthorized please login first');
+      toast.error('Unauthorized please login first', { id: notificationId });
       return;
     }
-    toast.error('Something went wrong please try again later');
+    toast.error('Something went wrong please try again later', {
+      id: notificationId,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -174,6 +179,9 @@ export default function BasicModal({
       setIsSubmiting(false);
       return;
     }
+    const creatingDogNotification = toast.loading(
+      isEditing ? 'Editing dog post' : 'Creating dog post'
+    );
     try {
       const serverResponse = await axios.post(
         SERVER_URL + `/dog/${isEditing ? 'editDog' : 'addDog'}`,
@@ -186,10 +194,10 @@ export default function BasicModal({
         }
       );
       const serverResponseMessage = serverResponse.data?.message || '';
-      handleServerResponse(serverResponseMessage);
+      handleServerResponse(serverResponseMessage, creatingDogNotification);
     } catch (err: any) {
       const serverErrorMessage = err.response?.data?.message || '';
-      handleServerResponse(serverErrorMessage);
+      handleServerResponse(serverErrorMessage, creatingDogNotification);
     }
     setErrors(DATA_ERROR_LIST);
     setIsSubmiting(false);

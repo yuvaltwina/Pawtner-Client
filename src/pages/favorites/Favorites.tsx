@@ -29,8 +29,14 @@ export function Favorites() {
           setFavoriteDogs(favoriteDogsArray);
         }
       } catch (err: any) {
+        if (err?.response?.data?.message === 'unauthorized') {
+          toast.error('Unauthorized');
+          return;
+        }
         if (err.message !== 'canceled') {
+          console.log(err);
           toast.error('Something went wrong please try again later');
+          return;
         }
       }
     };

@@ -6,13 +6,11 @@
 .favorites-header-headline {
   color: var(--text-secondary);
   font-size: clamp(1.4rem, 2.5vw, 5rem);
-  color: var(--special-color);
 }
 .favorites-header-subtitle {
   color: var(--text-secondary);
-  color: var(--special-color);
   font-size: clamp(0.8rem, 1.8vw, 4rem);
-  margin-bottom: 12rem;
+  margin-bottom: 5rem;
   font-weight: 540;
 }
 /*התמונה לא רספנוסיבית מספיק טוב צריך לתקן*/

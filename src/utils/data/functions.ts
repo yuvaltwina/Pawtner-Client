@@ -48,8 +48,14 @@ export async function fetchDogsArray(
     const resMessage = serverResponse.data?.message;
     if (resMessage === 'sent successfully') {
       arrayOfDogs = serverResponse.data.data.dogs;
+    } else {
+      toast.error('Something went wrong');
     }
-  } catch (err: any) {}
+  } catch (err: any) {
+    if (err?.response?.data?.message === 'unauthorized') {
+      toast.error('Unauthorized');
+    }
+  }
   return arrayOfDogs;
 }
 export const reloadAfterSecond = () => {
@@ -107,3 +113,7 @@ export const getDogById = (targetId: string, allDogs: SingleDogFullData[]) => {
   const dog = allDogs.filter((dog) => dog._id === targetId);
   return dog[0];
 };
+// export const getBreedList = () => {
+//   const dog = allDogs.filter((dog) => dog._id === targetId);
+//   return dog[0];
+// };

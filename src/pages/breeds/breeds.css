@@ -1,2 +1,59 @@
 .breeds {
+  background-color: var(--background-color);
+  height: 100%;
+  min-height: 100vh;
+}
+.breeds-header-headline {
+  color: var(--text-secondary);
+  font-size: clamp(1.4rem, 2.5vw, 5rem);
+}
+.breeds-header-subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(0.8rem, 1.8vw, 4rem);
+  margin-bottom: 4rem;
+  font-weight: 540;
+}
+
+/*התמונה לא רספנוסיבית מספיק טוב צריך לתקן*/
+.breeds-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 3rem 0;
+  background-image: url('../../utils/images/aboutBreeds.png');
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  height: clamp(30rem, 35vw, 35rem);
+}
+.breeds-select-button {
+  background-color: white;
+  width: clamp(17rem, 45%, 21rem);
+}
+.breeds-header-box {
+  width: clamp(18rem, 60%, 50rem);
+  height: 12rem;
+  background-color: rgba(255, 255, 255, 0.746);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+}
+.breeds-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  border-radius: 10px;
+  padding: 3rem 0;
+  height: 40rem;
+  background-color: white;
+  margin: auto;
+  margin-top: -3rem;
 }

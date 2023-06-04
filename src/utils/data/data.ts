@@ -1,5 +1,6 @@
 import { DogFormData } from '../types/type';
 import { cityOptions } from './cities';
+import { allBreedsArray } from './dogBreeds';
 
 export const SERVER_URL = 'http://localhost:3000';
 export const WEBSITE_URL = 'http://localhost:5173';
@@ -11,12 +12,7 @@ export const EMAIL_ERROR_MESSAGE = 'please provide a valid Email address';
 export const SELECT_BUTTONS_DATA = [
   {
     category: 'breed',
-    valuesArray: [
-      'Golden retriver',
-      'Random dog breed 1',
-      'Random dog breed 2',
-      'Random dog breed 3',
-    ],
+    valuesArray: allBreedsArray,
   },
   { category: 'gender', valuesArray: ['Male', 'Female'] },
   { category: 'age', valuesArray: ['Puppy', 'Young', 'Adult', 'Senior'] },
@@ -29,10 +25,6 @@ export const SELECT_BUTTONS_DATA = [
       'Extra Large (101 lbs or more)',
     ],
   },
-  // {
-  //   category: 'city',
-  //   valuesArray: cityOptions,
-  // },
 ];
 //קוד כפול זה בדיוק כמו הרשימה שמעליו רק בלי קטגוריה ריינג
 export const ADD_DOG_SELECT_BUTTONS: {
@@ -41,12 +33,7 @@ export const ADD_DOG_SELECT_BUTTONS: {
 }[] = [
   {
     category: 'breed',
-    valuesArray: [
-      'Golden retriver',
-      'Random dog breed 1',
-      'Random dog breed 2',
-      'Random dog breed 3',
-    ],
+    valuesArray: allBreedsArray,
   },
   { category: 'gender', valuesArray: ['Male', 'Female'] },
   { category: 'age', valuesArray: ['Puppy', 'Young', 'Adult', 'Senior'] },

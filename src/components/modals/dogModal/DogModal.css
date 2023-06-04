@@ -9,10 +9,7 @@
   top: 30rem;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(19rem, 80vw, 70rem);
-  /* width: 80vw;
-  min-width: 19rem;
-  max-width: 80rem; */
+  width: clamp(19rem, 80vw, 75rem);
   height: 53rem;
   background-color: var(--text-secondary);
   border-radius: 15px;
@@ -52,17 +49,16 @@
   justify-content: center;
   color: var(--text-secondary);
   width: 100%;
-  padding: 1rem 0;
-  /* height: 10%; */
+  padding: 1rem 0rem;
   background-color: var(--special-color);
 }
 .dogmodal-dog-footer-info {
   display: flex;
   flex-wrap: wrap;
-  min-width: 230px;
+
+  min-width: 300px;
   padding: 1rem;
   align-items: center;
-  /* justify-content: center; */
   gap: 0.5rem;
 }
 .dogmodal-dog-footer-icon {
@@ -76,9 +72,6 @@
   background-color: #ffffff1a;
 }
 .dogmodal-favorite-icon {
-  /* position: absolute;
-  right: 3%;
-  top: 0.5rem; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,10 +116,6 @@
   color: var(--special-color);
   opacity: 1;
 }
-/* .css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
-  opacity: 0.5 !important;
-  background: black !important;
-} */
 
 @media (max-width: 450px) {
   .dogmodal {
