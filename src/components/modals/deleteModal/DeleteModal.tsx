@@ -8,9 +8,9 @@ import { toast } from 'react-hot-toast';
 import { SingleDogFullData } from '../../../utils/types/type';
 import { Filter } from '@material-ui/icons';
 
-const DELETE_TITLE_TEXT = 'Are you sure you want to delete this post?';
+const DELETE_TITLE_TEXT = 'Are you sure you want to delete this post ?';
 const DELETE_SUBTITLE_TEXT =
-  'This will delete this post permanently. you cannot undo this action.';
+  'This will delete this post permanently. you cannot undo this action';
 
 export default function DeleteModal({
   openDeleteModal,

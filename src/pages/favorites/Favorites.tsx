@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
 import './favorites.css';
+
+import { useEffect, useState } from 'react';
+
 import Card from '../../components/card/Card';
-import { dogFavoriteAction } from '../../utils/data/functions';
-import { SingleDogFullData } from '../../utils/types/type';
 import { MdFavorite } from 'react-icons/md';
-import axios from 'axios';
 import { SERVER_URL } from '../../utils/data/data';
+import { SingleDogFullData } from '../../utils/types/type';
+import axios from 'axios';
+import { dogFavoriteAction } from '../../utils/data/functions';
 import { toast } from 'react-hot-toast';
 
 //add a window in this page
@@ -53,6 +55,7 @@ export function Favorites() {
     setFavoriteDogs(afterRemoveFavorite);
     dogFavoriteAction(favoriteDogId, 'delete');
   };
+
   const displayCards = favoriteDogs.map((favoriteDog) => {
     if (!favoriteDog._id) {
       return;
@@ -71,6 +74,7 @@ export function Favorites() {
       </span>
     );
   });
+
   return (
     <div className="favorites">
       <section className="favorites-header">

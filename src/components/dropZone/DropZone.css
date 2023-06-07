@@ -59,6 +59,7 @@
 .dropzone-image {
   width: 100%;
   aspect-ratio: 1/1;
+  border-radius: 10px;
 }
 .dropzone-image-container {
   position: relative;
@@ -69,9 +70,9 @@
   min-width: 2rem;
   aspect-ratio: 1/1;
   z-index: 5;
-  padding: 0.7rem;
-  border: 1px solid rgb(174, 172, 172);
-  border-radius: 10px;
+  /* padding: 0.7rem; */
+  /* border: 1px solid rgb(174, 172, 172); */
+  /* border-radius: 10px; */
 }
 .dropzone-images-container {
   display: flex;
@@ -89,7 +90,7 @@
   height: 20px;
   border-radius: 50%;
   color: var(--special-color);
-  background-color: rgba(183, 185, 186, 0.704);
+  background-color: rgba(183, 185, 186, 0.163);
 }
 .dropzone-delete-icon:hover {
   background-color: #ffffff85;

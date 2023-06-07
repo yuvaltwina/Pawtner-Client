@@ -1,12 +1,10 @@
 import './DogModal.css';
-
 import * as React from 'react';
-
+import { Modal } from '@mui/material';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
 import { MdOutlinePhoneIphone } from 'react-icons/md';
-import { Modal } from '@mui/material';
 import { RiCloseFill } from 'react-icons/ri';
 import { SingleDogFullData } from '../../../utils/types/type';
 import Swipe from '../../swipe/Swipe';
@@ -64,24 +62,25 @@ export default function BasicModal({
   ];
   const userContactsList = [
     {
-      header: 'User :',
+      header: 'User:',
       pargraph: username,
       icon: <BsFillPersonFill />,
     },
     {
-      header: 'Phone :',
+      header: 'Phone:',
       pargraph: phoneNumberFormating(phoneNumber),
       icon: <MdOutlinePhoneIphone />,
     },
+
     {
-      header: 'Email :',
-      pargraph: email,
-      icon: <AiOutlineMail />,
-    },
-    {
-      header: 'City :',
+      header: 'City:',
       pargraph: city,
       icon: <MdLocationOn />,
+    },
+    {
+      header: 'Email:',
+      pargraph: email,
+      icon: <AiOutlineMail />,
     },
   ];
 
@@ -89,7 +88,7 @@ export default function BasicModal({
     ({ icon, header, pargraph }) => (
       <div key={header} className="dogmodal-dog-footer-info">
         <span className="dogmodal-dog-footer-icon">{icon}</span>
-        <div>
+        <div className="dogmodal-dog-footer-details">
           <h4>{header}</h4>
           <p>{pargraph}</p>
         </div>
@@ -100,15 +99,14 @@ export default function BasicModal({
   const displayDogInfo = dogInfoList.map(({ category, value }) =>
     displayDogSpecificInfo(`${category} : `, value)
   );
+  BsFillPersonFill;
 
   return (
-    <Modal
-      open={openDogModal}
-      onClose={closeModal}
-      className="dogmodal-container"
-    >
+    <Modal open={openDogModal} onClose={closeModal}>
       <div className="dogmodal">
-        <Swipe imagesUrl={imagesUrl} />
+        <section className="dogmodal-swiper-container">
+          <Swipe imagesUrl={imagesUrl} />
+        </section>
         <RiCloseFill className="dog-modal-exit-icon" onClick={closeModal} />
         <span className="dogmodal-headline">
           {displayDogSpecificInfo('About ', name)}

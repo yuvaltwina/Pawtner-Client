@@ -52,6 +52,7 @@ const AppContext = React.createContext<IAppContext>({
   setUserDetails: () => {},
 });
 //לתקן את זה שיש פה 2 יוז אפקט להעביר את כולם לאחד נפרד
+
 const AppProvider = ({ children }: { children: ReactNode }) => {
   const [userDetails, setUserDetails] = useState(getUserDetailsInitial());
   useEffect(() => {
@@ -96,7 +97,6 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
       };
     }
   }, [setUserDetails, Cookies]);
-
   return (
     <AppContext.Provider
       value={{

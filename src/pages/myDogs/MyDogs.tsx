@@ -5,7 +5,7 @@ import Card from '../../components/card/Card';
 import { SingleDogFullData } from '../../utils/types/type';
 import axios from 'axios';
 import { fetchDogsArray } from '../../utils/data/functions';
-import { toast } from 'react-hot-toast';
+import useGetBreeds from '../../hooks/useGetBreeds';
 
 function MyDogs() {
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -27,6 +27,11 @@ function MyDogs() {
       source.cancel();
     };
   }, [setMyDogs]);
+  const { dogBreedsArray } = useGetBreeds(); //לעשות את זה ביוז ממו או לשים את זה כסטייט?
+  const dogBreedsNamesArray = //לעשות את זה ביוז ממו או לשים את זה כסטייט?
+    dogBreedsArray.length === 0
+      ? []
+      : dogBreedsArray.map((breed: any) => breed?.name);
 
   const displayCards = myDogs.map((singleDog) => {
     const { _id: id } = singleDog;
@@ -37,6 +42,7 @@ function MyDogs() {
           needEditAndTrash={true}
           setDogsArray={setMyDogs}
           dogsArray={myDogs}
+          dogBreedsNamesArray={dogBreedsNamesArray}
         ></Card>
       </span>
     );
@@ -48,6 +54,7 @@ function MyDogs() {
         <AddModal
           openAddModal={openAddModal}
           setOpenAddModal={setOpenAddModal}
+          dogBreedsNamesArray={dogBreedsNamesArray}
         />
       )}
       <div className="mydogs">

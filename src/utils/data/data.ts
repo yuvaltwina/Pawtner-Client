@@ -1,19 +1,15 @@
 import { DogFormData } from '../types/type';
-import { cityOptions } from './cities';
-import { allBreedsArray } from './dogBreeds';
-
 export const SERVER_URL = 'http://localhost:3000';
 export const WEBSITE_URL = 'http://localhost:5173';
-
 export const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // atleast 8 characters , must one letter, must one number
 export const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 export const EMAIL_ERROR_MESSAGE = 'please provide a valid Email address';
 
 export const SELECT_BUTTONS_DATA = [
-  {
-    category: 'breed',
-    valuesArray: allBreedsArray,
-  },
+  // {
+  //   category: 'breed',
+  //   valuesArray: allBreedsArray,
+  // },
   { category: 'gender', valuesArray: ['Male', 'Female'] },
   { category: 'age', valuesArray: ['Puppy', 'Young', 'Adult', 'Senior'] },
   {
@@ -31,10 +27,10 @@ export const ADD_DOG_SELECT_BUTTONS: {
   category: keyof DogFormData;
   valuesArray: string[];
 }[] = [
-  {
-    category: 'breed',
-    valuesArray: allBreedsArray,
-  },
+  // {
+  //   category: 'breed',
+  //   valuesArray: allBreedsArray,
+  // },
   { category: 'gender', valuesArray: ['Male', 'Female'] },
   { category: 'age', valuesArray: ['Puppy', 'Young', 'Adult', 'Senior'] },
   {

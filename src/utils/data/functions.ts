@@ -1,4 +1,5 @@
 import axios, { CancelTokenSource } from 'axios';
+
 import { SERVER_URL } from './data';
 import { SingleDogFullData } from '../types/type';
 import { toast } from 'react-hot-toast';

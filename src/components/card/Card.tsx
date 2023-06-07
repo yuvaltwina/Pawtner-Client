@@ -6,17 +6,20 @@ import './Card.css';
 import { EditDogFormData, SingleDogFullData } from '../../utils/types/type';
 import { TfiPencilAlt } from 'react-icons/tfi';
 import AddModal from '../../components/modals/addModal/AddModal';
+import useDogBreeds from '../../hooks/useGetBreeds';
 
 function Card({
   singleDog,
   needEditAndTrash = false,
   dogsArray,
   setDogsArray,
+  dogBreedsNamesArray,
 }: {
   singleDog: SingleDogFullData;
   needEditAndTrash?: boolean;
   dogsArray?: SingleDogFullData[];
   setDogsArray?: React.Dispatch<React.SetStateAction<SingleDogFullData[]>>;
+  dogBreedsNamesArray?: string[];
 }) {
   const [openDogModal, setOpenDogModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -35,35 +38,6 @@ function Card({
     city,
     images: [],
   };
-  // const favoriteClickHandler = () => {
-  //   dogFavoriteAction(_id, 'add');
-  //   setIsFavorite(!isfavorite);
-  //   console.log(
-  //     `${isfavorite ? 'deleted from favorites' : 'added to favorites'}`
-  //   );
-  // };
-
-  // const displayFavoriteIcon =
-  //   needFavorite &&
-  //   (isfavorite ? (
-  //     <span
-  //       className="card-favorite-icon-clicked"
-  //       onClick={() => {
-  //         favoriteClickHandler();
-  //       }}
-  //     >
-  //       <MdFavorite className="card-favorite-icon-clicked-hey" />
-  //     </span>
-  //   ) : (
-  //     <span
-  //       className="card-favorite-icon"
-  //       onClick={() => {
-  //         favoriteClickHandler();
-  //       }}
-  //     >
-  //       <MdOutlineFavoriteBorder />
-  //     </span>
-  //   ));
 
   const displayEditAndTrash = needEditAndTrash && (
     <div>
@@ -104,12 +78,13 @@ function Card({
           myDogs={dogsArray}
         />
       )}
-      {openEditModal && (
+      {openEditModal && dogBreedsNamesArray && (
         <AddModal
           openAddModal={openEditModal}
           setOpenAddModal={setOpenEditModal}
           editDogData={editDogData}
           dogId={_id}
+          dogBreedsNamesArray={dogBreedsNamesArray}
         />
       )}
       <div className="card-container">

@@ -38,25 +38,36 @@ const DATA_ERROR_LIST = {
   city: '',
   images: '',
 };
-//לעשות מודל רספונסיבי
-//לשנות שהשורות לא יגדל כשאני בוחר טקסט
+interface PropsType {
+  openAddModal: boolean;
+  setOpenAddModal: React.Dispatch<React.SetStateAction<boolean>>;
+  editDogData?: EditDogFormData;
+  dogId?: string;
+  dogBreedsNamesArray: string[];
+}
 //לשנות שזה לא יעשה רענן אלה יעשה פטץ שוב
 export default function BasicModal({
   openAddModal,
   setOpenAddModal,
   editDogData,
   dogId = '',
-}: {
-  openAddModal: boolean;
-  setOpenAddModal: React.Dispatch<React.SetStateAction<boolean>>;
-  editDogData?: EditDogFormData;
-  dogId?: string;
-}) {
+  dogBreedsNamesArray,
+}: PropsType) {
   const isEditing = !!editDogData;
   const [data, setData] = useState(!!isEditing ? editDogData : DATA_LIST);
   const [errors, setErrors] = useState(DATA_ERROR_LIST);
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { name, about, images } = data;
+  const selectButtonsData: {
+    category: keyof DogFormData;
+    valuesArray: string[];
+  }[] = [
+    ...ADD_DOG_SELECT_BUTTONS,
+    {
+      category: 'breed',
+      valuesArray: dogBreedsNamesArray,
+    },
+  ];
 
   const onChange = ({
     target: { value, id },
@@ -67,7 +78,7 @@ export default function BasicModal({
   };
 
   const displaySelectButtons = () => {
-    const selectButtons = ADD_DOG_SELECT_BUTTONS.map((selectbutton) => {
+    const selectButtons = selectButtonsData.map((selectbutton) => {
       const { category, valuesArray } = selectbutton;
       return (
         <span className="addmodal-preferences-button" key={category}>
@@ -99,7 +110,6 @@ export default function BasicModal({
           required
           sx={{ width: INPUTS_WIDTH }}
         />
-
         <Autocomplete
           disablePortal
           options={cityOptions}
@@ -146,29 +156,24 @@ export default function BasicModal({
     const isError = Boolean(errorMessage);
     return isError;
   };
-  const handleServerResponse = (
-    serverRespone: string,
-    notificationId: string
-  ) => {
+  const handleServerResponse = (serverRespone: string, toastId: string) => {
     if (serverRespone === 'dog created successfully') {
-      toast.success('Dog post created successfully!', { id: notificationId });
+      toast.success('Dog post created successfully!', { id: toastId });
       reloadAfterSecond();
       closeModal();
       return;
     }
     if (serverRespone === 'dog edited successfully') {
       closeModal();
-      toast.success('Dog post edited successfully!', { id: notificationId });
+      toast.success('Dog post edited successfully!', { id: toastId });
       reloadAfterSecond();
       return;
     }
     if (serverRespone === 'unauthorized') {
-      toast.error('Unauthorized please login first', { id: notificationId });
+      toast.error('Unauthorized please login first', { id: toastId });
       return;
     }
-    toast.error('Something went wrong please try again later', {
-      id: notificationId,
-    });
+    toast.error('Something went wrong please try again later', { id: toastId });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -202,6 +207,19 @@ export default function BasicModal({
     setErrors(DATA_ERROR_LIST);
     setIsSubmiting(false);
   };
+  const displayDropZoneOrSpace = isEditing ? (
+    ''
+  ) : (
+    <>
+      <DropZone
+        data={data as DogFormData}
+        setData={setData as React.Dispatch<React.SetStateAction<DogFormData>>}
+        isError={Boolean(errors.images)}
+      />
+      <p className="addmodal-dropzone-error">{errors.images}</p>{' '}
+    </>
+  );
+
   return (
     <Modal
       open={openAddModal}
@@ -226,19 +244,7 @@ export default function BasicModal({
             autoComplete="on"
             required
           />
-          {!isEditing && (
-            <>
-              <DropZone
-                data={data as DogFormData}
-                setData={
-                  setData as React.Dispatch<React.SetStateAction<DogFormData>>
-                }
-                isError={Boolean(errors.images)}
-              />
-              <p className="addmodal-dropzone-error">{errors.images}</p>{' '}
-            </>
-          )}
-
+          {displayDropZoneOrSpace}
           <RiCloseFill
             className="addmodal-exit-icon"
             onClick={() => {
