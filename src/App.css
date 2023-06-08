@@ -3,7 +3,7 @@
   --text-primary: #102542;
   --background-color: rgb(238, 237, 231);
   --text-secondary: #f4f4f4;
-  --special-color: rgb(255 114 15);
+  --special-color: rgb(255, 114, 15);
 }
 * {
   box-sizing: border-box;
