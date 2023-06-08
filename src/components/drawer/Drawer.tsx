@@ -8,11 +8,11 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 import { Link } from 'react-router-dom';
 import { AiOutlineHome } from 'react-icons/ai';
-import { TbDog } from 'react-icons/Tb';
+import { TbDog } from 'react-icons/tb';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BiLogInCircle } from 'react-icons/bi';
-import { FiLogOut } from 'react-icons/Fi';
-import { FiBookOpen } from 'react-icons/Fi';
+import { FiLogOut } from 'react-icons/fi';
+import { FiBookOpen } from 'react-icons/fi';
 import { useGlobalContext } from '../../hooks/useContext';
 
 const DRAWER_LINKS_GENERATOR = (

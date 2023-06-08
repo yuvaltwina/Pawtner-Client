@@ -6,7 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import DraftsIcon from '@mui/icons-material/Drafts';
-import { FiLogOut } from 'react-icons/Fi';
+import { FiLogOut } from 'react-icons/fi';
 import { FaRegUser } from 'react-icons/fa';
 import { MdSmartphone } from 'react-icons/md';
 import { useGlobalContext } from '../../hooks/useContext';
