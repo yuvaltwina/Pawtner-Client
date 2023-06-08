@@ -3,14 +3,20 @@ import { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { SERVER_URL } from '../../../utils/data/data';
 import axios from 'axios';
-import { useGlobalContext } from '../../../hooks/useContext';
 import { toast } from 'react-hot-toast';
 import { SingleDogFullData } from '../../../utils/types/type';
-import { Filter } from '@material-ui/icons';
+import { MdOutlineCancel } from 'react-icons/md';
 
-const DELETE_TITLE_TEXT = 'Are you sure you want to delete this post ?';
+const DELETE_TITLE_TEXT = 'Are you sure?';
 const DELETE_SUBTITLE_TEXT =
-  'This will delete this post permanently. you cannot undo this action';
+  'Do you really want to delete this post? this process cannot be undone';
+interface PropsType {
+  openDeleteModal: boolean;
+  setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+  dogId: string;
+  myDogs: SingleDogFullData[];
+  setMyDogs: React.Dispatch<React.SetStateAction<SingleDogFullData[]>>;
+}
 
 export default function DeleteModal({
   openDeleteModal,
@@ -18,13 +24,7 @@ export default function DeleteModal({
   dogId,
   myDogs,
   setMyDogs,
-}: {
-  openDeleteModal: boolean;
-  setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
-  dogId: string;
-  myDogs: SingleDogFullData[];
-  setMyDogs: React.Dispatch<React.SetStateAction<SingleDogFullData[]>>;
-}) {
+}: PropsType) {
   const [isSubmiting, setIsSubmiting] = useState(false);
   const deleteDog = async () => {
     setIsSubmiting(true);
@@ -56,6 +56,7 @@ export default function DeleteModal({
       className="delete-modal-container"
     >
       <div className="delete-modal">
+        <MdOutlineCancel className="delete-modal-icon" />
         <h1 className="delete-modal-headline">{DELETE_TITLE_TEXT}</h1>
         <p className="delete-modal-subtitle">{DELETE_SUBTITLE_TEXT} </p>
         <span className="delete-modal-buttons-container">
@@ -65,7 +66,7 @@ export default function DeleteModal({
               setOpenDeleteModal(false);
             }}
           >
-            cancel
+            Cancel
           </button>
           <button
             type="submit"
@@ -75,7 +76,7 @@ export default function DeleteModal({
               deleteDog();
             }}
           >
-            delete
+            Delete
           </button>
         </span>
       </div>

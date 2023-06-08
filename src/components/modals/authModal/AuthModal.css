@@ -1,16 +1,14 @@
 .login-modal {
   position: absolute;
-  top: 25rem;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(22rem, 50vw, 40rem);
-  height: 38rem;
+  max-height: 90vh;
   overflow-x: hidden;
   overflow-y: auto;
+  width: clamp(22rem, 50vw, 40rem);
   background-color: var(--text-secondary);
   border-radius: 15px;
-  overflow: hidden;
-
   background-color: var(--text-secondary);
   gap: 1rem;
   padding: 3.5rem 1rem;
@@ -30,6 +28,7 @@
 }
 @media (max-width: 450px) {
   .login-modal {
+    max-height: 100vh;
     height: 100vh !important;
     width: 100vw !important;
     top: 50%;

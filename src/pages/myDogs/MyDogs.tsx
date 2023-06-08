@@ -6,7 +6,7 @@ import { SingleDogFullData } from '../../utils/types/type';
 import axios from 'axios';
 import { fetchDogsArray } from '../../utils/data/functions';
 import useGetBreeds from '../../hooks/useGetBreeds';
-
+/// לתקן את זה שהמספר טלפון ניהיה בלי מקפים
 function MyDogs() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [myDogs, setMyDogs] = useState<SingleDogFullData[]>([]);
@@ -27,8 +27,8 @@ function MyDogs() {
       source.cancel();
     };
   }, [setMyDogs]);
-  const { dogBreedsArray } = useGetBreeds(); //לעשות את זה ביוז ממו או לשים את זה כסטייט?
-  const dogBreedsNamesArray = //לעשות את זה ביוז ממו או לשים את זה כסטייט?
+  const { dogBreedsArray } = useGetBreeds();
+  const dogBreedsNamesArray =
     dogBreedsArray.length === 0
       ? []
       : dogBreedsArray.map((breed: any) => breed?.name);

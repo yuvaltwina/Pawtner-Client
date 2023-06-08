@@ -4,17 +4,18 @@
 
 .delete-modal {
   position: absolute;
-  top: 25%;
+  top: 10%;
   right: 50%;
   transform: translate(50%, 50%);
-  height: 17rem;
-  width: 25rem;
+  height: 25rem;
+  width: 30rem;
+  border-radius: 7px;
   background-color: white;
-  color: var(--special-color);
+  /* color: var(--special-color); */
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
   padding: 2.1rem 1rem 2rem 1rem;
   text-align: center;
 }
@@ -23,50 +24,56 @@
 }
 .delete-modal-headline {
   font-size: 1.6rem;
+  color: rgb(103, 103, 103);
 }
 .delete-modal-subtitle {
   font-size: 1.1rem;
+  color: rgb(139, 138, 138);
 }
 .delete-modal-buttons-container {
   display: flex;
-  gap: 3rem;
+  gap: 1rem;
+}
+.delete-modal-icon {
+  font-size: 5rem;
+  color: rgba(255, 0, 0, 0.814);
 }
 .delete-modal-cancel {
-  width: 6rem;
+  width: 8rem;
   text-align: center;
   font-size: 1rem;
   padding: 1rem;
   font-weight: 600;
   color: white;
-  background-color: var(--special-color);
+  background-color: rgb(139, 138, 138);
   border: 1px solid transparent;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   transition: all 0.2s;
   touch-action: manipulation;
 }
 .delete-modal-cancel:hover {
   cursor: pointer;
-  color: var(--special-color);
+  color: rgb(139, 138, 138);
   background-color: white;
   border: 1px solid black;
 }
 .delete-modal-delete {
-  width: 6rem;
+  width: 8rem;
   border: 1px solid transparent;
   text-align: center;
   font-size: 1rem;
   padding: 1rem;
   font-weight: 600;
   color: white;
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.814);
   border: none;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   transition: all 0.2s;
   touch-action: manipulation;
 }
 .delete-modal-delete:hover {
   cursor: pointer;
-  color: red;
+  color: rgba(255, 0, 0, 0.814);
   background-color: white;
   border: 1px solid black;
 }

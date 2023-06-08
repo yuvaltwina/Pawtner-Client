@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import { SERVER_URL } from '../utils/data/data';
 import { userTokenData } from '../utils/types/type';
 import { decodeToken } from 'react-jwt';
+import { phoneNumberFormating } from '../utils/data/functions';
 
 interface IAppContext {
   userDetails: {
@@ -40,7 +41,7 @@ const getUserDetailsInitial = () => {
       UserDetailsInitialValue = {
         username: userTokenData.username,
         email: userTokenData.email,
-        phoneNumber: userTokenData.phoneNumber,
+        phoneNumber: phoneNumberFormating(userTokenData.phoneNumber),
         isLoggedIn: false,
       };
     }

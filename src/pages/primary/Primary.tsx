@@ -1,5 +1,4 @@
 import './Primary.css';
-
 import { MdFavorite, MdOutlineFavoriteBorder } from 'react-icons/md';
 import {
   SingleDogFullData,
@@ -7,7 +6,6 @@ import {
 } from '../../utils/types/type';
 import { dogFavoriteAction, fetchDogsArray } from '../../utils/data/functions';
 import { useEffect, useState } from 'react';
-
 import Card from '../../components/card/Card';
 import { SELECT_BUTTONS_DATA } from '../../utils/data/data';
 import SelectButtonList from '../../components/selectButtons/selectButtonList/SelectButtonList';

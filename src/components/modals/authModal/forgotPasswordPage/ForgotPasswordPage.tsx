@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import "./ForgotPasswordPage.css";
-import { Navigate } from "../../../../utils/types/type";
+import React, { useState } from 'react';
+import TextField from '@mui/material/TextField';
+import './ForgotPasswordPage.css';
+import { Navigate } from '../../../../utils/types/type';
 import {
   EMAIL_REGEX,
   EMAIL_ERROR_MESSAGE,
   SERVER_URL,
-} from "../../../../utils/data/data";
-import { toast } from "react-hot-toast";
-import axios from "axios";
+} from '../../../../utils/data/data';
+import { toast } from 'react-hot-toast';
+import axios from 'axios';
 
 function ForgotPasswordPage({ navigate }: { navigate: Navigate }) {
   const [forgotPasswordData, setforgotPasswordData] = useState({
-    email: "",
+    email: '',
   });
   const { email } = forgotPasswordData;
 
@@ -48,33 +48,29 @@ function ForgotPasswordPage({ navigate }: { navigate: Navigate }) {
     setisSubmiting(false);
     try {
       const loginResponse = await axios.post(
-        SERVER_URL + "/user/forgotPassword",
+        SERVER_URL + '/user/forgotPassword',
         {
           email,
         }
       );
       const resMessage = loginResponse.data?.message;
-      if (resMessage === "Email sent successfully") {
-        toast.success(resMessage);
+      if (resMessage === 'Email sent successfully') {
+        toast.success('Reset link has been sent to this email');
       }
     } catch (err: any) {
       const errorMessage = err.response?.data?.message;
       if (errorMessage) {
         toast.error(errorMessage); //האם זה בסדר להודיע לכולם אם אימייל מסויים רשום או לא?
       } else {
-        toast.error("Something went wrong");
+        toast.error('Something went wrong');
       }
     }
     setisSubmiting(false);
-    setforgotPasswordData({ email: "" });
+    setforgotPasswordData({ email: '' });
   };
   return (
     <div className="forgot-modal-page">
       <h1 className="forgot-modal-headline">Forgot Your Password?</h1>
-      <p className="forgot-modal-paragrph">
-        Password reset instructions will be sent to the email address associated
-        with your account.
-      </p>
       <form className="forgot-modal-form" onSubmit={handleSubmit}>
         <TextField
           type="email"
@@ -82,7 +78,7 @@ function ForgotPasswordPage({ navigate }: { navigate: Navigate }) {
           label="Email"
           className="forgot-modal-input"
           error={emailError}
-          helperText={emailError ? EMAIL_ERROR_MESSAGE : ""}
+          helperText={emailError ? EMAIL_ERROR_MESSAGE : ''}
           value={email}
           autoComplete="on"
           onChange={onChange}
@@ -93,7 +89,7 @@ function ForgotPasswordPage({ navigate }: { navigate: Navigate }) {
           className="signup-modal-submit"
           disabled={isSubmiting}
         >
-          SUBMIT
+          RESET
         </button>
       </form>
       <span className="forgot-modal-login">

@@ -21,9 +21,9 @@
   align-items: center;
   width: 100%;
   padding: 3rem 0;
-  background-image: url('../../utils/images/favorites.jpeg');
+  background-image: url('../../utils/images/favorites.avif');
   background-size: cover;
-  background-position: 50% 60%;
+  background-position: 50% 48%;
   background-repeat: no-repeat;
   height: clamp(30rem, 55vw, 35rem);
 }

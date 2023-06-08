@@ -32,22 +32,22 @@ export function Breeds() {
   };
 
   const displayBreedsInfo = () => {
-    if (!breed) {
-      return (
-        <section className="breeds-info-container">
-          <h1 className="breeds-info-title-when-empty">
-            Choose your desired breed
-          </h1>
-        </section>
-      );
-    }
+    // if (!breed) {
+    //   return (
+    //     <section className="breeds-info-container">
+    //       <h1 className="breeds-info-title-when-empty">
+    //         Choose your desired breed
+    //       </h1>
+    //     </section>
+    //   );
+    // }
+    const selectedBreed = breed || 'Samoyed';
     const breedInfo = dogBreedsArray.filter(
-      (oneBreed: any) => oneBreed?.name === breed
+      (oneBreed: any) => oneBreed?.name === selectedBreed
     )[0];
     if (!breedInfo) {
       return <section className="breeds-info-container"></section>;
     }
-    console.log(breedInfo);
     return (
       <section className="breeds-info-container">
         <h1 className="breeds-info-title">{breedInfo.name}</h1>
