@@ -1,79 +1,82 @@
 import './favorites.css';
-
-import { useEffect, useState } from 'react';
-
 import Card from '../../components/card/Card';
 import { MdFavorite } from 'react-icons/md';
-import { SERVER_URL } from '../../utils/data/data';
 import { SingleDogFullData } from '../../utils/types/type';
-import axios from 'axios';
-import { dogFavoriteAction } from '../../utils/data/functions';
+import { LOADING_MESSAGE } from '../../utils/data/data';
+import { useGetFetchQuery } from '../../hooks/queryCustomHooks/get/useGetFetchQuery';
 import { toast } from 'react-hot-toast';
+import useDeleteMutation from '../../hooks/queryCustomHooks/delete/useDeleteMutation';
+import { useEffect, useState } from 'react';
+const FETCH_FAVORITES_ERROR_MESSEAGE =
+  "Couldn't fetch favorite dogs please try again later";
 
-//add a window in this page
+//האם עדיף עם היוז אפקט ולא לבטל את הבקשה כדי לא ליצור מלא רינדורים
 export function Favorites() {
   const [favoriteDogs, setFavoriteDogs] = useState<SingleDogFullData[]>([]);
-  //להעביר מקום
+
+  const { data, isError, isLoading } = useGetFetchQuery('favoriteDogs');
+  const favoriteDogsfetchedArray: SingleDogFullData[] = data?.data?.data;
   useEffect(() => {
-    let source = axios.CancelToken.source();
-    const getDogs = async () => {
-      try {
-        const serverResponse = await axios.get(
-          SERVER_URL + `/dog/getFavoriteDogs`,
-          {
-            withCredentials: true,
-            cancelToken: source.token,
-          }
-        );
-        const resMessage = serverResponse.data?.message;
-        if (resMessage === 'favorite dogs sent successfully') {
-          const favoriteDogsArray = serverResponse?.data?.data;
-          setFavoriteDogs(favoriteDogsArray);
-        }
-      } catch (err: any) {
-        if (err?.response?.data?.message === 'unauthorized') {
-          toast.error('Unauthorized');
-          return;
-        }
-        if (err.message !== 'canceled') {
-          console.log(err);
-          toast.error('Something went wrong please try again later');
-          return;
-        }
-      }
-    };
-    getDogs();
-    return () => {
-      source.cancel();
-    };
-  }, [setFavoriteDogs]);
+    setFavoriteDogs(favoriteDogsfetchedArray || []);
+  }, [favoriteDogsfetchedArray, setFavoriteDogs]);
+
+  const onSuccsessRemoveFavoriteDog = () => {
+    // queryClient.invalidateQueries(['favoriteDogs'], { exact: true });
+  };
+
+  const onErrorRemoveFavoriteDog = (error: any) => {
+    const serverErrorResponse = error?.response?.data?.message;
+    if (serverErrorResponse === 'unauthorized') {
+      toast.error('Unauthorized');
+    } else {
+      toast.error('Something went wrong');
+    }
+  };
+  const deleteFavoriteMutation = useDeleteMutation(
+    'deleteFavoriteMutation',
+    onSuccsessRemoveFavoriteDog,
+    onErrorRemoveFavoriteDog
+  );
 
   const favoriteClickHandler = (favoriteDogId: string) => {
     const afterRemoveFavorite = favoriteDogs.filter(
       (dog) => dog._id !== favoriteDogId
     );
     setFavoriteDogs(afterRemoveFavorite);
-    dogFavoriteAction(favoriteDogId, 'delete');
+    // dogFavoriteAction(favoriteDogId, 'delete');
+    deleteFavoriteMutation.mutate(favoriteDogId);
   };
 
-  const displayCards = favoriteDogs.map((favoriteDog) => {
-    if (!favoriteDog._id) {
-      return;
+  const displayCards = () => {
+    if (isError) {
+      return (
+        <h1 className="favorite-fetch-error">
+          {FETCH_FAVORITES_ERROR_MESSEAGE}
+        </h1>
+      );
     }
-    return (
-      <span className="card-and-icon-container" key={favoriteDog._id}>
-        <span
-          className="card-favorite-icon"
-          onClick={() => {
-            favoriteClickHandler(favoriteDog._id);
-          }}
-        >
-          <MdFavorite />
+    if (isLoading) {
+      return <h1 className="favorite-fetch-loading">{LOADING_MESSAGE}</h1>;
+    }
+    return favoriteDogs.map((favoriteDog) => {
+      if (!favoriteDog._id) {
+        return;
+      }
+      return (
+        <span className="card-and-icon-container" key={favoriteDog._id}>
+          <span
+            className="card-favorite-icon"
+            onClick={() => {
+              favoriteClickHandler(favoriteDog._id);
+            }}
+          >
+            <MdFavorite />
+          </span>
+          <Card singleDog={favoriteDog}></Card>
         </span>
-        <Card singleDog={favoriteDog}></Card>
-      </span>
-    );
-  });
+      );
+    });
+  };
 
   return (
     <div className="favorites">
@@ -87,10 +90,13 @@ export function Favorites() {
       </section>
       <section className="mydogs-dogs">
         <h1 className="mydogs-dogs-headline">
-          My Favorites (<span className="headlight">{favoriteDogs.length}</span>
+          My Favorites (
+          <span className="headlight">
+            {favoriteDogs ? favoriteDogs.length : '0'}
+          </span>
           )
         </h1>
-        <div className="mydogs-cards-container"> {displayCards}</div>
+        <div className="mydogs-cards-container"> {displayCards()}</div>
       </section>
     </div>
   );

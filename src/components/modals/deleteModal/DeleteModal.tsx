@@ -1,52 +1,55 @@
 import './deleteModal.css';
 import { useState } from 'react';
 import Modal from '@mui/material/Modal';
-import { SERVER_URL } from '../../../utils/data/data';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { SingleDogFullData } from '../../../utils/types/type';
 import { MdOutlineCancel } from 'react-icons/md';
+import { useMutation, useQueryClient } from 'react-query';
+import { deleteDog } from '../../../utils/data/functions';
+import useDeleteMutation from '../../../hooks/queryCustomHooks/delete/useDeleteMutation';
 
 const DELETE_TITLE_TEXT = 'Are you sure?';
 const DELETE_SUBTITLE_TEXT =
   'Do you really want to delete this post? this process cannot be undone';
+
 interface PropsType {
   openDeleteModal: boolean;
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   dogId: string;
-  myDogs: SingleDogFullData[];
-  setMyDogs: React.Dispatch<React.SetStateAction<SingleDogFullData[]>>;
 }
 
 export default function DeleteModal({
   openDeleteModal,
   setOpenDeleteModal,
   dogId,
-  myDogs,
-  setMyDogs,
 }: PropsType) {
   const [isSubmiting, setIsSubmiting] = useState(false);
-  const deleteDog = async () => {
-    setIsSubmiting(true);
-    try {
-      const serverResponse = await axios.post(
-        SERVER_URL + '/dog/deleteDog',
-        { id: dogId },
-        {
-          withCredentials: true,
-        }
-      );
-      if (serverResponse?.data?.message === 'deleted successfully') {
-        toast.success('Dog post deleted successfully!');
-        const afterDelete = myDogs.filter((dog) => {
-          return dog._id !== dogId;
-        });
-        setMyDogs(afterDelete);
-        setOpenDeleteModal(false);
-      }
-    } catch (err: any) {
-      toast.error('Something went wrong please try again later');
+  const queryClient = useQueryClient();
+
+  const closeModal = () => setOpenDeleteModal(false);
+
+  const onErrorDeleteDog = (error: any, loadingDogToast: string) => {
+    const serverErrorResponse = error?.response?.data?.message;
+    if (serverErrorResponse === 'unauthorized') {
+      toast.error('Unauthorized', { id: loadingDogToast });
+    } else {
+      toast.error('Something went wrong', { id: loadingDogToast });
     }
+  };
+
+  const onSuccsessDeleteDog = (loadingDogToast: string) => {
+    toast.success(`Dog post deleted successfully!`, { id: loadingDogToast });
+    queryClient.invalidateQueries(['myDogs'], { exact: true });
+    closeModal();
+  };
+
+  const deleteDogMutation = useDeleteMutation(
+    'deleteDogMutation',
+    onSuccsessDeleteDog,
+    onErrorDeleteDog
+  );
+  const clickHandler = async () => {
+    setIsSubmiting(true);
+    deleteDogMutation.mutate(dogId);
     setIsSubmiting(false);
   };
   return (
@@ -72,9 +75,7 @@ export default function DeleteModal({
             type="submit"
             disabled={isSubmiting}
             className="delete-modal-delete"
-            onClick={() => {
-              deleteDog();
-            }}
+            onClick={clickHandler}
           >
             Delete
           </button>

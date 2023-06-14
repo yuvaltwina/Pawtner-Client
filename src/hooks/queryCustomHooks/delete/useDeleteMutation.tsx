@@ -1,0 +1,61 @@
+import React from 'react';
+import { toast } from 'react-hot-toast';
+import { UseMutationResult, useMutation } from 'react-query';
+import {
+  deleteDog,
+  deleteFavoriteDog,
+} from '../../../utils/apiService/axiosRequests';
+import { AxiosResponse } from 'axios';
+import { DogFormData } from '../../../utils/types/type';
+
+type MutationsType = {
+  deleteDogMutation: UseMutationResult<
+    AxiosResponse<any, any>,
+    unknown,
+    DogFormData,
+    string
+  >;
+  deleteFavoriteMutation: UseMutationResult<
+    AxiosResponse<any, any>,
+    unknown,
+    string,
+    unknown
+  >;
+};
+function useDeleteMutation(
+  key: keyof MutationsType,
+  onSuccess: Function,
+  onError: Function
+) {
+  const deleteDogMutation = useMutation({
+    mutationFn: deleteDog,
+    onError: (error, variabels, context) => {
+      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+    },
+    onSuccess: (data, variabels, context) => {
+      onSuccess(context as string);
+    },
+    onMutate: () => {
+      const loadingDogToast = toast.loading('Deleting dog post');
+      return loadingDogToast;
+    },
+  });
+  const deleteFavoriteMutation = useMutation({
+    mutationFn: deleteFavoriteDog,
+    onError: (error) => {
+      onError(error);
+    },
+    onSuccess: () => {
+      onSuccess();
+    },
+  });
+
+  const postMutations = {
+    deleteDogMutation,
+    deleteFavoriteMutation,
+  };
+
+  return postMutations[key];
+}
+
+export default useDeleteMutation;

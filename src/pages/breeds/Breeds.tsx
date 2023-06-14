@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import './breeds.css';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material';
-import useDogBreeds from '../../hooks/useGetBreeds';
+import { useGetFetchQuery } from '../../hooks/queryCustomHooks/get/useGetFetchQuery';
+
+const FIRST_DISPLAYED_DOG = 'Samoyed';
 //לשים מאקס וייד בכל האתר
 export function Breeds() {
   const [breed, setBreed] = useState('');
@@ -10,18 +12,21 @@ export function Breeds() {
   const handleBreedChange = (e: SelectChangeEvent<string>) => {
     setBreed(e.target.value);
   };
-  const { dogBreedsArray } = useDogBreeds(); //לעשות את זה ביוז ממו או לשים את זה כסטייט?
-  const displayValues = dogBreedsArray.map((value: any) => {
-    //לעשות את זה ביוז ממו או לשים את זה כסטייט?
-    if (dogBreedsArray.length === 0) {
-      return;
-    }
-    return (
-      <MenuItem key={value?.name} value={value?.name}>
-        {value?.name}
-      </MenuItem>
-    );
-  });
+  const getBreedsQuery = useGetFetchQuery('breeds');
+  const dogBreedsArray = getBreedsQuery?.data?.data;
+
+  const displayValues =
+    dogBreedsArray &&
+    dogBreedsArray.map((value: any) => {
+      if (dogBreedsArray.length === 0) {
+        return;
+      }
+      return (
+        <MenuItem key={value?.name} value={value?.name}>
+          {value?.name}
+        </MenuItem>
+      );
+    });
 
   const displayHighlightInfo = (category: string, info: string) => {
     return (
@@ -32,16 +37,10 @@ export function Breeds() {
   };
 
   const displayBreedsInfo = () => {
-    // if (!breed) {
-    //   return (
-    //     <section className="breeds-info-container">
-    //       <h1 className="breeds-info-title-when-empty">
-    //         Choose your desired breed
-    //       </h1>
-    //     </section>
-    //   );
-    // }
-    const selectedBreed = breed || 'Samoyed';
+    if (!dogBreedsArray) {
+      return;
+    }
+    const selectedBreed = breed || FIRST_DISPLAYED_DOG;
     const breedInfo = dogBreedsArray.filter(
       (oneBreed: any) => oneBreed?.name === selectedBreed
     )[0];

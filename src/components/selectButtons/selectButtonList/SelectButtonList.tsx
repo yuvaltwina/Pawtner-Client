@@ -8,22 +8,28 @@ import { cityOptions } from '../../../utils/data/cities';
 
 function SelectButtonList({
   list,
-  setPreferencesList,
+  onChange,
   preferencesList,
 }: {
   list: { category: string; valuesArray: string[] }[];
-  setPreferencesList: React.Dispatch<
-    React.SetStateAction<filterDataInitialObjectType>
-  >;
+  onChange: (value: string[] | string, category: string) => void;
   preferencesList: filterDataInitialObjectType;
 }) {
-  const cityOnChange = ({
-    target: { value, id },
-  }: {
-    target: { value: string[]; id: string };
-  }) => {
-    setPreferencesList((prevState) => ({ ...prevState, [id]: value }));
-  };
+  // const onChange = (value: string[] | string, category: string) => {
+  //   if (Array.isArray(value)) {
+  //     setPreferencesList((prevState: any) => ({
+  //       ...prevState,
+  //       [category]: value,
+  //     }));
+  //   }
+  //   if (typeof value === 'string') {
+  //     setPreferencesList((prev: any) => ({
+  //       ...prev,
+  //       [category]: typeof value === 'string' ? value.split(',') : value,
+  //     }));
+  //   }
+  // };
+
   const displaySelectButtons = list.map(
     (selectbutton: { category: string; valuesArray: string[] }) => {
       const {
@@ -35,7 +41,7 @@ function SelectButtonList({
           <SelectButton
             allProps={{}}
             preferencesList={preferencesList}
-            setPreferencesList={setPreferencesList}
+            onChange={onChange}
             category={category}
             valuesArray={valuesArray}
           />
@@ -54,7 +60,7 @@ function SelectButtonList({
         value={preferencesList.city || null}
         className={'primary-preferences-button'}
         onChange={(event, value) => {
-          value && cityOnChange({ target: { id: 'city', value } });
+          value && onChange(value, 'city');
         }}
         renderInput={(params) => <TextField {...params} label="CITY" />}
       />

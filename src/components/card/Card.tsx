@@ -6,25 +6,23 @@ import './Card.css';
 import { EditDogFormData, SingleDogFullData } from '../../utils/types/type';
 import { TfiPencilAlt } from 'react-icons/tfi';
 import AddModal from '../../components/modals/addModal/AddModal';
-import useDogBreeds from '../../hooks/useGetBreeds';
+
+interface PropsType {
+  singleDog: SingleDogFullData;
+  needEditAndTrash?: boolean;
+  dogsArray?: SingleDogFullData[];
+  dogBreedsNamesArray?: string[];
+}
 
 function Card({
   singleDog,
   needEditAndTrash = false,
   dogsArray,
-  setDogsArray,
   dogBreedsNamesArray,
-}: {
-  singleDog: SingleDogFullData;
-  needEditAndTrash?: boolean;
-  dogsArray?: SingleDogFullData[];
-  setDogsArray?: React.Dispatch<React.SetStateAction<SingleDogFullData[]>>;
-  dogBreedsNamesArray?: string[];
-}) {
+}: PropsType) {
   const [openDogModal, setOpenDogModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  // const [isfavorite, setIsFavorite] = useState(false);
   const { name, breed, gender, age, size, about, city, imagesUrl, _id } =
     singleDog;
 
@@ -69,13 +67,11 @@ function Card({
         />
       )}
       {/* לשנות את הקונדישן */}
-      {dogsArray && setDogsArray && openDeleteModal && (
+      {dogsArray && openDeleteModal && (
         <DeleteModal
           openDeleteModal={openDeleteModal}
           setOpenDeleteModal={setOpenDeleteModal}
           dogId={_id}
-          setMyDogs={setDogsArray}
-          myDogs={dogsArray}
         />
       )}
       {openEditModal && dogBreedsNamesArray && (

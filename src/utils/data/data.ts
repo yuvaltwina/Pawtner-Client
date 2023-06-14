@@ -45,3 +45,4 @@ export const ADD_DOG_SELECT_BUTTONS: {
 ];
 
 export const EMPTY_STRING = '';
+export const LOADING_MESSAGE = 'Loading...';

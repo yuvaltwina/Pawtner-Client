@@ -1,52 +1,55 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './myDogs.css';
 import AddModal from '../../components/modals/addModal/AddModal';
 import Card from '../../components/card/Card';
 import { SingleDogFullData } from '../../utils/types/type';
-import axios from 'axios';
-import { fetchDogsArray } from '../../utils/data/functions';
-import useGetBreeds from '../../hooks/useGetBreeds';
-/// לתקן את זה שהמספר טלפון ניהיה בלי מקפים
+import { fetchMyDogs } from '../../utils/data/functions';
+import { useQuery } from 'react-query';
+import { useGetFetchQuery } from '../../hooks/queryCustomHooks/get/useGetFetchQuery';
+
+const FETCH_MY_DOGS_ERROR_MESSEAGE =
+  "Couldn't fetch dogs please try again later";
+const FETCH_MY_DOGS_LOADING_MESSEAGE = 'Loading...';
+//לעשות high order component  ברגע שלוחצים על משהו ללא גישה זה מעביר חזרה ללוגין
 function MyDogs() {
   const [openAddModal, setOpenAddModal] = useState(false);
-  const [myDogs, setMyDogs] = useState<SingleDogFullData[]>([]);
-  //לתקן את הרענון ביצירת כלב
-  //להעביר מקום
-  useEffect(() => {
-    let source = axios.CancelToken.source();
-    const getDogs = async () => {
-      const serverLastRoute = 'getMyDogs';
-      const arrayOfDogs = await fetchDogsArray(serverLastRoute, source);
-      if (!arrayOfDogs) {
-        return;
-      }
-      setMyDogs(arrayOfDogs);
-    };
-    getDogs();
-    return () => {
-      source.cancel();
-    };
-  }, [setMyDogs]);
-  const { dogBreedsArray } = useGetBreeds();
-  const dogBreedsNamesArray =
-    dogBreedsArray.length === 0
-      ? []
-      : dogBreedsArray.map((breed: any) => breed?.name);
+  const { data, isError, isLoading, error } = useQuery(['myDogs'], fetchMyDogs);
+  const myDogs: SingleDogFullData[] = data?.data?.data?.dogs;
 
-  const displayCards = myDogs.map((singleDog) => {
-    const { _id: id } = singleDog;
-    return (
-      <span className="card-and-icon-container" key={id}>
-        <Card
-          singleDog={singleDog}
-          needEditAndTrash={true}
-          setDogsArray={setMyDogs}
-          dogsArray={myDogs}
-          dogBreedsNamesArray={dogBreedsNamesArray}
-        ></Card>
-      </span>
-    );
-  });
+  const getBreedsQuery = useGetFetchQuery('breeds');
+  const dogBreedsArray = getBreedsQuery?.data?.data;
+  const dogBreedsNamesArray: string[] = dogBreedsArray
+    ? dogBreedsArray.map((breed: any) => breed?.name)
+    : [];
+
+  const displayCards = () => {
+    if (isError) {
+      return (
+        <h1 className="mydogs-fetch-error">{FETCH_MY_DOGS_ERROR_MESSEAGE}</h1>
+      );
+    }
+    if (isLoading) {
+      return (
+        <h1 className="mydogs-fetch-loading">
+          {FETCH_MY_DOGS_LOADING_MESSEAGE}
+        </h1>
+      );
+    }
+
+    return myDogs.map((singleDog) => {
+      const { _id: id } = singleDog;
+      return (
+        <span className="card-and-icon-container" key={id}>
+          <Card
+            singleDog={singleDog}
+            needEditAndTrash={true}
+            dogsArray={myDogs}
+            dogBreedsNamesArray={dogBreedsNamesArray}
+          ></Card>
+        </span>
+      );
+    });
+  };
 
   return (
     <>
@@ -66,7 +69,8 @@ function MyDogs() {
         </section>
         <section className="mydogs-dogs">
           <h1 className="mydogs-dogs-headline">
-            My Dogs (<span className="headlight">{myDogs.length}</span>)
+            My Dogs (
+            <span className="headlight">{myDogs ? myDogs.length : '0'}</span>)
           </h1>
           <div className="mydogs-cards-container">
             <button
@@ -77,7 +81,7 @@ function MyDogs() {
             >
               <span className="mydogs-add-plus">+</span>
             </button>
-            {displayCards}
+            {displayCards()}
           </div>
         </section>
       </div>

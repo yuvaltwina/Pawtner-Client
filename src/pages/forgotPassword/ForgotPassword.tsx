@@ -1,10 +1,11 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './ForgotPassword.css';
 import TextField from '@mui/material/TextField';
-import { PASSWORD_REGEX, SERVER_URL } from '../../utils/data/data';
-import axios from 'axios';
+import { PASSWORD_REGEX } from '../../utils/data/data';
 import { toast } from 'react-hot-toast';
+import useUpdateMutation from '../../hooks/queryCustomHooks/update/useUpdateMutation';
+
 const CONFIRMPASS_ERROR_MESSAGE = 'Passwords not match';
 const PASSWORD_ERROR_MESSAGE =
   ' Atleast 8 characters , Needs to contain letters and numbers.';
@@ -51,6 +52,25 @@ function ForgotPassword() {
     });
     return true;
   };
+
+  const onSuccsessChangePassword = (loadingToast: string) => {
+    toast.success('Password changed!', { id: loadingToast });
+  };
+
+  const onErrorChangePassword = (error: any, loadingToast: string) => {
+    const errorMessage = error.response?.data?.message;
+    if (!errorMessage) {
+      toast.error('Something went wrong', { id: loadingToast });
+    } else {
+      toast.error(errorMessage, { id: loadingToast });
+    }
+  };
+  const changePasswordMutation = useUpdateMutation(
+    'changePasswordMutation',
+    onSuccsessChangePassword,
+    onErrorChangePassword
+  );
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmiting(true);
@@ -63,25 +83,7 @@ function ForgotPassword() {
       setIsSubmiting(false);
       return;
     }
-    try {
-      const serverResponse = await axios.post(
-        SERVER_URL + '/user/changePassword',
-        { newPassword, token }
-      );
-      const serverVerified =
-        serverResponse.data?.message === 'Password changed!';
-      console.log(serverResponse.data?.message);
-      if (serverVerified) {
-        toast.success('Password changed!');
-      }
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.message;
-      if (!errorMessage) {
-        toast.error('Something went wrong');
-      } else {
-        toast.error(errorMessage);
-      }
-    }
+    changePasswordMutation.mutate({ token, newPassword });
     setData({
       newPassword: '',
       confirmPassword: '',

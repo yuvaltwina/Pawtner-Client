@@ -4,25 +4,27 @@ import {
   SingleDogFullData,
   filterDataInitialObjectType,
 } from '../../utils/types/type';
-import { dogFavoriteAction, fetchDogsArray } from '../../utils/data/functions';
+import { dogFavoriteAction, fetchAllDogs } from '../../utils/data/functions';
 import { useEffect, useState } from 'react';
 import Card from '../../components/card/Card';
 import { SELECT_BUTTONS_DATA } from '../../utils/data/data';
 import SelectButtonList from '../../components/selectButtons/selectButtonList/SelectButtonList';
-import axios from 'axios';
-import { toast } from 'react-hot-toast';
-import useDogBreeds from '../../hooks/useGetBreeds';
 import { useGlobalContext } from '../../hooks/useContext';
+import { useQuery } from 'react-query';
+import { useGetFetchQuery } from '../../hooks/queryCustomHooks/get/useGetFetchQuery';
+
 const DOG_HEADER_TITLE_TEXT = 'Find your new best friend';
 const DOG_HEADER_SUBTITLE_TEXT =
-  '   browse dogs from our network and find your new buddy';
+  'browse dogs from our network and find your new buddy';
 const DOG_PREFENCES_HEADLINE_TEXT = 'What are you looking for ?';
 const DOG_CARDS_HEADLINE_TEXT = 'Dogs Available for ';
+const FAILED_TO_FETCH_DOGS = 'Failed to fetch dogs';
+const LOADING_DOGS_MESSAGE = 'Loading...';
 //להוסיף מינימום גודל מבחינת עיצוב לכלבים למקרה שזה לא מוצא בחחיפוש
 //conditional loading , dont load all the dogs at once
-//לפתור את הבעיה עם הטייפ  סקרפיט
 // כשמשנים את הרוחב של העמוד זה מתרנדר לאט למה והאם יש איך לשפר
 //לשפר את המהירות של הלחיצה על הברייד האם אפשר לעשות את זה לפני ?
+//לעשות HIGH OREDER COMPONENT ולהזיז את הלב מהעמוד הראשי לקומפנונט ראשי
 const filterDataInitialObject: filterDataInitialObjectType = {
   breed: [],
   gender: [],
@@ -31,53 +33,46 @@ const filterDataInitialObject: filterDataInitialObjectType = {
   city: [],
 };
 
+type keyType = keyof filterDataInitialObjectType;
+
 export function Primary() {
-  const [allDogs, setAllDogs] = useState<SingleDogFullData[]>([]);
   const [filterData, setFilterData] = useState(filterDataInitialObject);
   const [filteredDogs, setFilteredDogs] = useState<SingleDogFullData[]>([]);
   const [favoriteDogs, setFavoriteDogs] = useState<string[]>([]);
+
   const {
     userDetails: { username },
   } = useGlobalContext();
-  //האם צריך כל כף הרבה יוז אפקט
-  //להעביר למקום אחר
-  useEffect(() => {
-    let source = axios.CancelToken.source();
-    const getDogs = async () => {
-      const serverLastRoute = 'getAllDogs';
-      const arrayOfDogs = await fetchDogsArray(serverLastRoute, source);
-      if (!arrayOfDogs) {
-        toast.error('Something went wrong');
-        return;
-      }
-      setAllDogs(arrayOfDogs);
-      setFilteredDogs(arrayOfDogs);
-    };
-    getDogs();
-    return () => {
-      source.cancel();
-    };
-  }, [setAllDogs, setFilteredDogs]);
 
+  const { data, isError, isLoading } = useQuery(['allDogs'], fetchAllDogs);
+  const allDogs: SingleDogFullData[] = data?.data?.data?.dogs;
+  //האם חייב יוז אפקט
   useEffect(() => {
-    setFilteredDogs(allDogs);
-    const favoriteDogsFiltered = allDogs.filter((dog) =>
+    if (!allDogs) {
+      return;
+    }
+    setFilteredDogs(allDogs); //לשנות את זה לקחת את הפייבוריט דוגס מהקוורי
+    const favoriteDogsFiltered = allDogs.filter((dog: SingleDogFullData) =>
       dog.likedBy.includes(username)
     );
-    const favoriteDogsIds = favoriteDogsFiltered.map((dog) => dog._id);
+    const favoriteDogsIds = favoriteDogsFiltered.map(
+      (dog: SingleDogFullData) => dog._id
+    );
     setFavoriteDogs(favoriteDogsIds);
   }, [setFilteredDogs, allDogs]);
 
-  useEffect(() => {
-    // האם חייב לעשות את זה ביוז אפקט
+  const filterDogsOnChange = (
+    updatedFilterData: filterDataInitialObjectType
+  ) => {
+    if (!allDogs) {
+      return;
+    }
     const filteredArr = allDogs.filter((dog) => {
       let isPassing = false;
-      for (const key in filterData) {
-        type keyType = keyof filterDataInitialObjectType; // יש דרך יותר טובה לעשות את זה?
-
+      for (const key in updatedFilterData) {
         isPassing =
-          filterData[key as keyType].includes(dog[key as keyType]) ||
-          filterData[key as keyType].length === 0;
+          updatedFilterData[key as keyType].includes(dog[key as keyType]) ||
+          updatedFilterData[key as keyType].length === 0;
         if (isPassing === false) {
           return isPassing;
         }
@@ -85,21 +80,38 @@ export function Primary() {
       return isPassing;
     });
     setFilteredDogs(filteredArr);
-  }, [filterData, setFilteredDogs]);
+  };
 
-  const { dogBreedsArray } = useDogBreeds();
-  const dogBreedNamesArray = dogBreedsArray.map(
-    (dogBreed: any) => dogBreed?.name
-  );
+  const onChange = (value: string[] | string, category: string) => {
+    let updatedFilterData: filterDataInitialObjectType = filterData;
+    if (Array.isArray(value)) {
+      updatedFilterData = { ...filterData, [category]: value };
+      setFilterData(updatedFilterData);
+    }
+    if (typeof value === 'string') {
+      updatedFilterData = {
+        ...filterData,
+        [category]: typeof value === 'string' ? value.split(',') : value,
+      };
+      setFilterData(updatedFilterData);
+    }
+    filterDogsOnChange(updatedFilterData);
+  };
+
+  const getBreedsQuery = useGetFetchQuery('breeds');
+  const dogBreedsArray = getBreedsQuery?.data?.data;
+  const dogBreedsNamesArray: string[] = dogBreedsArray
+    ? dogBreedsArray.map((breed: any) => breed?.name)
+    : [];
 
   const selectButtonsData = [
     ...SELECT_BUTTONS_DATA,
     {
       category: 'breed',
-      valuesArray: dogBreedNamesArray,
+      valuesArray: dogBreedsNamesArray,
     },
   ];
-
+  //לשנות למיוטיישנס
   const favoriteClickHandler = (dogId: string) => {
     if (favoriteDogs.includes(dogId)) {
       dogFavoriteAction(dogId, 'delete');
@@ -143,6 +155,17 @@ export function Primary() {
       <p className="primary-header-pargraph">{DOG_HEADER_SUBTITLE_TEXT} </p>
     </div>
   );
+
+  const displayDogCards = () => {
+    if (isLoading) {
+      return <h1>{LOADING_DOGS_MESSAGE}</h1>;
+    }
+    return isError ? (
+      <h1>{FAILED_TO_FETCH_DOGS}</h1>
+    ) : (
+      <div className="dogs-cards-container">{displayCards}</div>
+    );
+  };
   return (
     <div className="primary">
       {displayHeader}
@@ -153,7 +176,7 @@ export function Primary() {
         <div className="primary-form">
           <SelectButtonList
             list={selectButtonsData}
-            setPreferencesList={setFilterData}
+            onChange={onChange}
             preferencesList={filterData}
           />
         </div>
@@ -167,7 +190,7 @@ export function Primary() {
           {DOG_CARDS_HEADLINE_TEXT}
           <span className="primary-adoption-headline-headlight">Adoption</span>
         </h1>
-        <div className="dogs-cards-container">{displayCards}</div>
+        {displayDogCards()}
       </section>
     </div>
   );

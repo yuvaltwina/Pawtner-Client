@@ -1,7 +1,7 @@
 import axios, { CancelTokenSource } from 'axios';
 
 import { SERVER_URL } from './data';
-import { SingleDogFullData } from '../types/type';
+import { DogFormData, EditDogFormData, SingleDogFullData } from '../types/type';
 import { toast } from 'react-hot-toast';
 import { useGlobalContext } from '../../hooks/useContext';
 
@@ -33,32 +33,7 @@ export const phoneNumberFormating = (str: string) => {
     str.slice(0, 3) + '-' + str.slice(3, 6) + '-' + str.slice(6);
   return phoneFormatString;
 };
-export async function fetchDogsArray(
-  serverLastRoute: string,
-  source?: CancelTokenSource
-) {
-  let arrayOfDogs = [];
-  try {
-    const serverResponse = await axios.get(
-      SERVER_URL + `/dog/${serverLastRoute}`,
-      {
-        withCredentials: true,
-        cancelToken: source?.token,
-      }
-    );
-    const resMessage = serverResponse.data?.message;
-    if (resMessage === 'sent successfully') {
-      arrayOfDogs = serverResponse.data.data.dogs;
-    } else {
-      toast.error('Something went wrong');
-    }
-  } catch (err: any) {
-    if (err?.response?.data?.message === 'unauthorized') {
-      toast.error('Unauthorized');
-    }
-  }
-  return arrayOfDogs;
-}
+
 export const reloadAfterSecond = () => {
   setTimeout(() => {
     window.location.reload();
@@ -90,31 +65,111 @@ export const dogFavoriteAction = async (dogId: string, action: string) => {
     }
   }
 };
-export const getFavoriteDogs = async () => {
-  const {
-    userDetails: { username },
-  } = useGlobalContext();
-
-  const serverResponse = await axios.get(
-    SERVER_URL + `/dog/getFavoriteDogs?username=${username}`,
-    {
-      withCredentials: true,
-    }
-  );
-  const resMessage = serverResponse.data?.message;
-  if (resMessage === 'favorite added successfully') {
-    const favoriteDogsArray = serverResponse.data?.favoriteDogs;
-    return favoriteDogsArray;
-  } else {
-    return [];
-  }
-};
+//  ולהעביר לריאקט קוורי
+// export const getFavoriteDogs = async () => {
+//   const {
+//     userDetails: { username },
+//   } = useGlobalContext();
+//   try {
+//     const serverResponse = await axios.get(
+//       SERVER_URL + `/dog/getFavoriteDogs?username=${username}`,
+//       {
+//         withCredentials: true,
+//       }
+//     );
+//     const resMessage = serverResponse.data?.message;
+//     if (resMessage === 'favorite added successfully') {
+//       const favoriteDogsArray = serverResponse.data?.favoriteDogs;
+//       return favoriteDogsArray;
+//     } else {
+//       return [];
+//     }
+//   } catch (err) {
+//     return [];
+//   }
+// };
 
 export const getDogById = (targetId: string, allDogs: SingleDogFullData[]) => {
   const dog = allDogs.filter((dog) => dog._id === targetId);
   return dog[0];
 };
-// export const getBreedList = () => {
-//   const dog = allDogs.filter((dog) => dog._id === targetId);
-//   return dog[0];
-// };
+//האם צריך לעשות טרי וקאצ בריאקט קוורי
+export async function fetchAllDogs() {
+  const serverResponse = await axios.get(SERVER_URL + `/dog/getAllDogs`, {
+    withCredentials: true,
+  });
+  return serverResponse;
+}
+export async function fetchMyDogs() {
+  const serverResponse = await axios.get(SERVER_URL + `/dog/getMyDogs`, {
+    withCredentials: true,
+  });
+  return serverResponse;
+}
+export async function fetchAllBreeds() {
+  const serverResponse = await axios.get('https://api.thedogapi.com/v1/breeds');
+  return serverResponse;
+}
+
+export async function addDog(data: DogFormData) {
+  const serverResponse = await axios.post(
+    SERVER_URL + `/dog/addDog`,
+    { data },
+    {
+      withCredentials: true,
+    }
+  );
+  return serverResponse;
+}
+export async function editDog({
+  data,
+  dogId,
+}: {
+  data: EditDogFormData;
+  dogId: string;
+}) {
+  const serverResponse = await axios.post(
+    SERVER_URL + `/dog/editDog`,
+    { data, _id: dogId },
+    {
+      withCredentials: true,
+    }
+  );
+  return serverResponse;
+}
+export async function deleteDog(dogId: string) {
+  const serverResponse = await axios.post(
+    SERVER_URL + `/dog/deleteDog`,
+    { id: dogId },
+    {
+      withCredentials: true,
+    }
+  );
+  return serverResponse;
+}
+export async function fetchFavoriteDogs() {
+  const serverResponse = await axios.get(SERVER_URL + `/dog/getFavoriteDogs`, {
+    withCredentials: true,
+  });
+  return serverResponse;
+}
+export async function addFavorteDog(dogId: string) {
+  const serverResponse = await axios.post(
+    SERVER_URL + `/dog/deleteDog`,
+    { id: dogId },
+    {
+      withCredentials: true,
+    }
+  );
+  return serverResponse;
+}
+export async function deleteFavorteDog(dogId: string) {
+  const serverResponse = await axios.post(
+    SERVER_URL + `/dog/deleteDog`,
+    { id: dogId },
+    {
+      withCredentials: true,
+    }
+  );
+  return serverResponse;
+}

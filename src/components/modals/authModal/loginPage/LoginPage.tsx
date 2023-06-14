@@ -1,12 +1,13 @@
 import './LoginPage.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Navigate } from '../../../../utils/types/type';
-import { SERVER_URL } from '../../../../utils/data/data';
-import axios from 'axios';
 import { useGlobalContext } from '../../../../hooks/useContext';
 import Cookies from 'js-cookie';
-import { reloadAfterSecond } from '../../../../utils/data/functions';
+import usePostMutation from '../../../../hooks/queryCustomHooks/post/usePostMutation';
+import { AiOutlineEye } from 'react-icons/ai';
+import { AiOutlineEyeInvisible } from 'react-icons/ai';
+
 const LOGIN_BUTTON_TEXT = 'LOGIN';
 const SIGN_UP_TEXT = 'Need an account?';
 
@@ -27,45 +28,42 @@ function LoginPage({
   });
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { setUserDetails } = useGlobalContext();
-
   const { email, password } = loginData;
 
+  const onSuccessLogin = (data: any) => {
+    const {
+      loginToken,
+      userFrontDetails: { username, email, phoneNumber },
+    } = data?.data?.data;
+    Cookies.set('login', loginToken, { expires: 7 });
+    setUserDetails({ username, email, phoneNumber, isLoggedIn: true });
+    closeModal();
+  };
+  const onErrorLogin = (error: any) => {
+    const resMessage = error.response?.data?.message;
+    let errorMessage = 'Something went wrong please try again later';
+    if (resMessage === 'unauthorized') {
+      errorMessage = 'Wrong email or password';
+    }
+    if (resMessage === 'not verified') {
+      errorMessage = 'User not verified';
+    }
+    setLoginError({
+      isError: true,
+      errorMessage,
+    });
+  };
+  const checkLoginDetailsMutation = usePostMutation(
+    'checkLoginDetailsMutation',
+    onSuccessLogin,
+    onErrorLogin
+  );
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmiting(true);
-    try {
-      const loginResponse = await axios.post(SERVER_URL + '/user/login', {
-        email,
-        password,
-      });
-      const resMessage = loginResponse.data?.message;
-
-      if (resMessage === 'Successfully logged in') {
-        const {
-          loginToken,
-          userFrontDetails: { username, email, phoneNumber },
-        } = loginResponse.data.data;
-        Cookies.set('login', loginToken, { expires: 7 });
-        setUserDetails({ username, email, phoneNumber, isLoggedIn: true });
-        closeModal();
-      }
-      setIsSubmiting(false);
-    } catch (err: any) {
-      const resMessage = err.response?.data?.message;
-      let errorMessage = 'Something went wrong please try again later';
-      if (resMessage === 'unauthorized') {
-        errorMessage = 'Wrong email or password';
-      }
-      if (resMessage === 'not verified') {
-        errorMessage = 'User not verified';
-      }
-      setLoginError({
-        isError: true,
-        errorMessage,
-      });
-      setIsSubmiting(false);
-      return;
-    }
+    checkLoginDetailsMutation.mutate({ email, password });
+    setIsSubmiting(false);
+    return;
   };
 
   const onChange = ({
@@ -91,17 +89,20 @@ function LoginPage({
           autoComplete="on"
           required
         />
-        <TextField
-          id="password"
-          type="password"
-          label="Password"
-          error={loginError.isError}
-          className="login-modal-input"
-          value={password}
-          onChange={onChange}
-          autoComplete="off"
-          required
-        />
+        <span>
+          <AiOutlineEye />
+          <TextField
+            id="password"
+            type="password"
+            label="Password"
+            error={loginError.isError}
+            className="login-modal-input"
+            value={password}
+            onChange={onChange}
+            autoComplete="off"
+            required
+          />
+        </span>
         <p className="login-modal-error-message">{loginError.errorMessage}</p>
         <button
           type="submit"

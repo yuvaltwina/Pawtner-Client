@@ -1,17 +1,18 @@
 import './addModal.css';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useState } from 'react';
-import { ADD_DOG_SELECT_BUTTONS, SERVER_URL } from '../../../utils/data/data';
+import { ADD_DOG_SELECT_BUTTONS } from '../../../utils/data/data';
 import SelectOneButton from '../../selectButtons/selectOneButton/selectOneButton';
 import TextField from '@mui/material/TextField';
 import DropZone from '../../dropZone/DropZone';
 import { RiCloseFill } from 'react-icons/ri';
 import { DogFormData, EditDogFormData } from '../../../utils/types/type';
 import { cityOptions } from '../../../utils/data/cities';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { Modal } from '@mui/material';
-import { reloadAfterSecond } from '../../../utils/data/functions';
+import { useQueryClient } from 'react-query';
+import usePostMutation from '../../../hooks/queryCustomHooks/post/usePostMutation';
+import useUpdateMutation from '../../../hooks/queryCustomHooks/update/useUpdateMutation';
 
 const ABOUT_WIDTH = 'clamp(17rem,80%,44rem)';
 const INPUTS_WIDTH = 'clamp(17rem,45%,21rem)';
@@ -45,7 +46,6 @@ interface PropsType {
   dogId?: string;
   dogBreedsNamesArray: string[];
 }
-//לשנות שזה לא יעשה רענן אלה יעשה פטץ שוב
 export default function BasicModal({
   openAddModal,
   setOpenAddModal,
@@ -68,6 +68,34 @@ export default function BasicModal({
       valuesArray: dogBreedsNamesArray,
     },
   ];
+  const queryClient = useQueryClient();
+  const onSuccsessCreateOrEditDog = (loadingDogToast: string) => {
+    toast.success(
+      `Dog post ${isEditing ? 'edited' : 'created'} successfully!`,
+      { id: loadingDogToast }
+    );
+    queryClient.invalidateQueries(['myDogs'], { exact: true });
+    closeModal();
+  };
+  const onErrorCreateOrEditDog = (error: any, loadingDogToast: string) => {
+    const serverErrorResponse = error?.response?.data?.message;
+    if (serverErrorResponse === 'unauthorized') {
+      toast.error('Unauthorized', { id: loadingDogToast });
+    } else {
+      toast.error('Something went wrong', { id: loadingDogToast });
+    }
+  };
+
+  const createDogMutation = usePostMutation(
+    'createDogMutation',
+    onSuccsessCreateOrEditDog,
+    onErrorCreateOrEditDog
+  );
+  const editDogMutation = useUpdateMutation(
+    'updateDogMutation',
+    onSuccsessCreateOrEditDog,
+    onErrorCreateOrEditDog
+  );
 
   const onChange = ({
     target: { value, id },
@@ -119,10 +147,7 @@ export default function BasicModal({
             value && onChange({ target: { id: 'city', value } });
           }}
           renderInput={(params) => (
-            <>
-              {/* <VirtualizedList /> */}
-              <TextField {...params} label="CITY" required />
-            </>
+            <TextField {...params} label="CITY" required />
           )}
         />
         {selectButtons}
@@ -156,25 +181,6 @@ export default function BasicModal({
     const isError = Boolean(errorMessage);
     return isError;
   };
-  const handleServerResponse = (serverRespone: string, toastId: string) => {
-    if (serverRespone === 'dog created successfully') {
-      toast.success('Dog post created successfully!', { id: toastId });
-      reloadAfterSecond();
-      closeModal();
-      return;
-    }
-    if (serverRespone === 'dog edited successfully') {
-      closeModal();
-      toast.success('Dog post edited successfully!', { id: toastId });
-      reloadAfterSecond();
-      return;
-    }
-    if (serverRespone === 'unauthorized') {
-      toast.error('Unauthorized please login first', { id: toastId });
-      return;
-    }
-    toast.error('Something went wrong please try again later', { id: toastId });
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -184,25 +190,14 @@ export default function BasicModal({
       setIsSubmiting(false);
       return;
     }
-    const creatingDogNotification = toast.loading(
-      isEditing ? 'Editing dog post' : 'Creating dog post'
-    );
-    try {
-      const serverResponse = await axios.post(
-        SERVER_URL + `/dog/${isEditing ? 'editDog' : 'addDog'}`,
-        {
-          data,
-          _id: isEditing ? dogId : '',
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      const serverResponseMessage = serverResponse.data?.message || '';
-      handleServerResponse(serverResponseMessage, creatingDogNotification);
-    } catch (err: any) {
-      const serverErrorMessage = err.response?.data?.message || '';
-      handleServerResponse(serverErrorMessage, creatingDogNotification);
+    // לתקן את הas
+    if (isEditing) {
+      editDogMutation.mutate({ data, dogId } as {
+        data: EditDogFormData;
+        dogId: string;
+      });
+    } else {
+      createDogMutation.mutate(data);
     }
     setErrors(DATA_ERROR_LIST);
     setIsSubmiting(false);

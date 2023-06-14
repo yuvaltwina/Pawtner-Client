@@ -54,3 +54,16 @@
 .card-favorite-icon:hover {
   background-color: #b5b5b5bb;
 }
+.favorite-fetch-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: rgb(254, 1, 1);
+}
+.favorite-fetch-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

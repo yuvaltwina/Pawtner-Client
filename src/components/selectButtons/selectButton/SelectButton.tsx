@@ -20,19 +20,7 @@ const MenuProps = {
 };
 
 export default function MultipleSelectCheckmarks(allProps: any) {
-  const { preferencesList, setPreferencesList, category, valuesArray } =
-    allProps;
-
-  const handleChange = (event: any) => {
-    const {
-      target: { value },
-    } = event;
-    setPreferencesList((prev: any) => ({
-      ...prev,
-      [category]: typeof value === 'string' ? value.split(',') : value,
-    }));
-  };
-
+  const { preferencesList, onChange, category, valuesArray } = allProps;
   return (
     <div>
       <FormControl className="select-button-container">
@@ -40,7 +28,7 @@ export default function MultipleSelectCheckmarks(allProps: any) {
         <Select
           multiple
           value={preferencesList[category]}
-          onChange={handleChange}
+          onChange={(event) => onChange(event.target.value, category)}
           input={<OutlinedInput label={category} />}
           renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
