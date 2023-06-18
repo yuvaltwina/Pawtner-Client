@@ -12,7 +12,7 @@ type MutationsType = {
   deleteDogMutation: UseMutationResult<
     AxiosResponse<any, any>,
     unknown,
-    DogFormData,
+    string,
     string
   >;
   deleteFavoriteMutation: UseMutationResult<
@@ -23,10 +23,9 @@ type MutationsType = {
   >;
 };
 function useDeleteMutation(
-  key: keyof MutationsType,
   onSuccess: Function,
   onError: Function
-) {
+): MutationsType {
   const deleteDogMutation = useMutation({
     mutationFn: deleteDog,
     onError: (error, variabels, context) => {
@@ -50,12 +49,10 @@ function useDeleteMutation(
     },
   });
 
-  const postMutations = {
+  return {
     deleteDogMutation,
     deleteFavoriteMutation,
   };
-
-  return postMutations[key];
 }
 
 export default useDeleteMutation;

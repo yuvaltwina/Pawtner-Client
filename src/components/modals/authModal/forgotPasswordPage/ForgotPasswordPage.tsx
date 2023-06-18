@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
 import './ForgotPasswordPage.css';
+
+import { EMAIL_ERROR_MESSAGE, EMAIL_REGEX } from '../../../../utils/data/data';
+import React, { useState } from 'react';
+
 import { Navigate } from '../../../../utils/types/type';
-import { EMAIL_REGEX, EMAIL_ERROR_MESSAGE } from '../../../../utils/data/data';
+import TextField from '@mui/material/TextField';
 import { toast } from 'react-hot-toast';
 import usePostMutation from '../../../../hooks/queryCustomHooks/post/usePostMutation';
 
@@ -48,8 +50,7 @@ function ForgotPasswordPage({ navigate }: { navigate: Navigate }) {
       });
     }
   };
-  const sendForgotPasswordEmailMutation = usePostMutation(
-    'sendForgotPasswordEmailMutation',
+  const { sendForgotPasswordEmailMutation } = usePostMutation(
     onSuccsessChangePassword,
     onErrorChangePassword
   );

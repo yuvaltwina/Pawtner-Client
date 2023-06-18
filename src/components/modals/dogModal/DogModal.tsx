@@ -8,6 +8,7 @@ import { MdOutlinePhoneIphone } from 'react-icons/md';
 import { RiCloseFill } from 'react-icons/ri';
 import { SingleDogFullData } from '../../../utils/types/type';
 import Swipe from '../../swipe/Swipe';
+import { phoneNumberFormating } from '../../../utils/data/functions';
 
 const displayDogSpecificInfo = (value: string, category: string) => (
   <h3 key={category}>
@@ -67,7 +68,7 @@ export default function BasicModal({
     },
     {
       header: 'Phone:',
-      pargraph: phoneNumber,
+      pargraph: phoneNumberFormating(phoneNumber),
       icon: <MdOutlinePhoneIphone />,
     },
 
@@ -94,7 +95,6 @@ export default function BasicModal({
       </div>
     )
   );
-
   const displayDogInfo = dogInfoList.map(({ category, value }) =>
     displayDogSpecificInfo(`${category} : `, value)
   );

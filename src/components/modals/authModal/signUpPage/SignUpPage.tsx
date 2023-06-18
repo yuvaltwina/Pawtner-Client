@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './SignUpPage.css';
 import TextField from '@mui/material/TextField';
 import { Navigate } from '../../../../utils/types/type';
 import {
   EMAIL_REGEX,
-  SERVER_URL,
   EMAIL_ERROR_MESSAGE,
   PASSWORD_REGEX,
 } from '../../../../utils/data/data';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
+import usePostMutation from '../../../../hooks/queryCustomHooks/post/usePostMutation';
 const PHONE_NUMBER_REGEX = /^[0-9]{10}$/;
 const USER_NAME_REGEX = /^[a-zA-Z][a-zA-Z0-9]{3,11}$/; //allows only letters and numbers in the string, and the first character must be a letter 4-12 charcters.
 const USER_NAME_ERROR_MESSAGE =
@@ -18,13 +17,11 @@ const PASSWORD_ERROR_MESSAGE =
   ' Atleast 8 characters , Needs to contain letters and numbers.';
 const CONFIRM_PASSWORD_ERROR_MESSAGE = 'Passwords not match';
 const PHONE_NUMBER_ERROR_MESSAGE = 'Please provide a valid phone number';
-
 const USER_NAME_ERROR = 'usernameError';
 const PASSWORD_ERROR = 'passwordError';
 const CONFIRM_PASSWORD_ERROR = 'confirmPasswordError';
 const EMAIL_ERROR = 'emailError';
 const PHONE_NUMBER_ERROR = 'phoneNumberError';
-
 const INITIAL_DATA_LIST = {
   username: '',
   email: '',
@@ -33,13 +30,12 @@ const INITIAL_DATA_LIST = {
   confirmPassword: '',
 };
 
-function SignUpPage({
-  navigate,
-  closeModal,
-}: {
+interface PropsType {
   navigate: Navigate;
   closeModal: () => void;
-}) {
+}
+
+function SignUpPage({ navigate, closeModal }: PropsType) {
   const [signUpData, setsignUpData] = useState(INITIAL_DATA_LIST);
   const [signUpError, setsignUpError] = useState({
     usernameError: false,
@@ -100,6 +96,32 @@ function SignUpPage({
     return true;
   };
 
+  const onSuccsessSignUp = (loadingToast: string) => {
+    toast.success('Verification mail sent to your email', { id: loadingToast });
+    setsignUpData(INITIAL_DATA_LIST);
+    closeModal();
+  };
+  const onErrorSignUp = (error: any, loadingToast: string) => {
+    const serverError = error.response?.data?.message || '';
+    if (serverError === 'Username already exists') {
+      toast.dismiss(loadingToast);
+      ChangesignUpErrorTo(USER_NAME_ERROR, serverError);
+      return;
+    }
+    if (serverError === 'Email already exists') {
+      toast.dismiss(loadingToast);
+      ChangesignUpErrorTo(EMAIL_ERROR, serverError);
+      return;
+    }
+    toast.error('Something went wrong please try again later', {
+      id: loadingToast,
+    });
+  };
+  const { sendVerificationEmailMutation } = usePostMutation(
+    onSuccsessSignUp,
+    onErrorSignUp
+  );
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -108,40 +130,13 @@ function SignUpPage({
       setIsSubmitting(false);
       return;
     }
-    try {
-      const verificationEmailResponse = await axios.post(
-        SERVER_URL + '/user/verification',
-        { username, password, email, phoneNumber }
-      );
-      const isServerVerified =
-        verificationEmailResponse.data?.message ===
-        'verification email sent successfully';
-
-      if (isServerVerified) {
-        toast.success('Verification mail sent to your email');
-        setsignUpData(INITIAL_DATA_LIST);
-        closeModal();
-      } else {
-        toast.error('Something went wrong please try again later');
-      }
-    } catch (err: any) {
-      const serverError = err.response?.data?.message || '';
-      if (serverError === 'Username already exists') {
-        ChangesignUpErrorTo(USER_NAME_ERROR, serverError);
-        setIsSubmitting(false);
-        return;
-      }
-      if (serverError === 'Email already exists') {
-        ChangesignUpErrorTo(EMAIL_ERROR, serverError);
-        setIsSubmitting(false);
-        return;
-      }
-      console.log(serverError);
-      toast.error('Something went wrong please try again later');
-    }
-    //הוצאתי את החלק הזה מהקאץ
+    sendVerificationEmailMutation.mutate({
+      username,
+      password,
+      email,
+      phoneNumber,
+    });
     setIsSubmitting(false);
-    return;
   };
 
   const onChange = ({
@@ -214,6 +209,7 @@ function SignUpPage({
           autoComplete="off"
           required
         ></TextField>
+
         <button
           type="submit"
           className="signup-modal-submit"
@@ -222,7 +218,6 @@ function SignUpPage({
           SUBMIT
         </button>
       </form>
-
       <span className="signup-modal-login">
         <p>Already have an account?</p>
         <button

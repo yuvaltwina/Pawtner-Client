@@ -4,14 +4,15 @@ import {
   SingleDogFullData,
   filterDataInitialObjectType,
 } from '../../utils/types/type';
-import { dogFavoriteAction, fetchAllDogs } from '../../utils/data/functions';
+import { dogFavoriteAction } from '../../utils/data/functions';
 import { useEffect, useState } from 'react';
 import Card from '../../components/card/Card';
 import { SELECT_BUTTONS_DATA } from '../../utils/data/data';
 import SelectButtonList from '../../components/selectButtons/selectButtonList/SelectButtonList';
+import { fetchAllDogs } from '../../utils/apiService/axiosRequests';
 import { useGlobalContext } from '../../hooks/useContext';
 import { useQuery } from 'react-query';
-import { useGetFetchQuery } from '../../hooks/queryCustomHooks/get/useGetFetchQuery';
+import useGetBreeds from '../../hooks/queryCustomHooks/get/useGetBreeds';
 
 const DOG_HEADER_TITLE_TEXT = 'Find your new best friend';
 const DOG_HEADER_SUBTITLE_TEXT =
@@ -22,8 +23,6 @@ const FAILED_TO_FETCH_DOGS = 'Failed to fetch dogs';
 const LOADING_DOGS_MESSAGE = 'Loading...';
 //להוסיף מינימום גודל מבחינת עיצוב לכלבים למקרה שזה לא מוצא בחחיפוש
 //conditional loading , dont load all the dogs at once
-// כשמשנים את הרוחב של העמוד זה מתרנדר לאט למה והאם יש איך לשפר
-//לשפר את המהירות של הלחיצה על הברייד האם אפשר לעשות את זה לפני ?
 //לעשות HIGH OREDER COMPONENT ולהזיז את הלב מהעמוד הראשי לקומפנונט ראשי
 const filterDataInitialObject: filterDataInitialObjectType = {
   breed: [],
@@ -43,9 +42,13 @@ export function Primary() {
   const {
     userDetails: { username },
   } = useGlobalContext();
-
   const { data, isError, isLoading } = useQuery(['allDogs'], fetchAllDogs);
   const allDogs: SingleDogFullData[] = data?.data?.data?.dogs;
+  // const getFavoriteDogsQuery = useQuery(['favoriteDogs'], fetchFavoriteDogs, {
+  //   enabled: !!userId,
+
+  // });
+
   //האם חייב יוז אפקט
   useEffect(() => {
     if (!allDogs) {
@@ -98,7 +101,7 @@ export function Primary() {
     filterDogsOnChange(updatedFilterData);
   };
 
-  const getBreedsQuery = useGetFetchQuery('breeds');
+  const getBreedsQuery = useGetBreeds();
   const dogBreedsArray = getBreedsQuery?.data?.data;
   const dogBreedsNamesArray: string[] = dogBreedsArray
     ? dogBreedsArray.map((breed: any) => breed?.name)
@@ -161,7 +164,7 @@ export function Primary() {
       return <h1>{LOADING_DOGS_MESSAGE}</h1>;
     }
     return isError ? (
-      <h1>{FAILED_TO_FETCH_DOGS}</h1>
+      <h1 className="primary-failed-fetch-dogs">{FAILED_TO_FETCH_DOGS}</h1>
     ) : (
       <div className="dogs-cards-container">{displayCards}</div>
     );

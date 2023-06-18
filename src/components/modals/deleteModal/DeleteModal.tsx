@@ -42,11 +42,11 @@ export default function DeleteModal({
     closeModal();
   };
 
-  const deleteDogMutation = useDeleteMutation(
-    'deleteDogMutation',
+  const { deleteDogMutation } = useDeleteMutation(
     onSuccsessDeleteDog,
     onErrorDeleteDog
   );
+
   const clickHandler = async () => {
     setIsSubmiting(true);
     deleteDogMutation.mutate(dogId);

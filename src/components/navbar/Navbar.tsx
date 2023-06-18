@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { VscHeartFilled } from 'react-icons/vsc';
@@ -11,6 +11,9 @@ import { useGlobalContext } from '../../hooks/useContext';
 import Cookies from 'js-cookie';
 import ProfileList from '../profileList/ProfileList';
 import { reloadAfterSecond } from '../../utils/data/functions';
+import { toast } from 'react-hot-toast';
+import axios, { CancelTokenSource } from 'axios';
+import { SERVER_URL } from '../../utils/data/data';
 
 function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -20,6 +23,44 @@ function Navbar() {
     userDetails: { username, isLoggedIn },
     setUserDetails,
   } = useGlobalContext();
+  //האם לשנות את היוז אפקט?
+  const checkUserLoginCookie = async (source: CancelTokenSource) => {
+    try {
+      const loginResponse = await axios.get(SERVER_URL + '/user/loginCookie', {
+        cancelToken: source.token,
+        withCredentials: true,
+      });
+      const resMessage = loginResponse.data?.message;
+      if (resMessage === 'User exist') {
+        setUserDetails((prev) => {
+          return {
+            ...prev,
+            isLoggedIn: true,
+          };
+        });
+      }
+    } catch (err) {}
+  };
+  useEffect(() => {
+    const verifiedCookie = Cookies.get('verified');
+    if (verifiedCookie) {
+      console.log(1);
+      if (verifiedCookie === 'Successfully Verified') {
+        toast.success(verifiedCookie);
+      } else {
+        verifiedCookie && toast.error(verifiedCookie);
+      }
+      Cookies.remove('verified');
+    }
+    let source = axios.CancelToken.source();
+    const loginToken = Cookies.get('login');
+    if (loginToken) {
+      checkUserLoginCookie(source);
+      return () => {
+        source.cancel();
+      };
+    }
+  }, [setUserDetails, Cookies]);
 
   const logout = () => {
     //need to clear also the jwt?

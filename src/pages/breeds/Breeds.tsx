@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 import './breeds.css';
+import React, { useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material';
-import { useGetFetchQuery } from '../../hooks/queryCustomHooks/get/useGetFetchQuery';
+import useGetBreeds from '../../hooks/queryCustomHooks/get/useGetBreeds';
 
 const FIRST_DISPLAYED_DOG = 'Samoyed';
 //לשים מאקס וייד בכל האתר
@@ -12,7 +12,7 @@ export function Breeds() {
   const handleBreedChange = (e: SelectChangeEvent<string>) => {
     setBreed(e.target.value);
   };
-  const getBreedsQuery = useGetFetchQuery('breeds');
+  const getBreedsQuery = useGetBreeds();
   const dogBreedsArray = getBreedsQuery?.data?.data;
 
   const displayValues =

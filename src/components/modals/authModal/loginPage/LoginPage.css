@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
+
 .login-modal-form {
   width: 75%;
   max-width: 25rem;
@@ -65,8 +66,18 @@
   text-decoration: underline; /* add underline on hover */
   cursor: pointer;
 }
+
 .login-modal-sign-up {
   display: flex;
   align-items: center;
   padding: 0.5rem;
+}
+
+.login-modal-eye-icon {
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+.login-modal-eye-icon:hover {
+  cursor: pointer;
+  opacity: 1;
 }

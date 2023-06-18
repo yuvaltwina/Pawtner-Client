@@ -4,6 +4,20 @@ import { DogFormData, EditDogFormData } from '../types/type';
 //צריך טרי וקאץ אם אני משתמש בריאקט קוורי ???
 //get
 
+interface sendEmailPropsType {
+  email: string;
+  password: string;
+  username: string;
+  phoneNumber: string;
+}
+
+export async function checkLoginCookie() {
+  const serverResponse = await axios.get(SERVER_URL + '/user/loginCookie', {
+    withCredentials: true,
+  });
+  return serverResponse;
+}
+
 export async function fetchAllDogs() {
   const serverResponse = await axios.get(SERVER_URL + `/dog/getAllDogs`, {
     withCredentials: true,
@@ -73,6 +87,21 @@ export async function checkLoginDetails({
   const serverResponse = await axios.post(SERVER_URL + '/user/login', {
     email,
     password,
+  });
+  return serverResponse;
+}
+
+export async function sendEmailVerification({
+  email,
+  password,
+  username,
+  phoneNumber,
+}: sendEmailPropsType) {
+  const serverResponse = await axios.post(SERVER_URL + '/user/verification', {
+    username,
+    password,
+    email,
+    phoneNumber,
   });
   return serverResponse;
 }

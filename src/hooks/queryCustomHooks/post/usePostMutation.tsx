@@ -1,14 +1,16 @@
 import React from 'react';
-import { toast } from 'react-hot-toast';
 import { UseMutationResult, useMutation } from 'react-query';
 import {
   addDog,
   addFavorteDog,
   checkLoginDetails,
   sendChangePasswordEmail,
+  sendEmailVerification,
 } from '../../../utils/apiService/axiosRequests';
 import { AxiosResponse } from 'axios';
 import { DogFormData } from '../../../utils/types/type';
+import { toast } from 'react-hot-toast';
+import { LOADING_MESSAGE } from '../../../utils/data/data';
 
 type MutationsType = {
   createDogMutation: UseMutationResult<
@@ -38,13 +40,37 @@ type MutationsType = {
     },
     unknown
   >;
+  sendVerificationEmailMutation: UseMutationResult<
+    AxiosResponse<any, any>,
+    unknown,
+    {
+      email: string;
+      password: string;
+      username: string;
+      phoneNumber: string;
+    },
+    string
+  >;
 };
 
 function usePostMutation(
-  key: keyof MutationsType,
   onSuccess: Function,
   onError: Function
-) {
+): MutationsType {
+  const sendVerificationEmailMutation = useMutation({
+    mutationFn: sendEmailVerification,
+    onError: (error, variabels, context) => {
+      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+    },
+    onSuccess: (data, variabels, context) => {
+      onSuccess(context as string);
+    },
+    onMutate: () => {
+      const loadingDogToast = toast.loading(LOADING_MESSAGE);
+      return loadingDogToast;
+    },
+  });
+
   const checkLoginDetailsMutation = useMutation({
     mutationFn: checkLoginDetails,
     onError: (error) => onError(error),
@@ -62,7 +88,7 @@ function usePostMutation(
       onSuccess(context as string);
     },
     onMutate: () => {
-      const loadingDogToast = toast.loading('loading...');
+      const loadingDogToast = toast.loading(LOADING_MESSAGE);
       return loadingDogToast;
     },
   });
@@ -87,13 +113,13 @@ function usePostMutation(
     onSuccess: () => onSuccess(),
   });
 
-  const postMutations: MutationsType = {
+  return {
     createDogMutation,
     addFavoriteMutation,
     sendForgotPasswordEmailMutation,
     checkLoginDetailsMutation,
+    sendVerificationEmailMutation,
   };
-  return postMutations[key];
 }
 
 export default usePostMutation;

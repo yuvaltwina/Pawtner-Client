@@ -1,23 +1,25 @@
-import './LoginPage.css';
 import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import { Navigate } from '../../../../utils/types/type';
-import { useGlobalContext } from '../../../../hooks/useContext';
-import Cookies from 'js-cookie';
-import usePostMutation from '../../../../hooks/queryCustomHooks/post/usePostMutation';
+import './LoginPage.css';
 import { AiOutlineEye } from 'react-icons/ai';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
+import Cookies from 'js-cookie';
+import { Navigate } from '../../../../utils/types/type';
+import TextField from '@mui/material/TextField';
+import { useGlobalContext } from '../../../../hooks/useContext';
+import usePostMutation from '../../../../hooks/queryCustomHooks/post/usePostMutation';
+import { InputAdornment } from '@mui/material';
+import { Visibility } from '@material-ui/icons';
 
 const LOGIN_BUTTON_TEXT = 'LOGIN';
 const SIGN_UP_TEXT = 'Need an account?';
 
-function LoginPage({
-  navigate,
-  closeModal,
-}: {
+interface PropsType {
   navigate: Navigate;
   closeModal: () => void;
-}) {
+}
+type OnChangeProps = { target: { value: string; id: string } };
+
+function LoginPage({ navigate, closeModal }: PropsType) {
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -26,8 +28,11 @@ function LoginPage({
     isError: false,
     errorMessage: '',
   });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { setUserDetails } = useGlobalContext();
+
   const { email, password } = loginData;
 
   const onSuccessLogin = (data: any) => {
@@ -53,8 +58,7 @@ function LoginPage({
       errorMessage,
     });
   };
-  const checkLoginDetailsMutation = usePostMutation(
-    'checkLoginDetailsMutation',
+  const { checkLoginDetailsMutation } = usePostMutation(
     onSuccessLogin,
     onErrorLogin
   );
@@ -66,14 +70,20 @@ function LoginPage({
     return;
   };
 
-  const onChange = ({
-    target: { value, id },
-  }: {
-    target: { value: string; id: string };
-  }) => {
+  const onChange = ({ target: { value, id } }: OnChangeProps) => {
     setLoginData((prevState) => ({ ...prevState, [id]: value }));
   };
 
+  const displayEyeIcon = () => {
+    const iconclassName = 'login-modal-eye-icon';
+    const iconOnClick = () => setIsPasswordVisible(!isPasswordVisible);
+    return isPasswordVisible ? (
+      <AiOutlineEye className={iconclassName} onClick={iconOnClick} />
+    ) : (
+      <AiOutlineEyeInvisible className={iconclassName} onClick={iconOnClick} />
+    );
+  };
+  const showPassword = isPasswordVisible ? 'text' : 'password';
   return (
     <div className="login-modal-page">
       <h1 className="login-modal-headline">Login</h1>
@@ -89,20 +99,23 @@ function LoginPage({
           autoComplete="on"
           required
         />
-        <span>
-          <AiOutlineEye />
-          <TextField
-            id="password"
-            type="password"
-            label="Password"
-            error={loginError.isError}
-            className="login-modal-input"
-            value={password}
-            onChange={onChange}
-            autoComplete="off"
-            required
-          />
-        </span>
+        <TextField
+          id="password"
+          type={showPassword}
+          label="Password"
+          error={loginError.isError}
+          className="login-modal-input"
+          value={password}
+          onChange={onChange}
+          autoComplete="off"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">{displayEyeIcon()}</InputAdornment>
+            ),
+          }}
+          required
+        />
+        {/* </span> */}
         <p className="login-modal-error-message">{loginError.errorMessage}</p>
         <button
           type="submit"

@@ -1,17 +1,19 @@
 import './addModal.css';
-import Autocomplete from '@mui/material/Autocomplete';
-import { useState } from 'react';
+
+import { DogFormData, EditDogFormData } from '../../../utils/types/type';
+
 import { ADD_DOG_SELECT_BUTTONS } from '../../../utils/data/data';
+import Autocomplete from '@mui/material/Autocomplete';
+import DropZone from '../../dropZone/DropZone';
+import { Modal } from '@mui/material';
+import { RiCloseFill } from 'react-icons/ri';
 import SelectOneButton from '../../selectButtons/selectOneButton/selectOneButton';
 import TextField from '@mui/material/TextField';
-import DropZone from '../../dropZone/DropZone';
-import { RiCloseFill } from 'react-icons/ri';
-import { DogFormData, EditDogFormData } from '../../../utils/types/type';
 import { cityOptions } from '../../../utils/data/cities';
 import { toast } from 'react-hot-toast';
-import { Modal } from '@mui/material';
-import { useQueryClient } from 'react-query';
 import usePostMutation from '../../../hooks/queryCustomHooks/post/usePostMutation';
+import { useQueryClient } from 'react-query';
+import { useState } from 'react';
 import useUpdateMutation from '../../../hooks/queryCustomHooks/update/useUpdateMutation';
 
 const ABOUT_WIDTH = 'clamp(17rem,80%,44rem)';
@@ -86,13 +88,11 @@ export default function BasicModal({
     }
   };
 
-  const createDogMutation = usePostMutation(
-    'createDogMutation',
+  const { createDogMutation } = usePostMutation(
     onSuccsessCreateOrEditDog,
     onErrorCreateOrEditDog
   );
-  const editDogMutation = useUpdateMutation(
-    'updateDogMutation',
+  const { updateDogMutation } = useUpdateMutation(
     onSuccsessCreateOrEditDog,
     onErrorCreateOrEditDog
   );
@@ -192,7 +192,7 @@ export default function BasicModal({
     }
     // לתקן את הas
     if (isEditing) {
-      editDogMutation.mutate({ data, dogId } as {
+      updateDogMutation.mutate({ data, dogId } as {
         data: EditDogFormData;
         dogId: string;
       });

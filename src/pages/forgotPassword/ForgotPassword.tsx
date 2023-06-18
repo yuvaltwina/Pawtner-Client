@@ -65,8 +65,7 @@ function ForgotPassword() {
       toast.error(errorMessage, { id: loadingToast });
     }
   };
-  const changePasswordMutation = useUpdateMutation(
-    'changePasswordMutation',
+  const { changePasswordMutation } = useUpdateMutation(
     onSuccsessChangePassword,
     onErrorChangePassword
   );

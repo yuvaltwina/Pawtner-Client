@@ -1,12 +1,13 @@
 import React from 'react';
-import { toast } from 'react-hot-toast';
 import { UseMutationResult, useMutation } from 'react-query';
 import {
   changePassword,
   editDog,
 } from '../../../utils/apiService/axiosRequests';
+
 import { AxiosResponse } from 'axios';
 import { EditDogFormData } from '../../../utils/types/type';
+import { toast } from 'react-hot-toast';
 
 interface MutationsType {
   updateDogMutation: UseMutationResult<
@@ -30,10 +31,9 @@ interface MutationsType {
 }
 
 function useUpdateMutation(
-  key: keyof MutationsType,
   onSuccess: Function,
   onError: Function
-) {
+): MutationsType {
   const updateDogMutation = useMutation({
     mutationFn: editDog,
     onError: (error, variabels, context) => {
@@ -62,11 +62,7 @@ function useUpdateMutation(
     },
   });
 
-  const updateMutations: MutationsType = {
-    updateDogMutation,
-    changePasswordMutation,
-  };
-  return updateMutations[key];
+  return { updateDogMutation, changePasswordMutation };
 }
 
 export default useUpdateMutation;

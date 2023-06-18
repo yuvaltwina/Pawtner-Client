@@ -13,6 +13,9 @@
   gap: 1rem;
   padding: 3.5rem 1rem;
 }
+.login-modal:focus-visible {
+  outline: none;
+}
 .login-modal-exit-icon {
   position: absolute;
   top: 2%;

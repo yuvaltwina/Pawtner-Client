@@ -3,9 +3,9 @@ import './myDogs.css';
 import AddModal from '../../components/modals/addModal/AddModal';
 import Card from '../../components/card/Card';
 import { SingleDogFullData } from '../../utils/types/type';
-import { fetchMyDogs } from '../../utils/data/functions';
 import { useQuery } from 'react-query';
-import { useGetFetchQuery } from '../../hooks/queryCustomHooks/get/useGetFetchQuery';
+import { fetchMyDogs } from '../../utils/apiService/axiosRequests';
+import useGetBreeds from '../../hooks/queryCustomHooks/get/useGetBreeds';
 
 const FETCH_MY_DOGS_ERROR_MESSEAGE =
   "Couldn't fetch dogs please try again later";
@@ -16,7 +16,7 @@ function MyDogs() {
   const { data, isError, isLoading, error } = useQuery(['myDogs'], fetchMyDogs);
   const myDogs: SingleDogFullData[] = data?.data?.data?.dogs;
 
-  const getBreedsQuery = useGetFetchQuery('breeds');
+  const getBreedsQuery = useGetBreeds();
   const dogBreedsArray = getBreedsQuery?.data?.data;
   const dogBreedsNamesArray: string[] = dogBreedsArray
     ? dogBreedsArray.map((breed: any) => breed?.name)

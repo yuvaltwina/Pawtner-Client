@@ -1,12 +1,16 @@
 import './favorites.css';
+
+import { useEffect, useState } from 'react';
+
 import Card from '../../components/card/Card';
+import { LOADING_MESSAGE } from '../../utils/data/data';
 import { MdFavorite } from 'react-icons/md';
 import { SingleDogFullData } from '../../utils/types/type';
-import { LOADING_MESSAGE } from '../../utils/data/data';
-import { useGetFetchQuery } from '../../hooks/queryCustomHooks/get/useGetFetchQuery';
+import { fetchFavoriteDogs } from '../../utils/apiService/axiosRequests';
 import { toast } from 'react-hot-toast';
 import useDeleteMutation from '../../hooks/queryCustomHooks/delete/useDeleteMutation';
-import { useEffect, useState } from 'react';
+import { useGetFetchQuery } from '../../hooks/queryCustomHooks/get/useGetFetchQuery';
+import { useQuery } from 'react-query';
 const FETCH_FAVORITES_ERROR_MESSEAGE =
   "Couldn't fetch favorite dogs please try again later";
 
@@ -14,7 +18,14 @@ const FETCH_FAVORITES_ERROR_MESSEAGE =
 export function Favorites() {
   const [favoriteDogs, setFavoriteDogs] = useState<SingleDogFullData[]>([]);
 
-  const { data, isError, isLoading } = useGetFetchQuery('favoriteDogs');
+  // const {
+  //   getFavoriteDogsQuery: { data, isError, isLoading },
+  // } = useGetFetchQuery();
+  const { data, isError, isLoading } = useQuery(
+    ['favoriteDogs'],
+    fetchFavoriteDogs
+  );
+
   const favoriteDogsfetchedArray: SingleDogFullData[] = data?.data?.data;
   useEffect(() => {
     setFavoriteDogs(favoriteDogsfetchedArray || []);
@@ -32,8 +43,7 @@ export function Favorites() {
       toast.error('Something went wrong');
     }
   };
-  const deleteFavoriteMutation = useDeleteMutation(
-    'deleteFavoriteMutation',
+  const { deleteFavoriteMutation } = useDeleteMutation(
     onSuccsessRemoveFavoriteDog,
     onErrorRemoveFavoriteDog
   );
