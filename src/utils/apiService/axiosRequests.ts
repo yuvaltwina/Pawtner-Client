@@ -126,7 +126,7 @@ export async function addDog(data: DogFormData) {
 
 export async function addFavorteDog(dogId: string) {
   const serverResponse = await axios.post(
-    SERVER_URL + `/dog/addFavorteDog`,
+    SERVER_URL + `/dog/addFavoriteDog`,
     { dogId },
     {
       withCredentials: true,

@@ -16,6 +16,7 @@
   background-position: 50% 68%;
   background-repeat: no-repeat;
   height: clamp(25rem, 55vw, 52rem);
+  text-align: center;
   /* aspect-ratio: 2.3/1; */
 }
 .primary-header-headline {
@@ -48,7 +49,7 @@
 .primary-preferences-headline {
   font-size: clamp(1.3rem, 2.5vw, 2.8rem);
   text-align: center;
-  margin: 2rem 0rem;
+  margin: 2rem auto;
 }
 .primary-form {
   width: 100%;
@@ -104,4 +105,16 @@
   color: red;
   text-align: center;
   margin: auto;
+}
+.primary-report-icon {
+  position: absolute;
+  color: red;
+  opacity: 0.7;
+  top: 0.5rem;
+  left: 2.2%;
+  font-size: 1.7rem;
+  z-index: 5;
+}
+.primary-report-icon:hover {
+  opacity: 1;
 }

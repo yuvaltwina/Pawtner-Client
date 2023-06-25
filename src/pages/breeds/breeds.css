@@ -31,10 +31,10 @@
 }
 .breeds-select-button {
   background-color: white;
-  width: clamp(17rem, 45%, 21rem);
+  width: clamp(15rem, 45%, 21rem);
 }
 .breeds-header-box {
-  width: clamp(18rem, 60%, 50rem);
+  width: clamp(18rem, 70%, 45rem);
   height: 12rem;
   background-color: rgba(255, 255, 255, 0.746);
   padding: 2rem;
@@ -97,4 +97,10 @@
   color: black;
   font-weight: 400;
   line-height: 1.7rem;
+}
+.breed-fetch-error {
+  text-align: center;
+  margin: auto;
+  color: rgba(255, 0, 0, 0.83);
+  margin-top: 1rem;
 }

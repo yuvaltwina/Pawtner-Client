@@ -1,22 +1,9 @@
 .addmodal-container {
   position: relative;
+  backdrop-filter: blur(3px);
+  background-color: rgba(255, 255, 255, 0.116);
 }
 .addmodal {
-  /* padding: 3rem 1.5rem;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  top: 10%;
-  right: 50%;
-  transform: translate(50%);
-  width: clamp(26rem, 80vw, 70rem);
-  height: 53rem;
-  background-color: var(--text-secondary);
-  border-radius: 15px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  gap: 1rem; */
   position: absolute;
   border-radius: 15px;
   top: 50%;
@@ -60,10 +47,7 @@
 .addmodal-preferences-button {
   width: clamp(17rem, 45%, 21rem);
 }
-/* .addmodal-input-field {
-}
-.addmodal-text-field {
-} */
+
 .addmodal-submit {
   margin: auto;
   display: inline-block;

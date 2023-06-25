@@ -29,6 +29,7 @@
 }
 .card-and-icon-container {
   position: relative;
+  transition: all 0.4s;
 }
 .card-and-icon-container:hover {
   cursor: pointer;

@@ -14,40 +14,8 @@ import { BiLogInCircle } from 'react-icons/bi';
 import { FiLogOut } from 'react-icons/fi';
 import { FiBookOpen } from 'react-icons/fi';
 import { useGlobalContext } from '../../hooks/useContext';
+import { TfiPencilAlt } from 'react-icons/tfi';
 
-const DRAWER_LINKS_GENERATOR = (
-  link: String,
-  name: string,
-  icon: JSX.Element
-) => {
-  return (
-    <Link className="drawer-link" to={`/${link}`}>
-      <ListItemButton id="drawer-button">
-        <span className="drawer-icon">{icon}</span>
-        {name}
-      </ListItemButton>
-    </Link>
-  );
-};
-
-const DRAWER_LINKS = [
-  {
-    page: 'home',
-    link: DRAWER_LINKS_GENERATOR('', 'Home', <AiOutlineHome />),
-  },
-  {
-    page: 'mydogs',
-    link: DRAWER_LINKS_GENERATOR('mydogs', 'My Dogs', <TbDog />),
-  },
-  {
-    page: 'favorites',
-    link: DRAWER_LINKS_GENERATOR('favorites', 'Favorites', <AiOutlineHeart />),
-  },
-  {
-    page: 'breeds',
-    link: DRAWER_LINKS_GENERATOR('breeds', 'About Breeds', <FiBookOpen />),
-  },
-];
 interface TemporaryDrawer {
   isDrawerOpen: boolean;
   setIsDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -64,6 +32,62 @@ export default function TemporaryDrawer({
   const {
     userDetails: { username, email, phoneNumber, isLoggedIn },
   } = useGlobalContext();
+  const openLoginModal = () => setIsLoginModal(true);
+
+  const DRAWER_LINKS = [
+    {
+      page: 'home',
+      link: DRAWER_LINK_GENERATOR('', 'Home', <AiOutlineHome />, false),
+    },
+    {
+      page: 'mydogs',
+      link: DRAWER_LINK_GENERATOR('mydogs', 'My Dogs', <TbDog />, true),
+    },
+    {
+      page: 'favorites',
+      link: DRAWER_LINK_GENERATOR(
+        'favorites',
+        'Favorites',
+        <AiOutlineHeart />,
+        true
+      ),
+    },
+    {
+      page: 'breeds',
+      link: DRAWER_LINK_GENERATOR(
+        'breeds',
+        'About Breeds',
+        <FiBookOpen />,
+        false
+      ),
+    },
+  ];
+
+  function DRAWER_LINK_GENERATOR(
+    link: String,
+    name: string,
+    icon: JSX.Element,
+    isLoggedInlink: boolean
+  ) {
+    if (isLoggedInlink && !isLoggedIn) {
+      return (
+        <a className="drawer-link" onClick={openLoginModal}>
+          <ListItemButton id="drawer-button">
+            <span className="drawer-icon">{icon}</span>
+            {name}
+          </ListItemButton>
+        </a>
+      );
+    }
+    return (
+      <Link className="drawer-link" to={`/${link}`}>
+        <ListItemButton id="drawer-button">
+          <span className="drawer-icon">{icon}</span>
+          {name}
+        </ListItemButton>
+      </Link>
+    );
+  }
 
   const displayHeadLine = () => {
     if (isLoggedIn) {
@@ -86,7 +110,7 @@ export default function TemporaryDrawer({
                 id="drawer-button"
                 onClick={() => {
                   setIsDrawerOpen(false);
-                  setIsLoginModal(true);
+                  openLoginModal();
                 }}
               >
                 <span className="drawer-icon">
@@ -123,26 +147,47 @@ export default function TemporaryDrawer({
     </Box>
   );
 
-  const displaySignOut = (
-    <List>
-      <Divider />
-      <ListItem className="drawer-signout">
-        <ListItemButton
-          id="drawer-button"
-          onClick={() => {
-            setIsDrawerOpen(false);
-            logout();
-          }}
-        >
-          <span className="drawer-icon">
-            <FiLogOut />
-          </span>
-          Sign Out
-        </ListItemButton>
-      </ListItem>
-    </List>
-  );
-  const displaySignOutIfLogged = isLoggedIn && displaySignOut;
+  const DRAWER_ACTION_LINKS = [
+    {
+      actionFunction: logout,
+      icon: <TfiPencilAlt />,
+      text: 'Edit details',
+    },
+    {
+      actionFunction: logout,
+      icon: <FiLogOut />,
+      text: 'Sign Out',
+    },
+  ];
+
+  const displayActionList = () => {
+    const displayLinks = DRAWER_ACTION_LINKS.map(
+      ({ icon, text, actionFunction }) => {
+        return (
+          <ListItem className="drawer-signout">
+            <ListItemButton
+              id="drawer-button"
+              onClick={() => {
+                setIsDrawerOpen(false);
+                actionFunction();
+              }}
+            >
+              <span className="drawer-icon">{icon}</span>
+              {text}
+            </ListItemButton>
+          </ListItem>
+        );
+      }
+    );
+    return (
+      <List>
+        <Divider />
+        {displayLinks}
+      </List>
+    );
+  };
+
+  const displayActionListIfLogged = isLoggedIn && displayActionList();
   return (
     <div>
       <Drawer
@@ -152,7 +197,7 @@ export default function TemporaryDrawer({
       >
         {displayHeadLine()}
         {Displaylist()}
-        {displaySignOutIfLogged}
+        {displayActionListIfLogged}
       </Drawer>
     </div>
   );

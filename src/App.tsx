@@ -8,26 +8,47 @@ import NotFound from './pages/notFound/NotFound';
 import MyDogs from './pages/myDogs/MyDogs';
 import { Toaster } from 'react-hot-toast';
 import ForgotPassword from './pages/forgotPassword/ForgotPassword';
+import RequireAuth from './HOCS/RequireAuth';
+import Admin from './admin/Admin';
+import RequireAdmin from './HOCS/RequireAdmin';
 
 //missions
 // 2 - change the look of the logout
 //3 change the fonts
-//אפשר לחכות שהכל יטען לפני שזה מציג משהו ?
-//למזה זה נתקע כשמותחים
-//on logout move the website to homepage
-//להעביר את כל היוזאפקטים להוק נפרד
 function App() {
   return (
     <div className="App">
       <Toaster />
       <Navbar />
       <Routes>
-        <Route path="/" element={<Primary />}></Route>
-        <Route path="/favorites" element={<Favorites />}></Route>
-        <Route path="/breeds" element={<Breeds />}></Route>
-        <Route path="/myDogs" element={<MyDogs />}></Route>
-        <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
-        <Route path="*" element={<NotFound />}></Route>
+        <Route path="/" element={<Primary />} />
+        <Route
+          path="/favorites"
+          element={
+            <RequireAuth>
+              <Favorites />
+            </RequireAuth>
+          }
+        />
+        <Route path="/breeds" element={<Breeds />} />
+        <Route
+          path="/myDogs"
+          element={
+            <RequireAuth>
+              <MyDogs />
+            </RequireAuth>
+          }
+        ></Route>
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route
+          path="/admin"
+          element={
+            <RequireAdmin>
+              <Admin />
+            </RequireAdmin>
+          }
+        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

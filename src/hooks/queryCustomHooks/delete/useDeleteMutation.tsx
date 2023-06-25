@@ -7,6 +7,7 @@ import {
 } from '../../../utils/apiService/axiosRequests';
 import { AxiosResponse } from 'axios';
 import { DogFormData } from '../../../utils/types/type';
+import { adminDeleteDog } from '../../../admin/AdminApiService';
 
 type MutationsType = {
   deleteDogMutation: UseMutationResult<
@@ -20,6 +21,15 @@ type MutationsType = {
     unknown,
     string,
     unknown
+  >;
+  adminDeleteDogMutation: UseMutationResult<
+    AxiosResponse<any, any>,
+    unknown,
+    {
+      dogId: string;
+      username: string;
+    },
+    string
   >;
 };
 function useDeleteMutation(
@@ -48,10 +58,23 @@ function useDeleteMutation(
       onSuccess();
     },
   });
-
+  const adminDeleteDogMutation = useMutation({
+    mutationFn: adminDeleteDog,
+    onError: (error, variabels, context) => {
+      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+    },
+    onSuccess: (data, variabels, context) => {
+      onSuccess(context as string);
+    },
+    onMutate: () => {
+      const loadingDogToast = toast.loading('Deleting dog post');
+      return loadingDogToast;
+    },
+  });
   return {
     deleteDogMutation,
     deleteFavoriteMutation,
+    adminDeleteDogMutation,
   };
 }
 

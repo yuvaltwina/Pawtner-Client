@@ -15,21 +15,6 @@ function SelectButtonList({
   onChange: (value: string[] | string, category: string) => void;
   preferencesList: filterDataInitialObjectType;
 }) {
-  // const onChange = (value: string[] | string, category: string) => {
-  //   if (Array.isArray(value)) {
-  //     setPreferencesList((prevState: any) => ({
-  //       ...prevState,
-  //       [category]: value,
-  //     }));
-  //   }
-  //   if (typeof value === 'string') {
-  //     setPreferencesList((prev: any) => ({
-  //       ...prev,
-  //       [category]: typeof value === 'string' ? value.split(',') : value,
-  //     }));
-  //   }
-  // };
-
   const displaySelectButtons = list.map(
     (selectbutton: { category: string; valuesArray: string[] }) => {
       const {

@@ -1,7 +1,5 @@
 import './addModal.css';
-
 import { DogFormData, EditDogFormData } from '../../../utils/types/type';
-
 import { ADD_DOG_SELECT_BUTTONS } from '../../../utils/data/data';
 import Autocomplete from '@mui/material/Autocomplete';
 import DropZone from '../../dropZone/DropZone';
@@ -15,6 +13,7 @@ import usePostMutation from '../../../hooks/queryCustomHooks/post/usePostMutatio
 import { useQueryClient } from 'react-query';
 import { useState } from 'react';
 import useUpdateMutation from '../../../hooks/queryCustomHooks/update/useUpdateMutation';
+import useGetBreeds from '../../../hooks/queryCustomHooks/get/useGetBreeds';
 
 const ABOUT_WIDTH = 'clamp(17rem,80%,44rem)';
 const INPUTS_WIDTH = 'clamp(17rem,45%,21rem)';
@@ -46,19 +45,23 @@ interface PropsType {
   setOpenAddModal: React.Dispatch<React.SetStateAction<boolean>>;
   editDogData?: EditDogFormData;
   dogId?: string;
-  dogBreedsNamesArray: string[];
 }
 export default function BasicModal({
   openAddModal,
   setOpenAddModal,
   editDogData,
   dogId = '',
-  dogBreedsNamesArray,
 }: PropsType) {
   const isEditing = !!editDogData;
   const [data, setData] = useState(!!isEditing ? editDogData : DATA_LIST);
   const [errors, setErrors] = useState(DATA_ERROR_LIST);
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const getBreedsQuery = useGetBreeds();
+  const dogBreedsArray = getBreedsQuery?.data?.data;
+  const dogBreedsNamesArray: string[] = dogBreedsArray
+    ? dogBreedsArray.map((breed: any) => breed?.name)
+    : [isEditing ? editDogData?.breed : ''];
+
   const { name, about, images } = data;
   const selectButtonsData: {
     category: keyof DogFormData;

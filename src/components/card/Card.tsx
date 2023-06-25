@@ -10,16 +10,9 @@ import AddModal from '../../components/modals/addModal/AddModal';
 interface PropsType {
   singleDog: SingleDogFullData;
   needEditAndTrash?: boolean;
-  dogsArray?: SingleDogFullData[];
-  dogBreedsNamesArray?: string[];
 }
 
-function Card({
-  singleDog,
-  needEditAndTrash = false,
-  dogsArray,
-  dogBreedsNamesArray,
-}: PropsType) {
+function Card({ singleDog, needEditAndTrash = false }: PropsType) {
   const [openDogModal, setOpenDogModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -66,21 +59,19 @@ function Card({
           singleDog={singleDog}
         />
       )}
-      {/* לשנות את הקונדישן */}
-      {dogsArray && openDeleteModal && (
+      {openDeleteModal && (
         <DeleteModal
           openDeleteModal={openDeleteModal}
           setOpenDeleteModal={setOpenDeleteModal}
           dogId={_id}
         />
       )}
-      {openEditModal && dogBreedsNamesArray && (
+      {openEditModal && (
         <AddModal
           openAddModal={openEditModal}
           setOpenAddModal={setOpenEditModal}
           editDogData={editDogData}
           dogId={_id}
-          dogBreedsNamesArray={dogBreedsNamesArray}
         />
       )}
       <div className="card-container">

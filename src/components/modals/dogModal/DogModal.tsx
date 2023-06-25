@@ -1,9 +1,9 @@
 import './DogModal.css';
-import * as React from 'react';
+import { useState } from 'react';
 import { Modal } from '@mui/material';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsFillPersonFill } from 'react-icons/bs';
-import { MdLocationOn } from 'react-icons/md';
+import { MdLocationOn, MdReportGmailerrorred } from 'react-icons/md';
 import { MdOutlinePhoneIphone } from 'react-icons/md';
 import { RiCloseFill } from 'react-icons/ri';
 import { SingleDogFullData } from '../../../utils/types/type';
@@ -34,14 +34,14 @@ export default function BasicModal({
     email,
     gender,
     imagesUrl,
-    likedBy,
     name,
     phoneNumber,
     size,
     username,
   },
 }: PropTypes) {
-  const closeModal = () => setOpenDogModal(false);
+  const closeDogModal = () => setOpenDogModal(false);
+
   const dogInfoList = [
     {
       category: 'Breed',
@@ -101,12 +101,16 @@ export default function BasicModal({
   BsFillPersonFill;
 
   return (
-    <Modal open={openDogModal} onClose={closeModal}>
+    <Modal
+      open={openDogModal}
+      onClose={closeDogModal}
+      className="dogmodal-container"
+    >
       <div className="dogmodal">
         <section className="dogmodal-swiper-container">
           <Swipe imagesUrl={imagesUrl} />
         </section>
-        <RiCloseFill className="dog-modal-exit-icon" onClick={closeModal} />
+        <RiCloseFill className="dog-modal-exit-icon" onClick={closeDogModal} />
         <span className="dogmodal-headline">
           {displayDogSpecificInfo('About ', name)}
         </span>

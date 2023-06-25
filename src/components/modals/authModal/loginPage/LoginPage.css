@@ -17,6 +17,7 @@
 .login-modal-error-message {
   margin: auto;
   color: red;
+  text-align: center;
 }
 .login-modal-submit {
   margin: auto;

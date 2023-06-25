@@ -3,11 +3,11 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  /* background-color: var(--text-secondary); */
   font-weight: 550;
   position: absolute;
   padding: 1rem 1.5rem;
   width: 100%;
+  z-index: 0;
 }
 .nav-left-links {
   display: flex;
@@ -21,12 +21,12 @@
   text-decoration: none;
   color: var(--text-secondary);
   font-size: 1rem;
-
   margin-top: 0.36rem;
 }
 .nav-link:hover {
   transition: all 0.1s;
   color: var(--special-color);
+  cursor: pointer;
 }
 
 .nav-headline {

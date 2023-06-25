@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField';
 import { useGlobalContext } from '../../../../hooks/useContext';
 import usePostMutation from '../../../../hooks/queryCustomHooks/post/usePostMutation';
 import { InputAdornment } from '@mui/material';
-import { Visibility } from '@material-ui/icons';
 
 const LOGIN_BUTTON_TEXT = 'LOGIN';
 const SIGN_UP_TEXT = 'Need an account?';

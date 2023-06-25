@@ -10,10 +10,10 @@ import LoginModal from '../modals/authModal/AuthModal';
 import { useGlobalContext } from '../../hooks/useContext';
 import Cookies from 'js-cookie';
 import ProfileList from '../profileList/ProfileList';
-import { reloadAfterSecond } from '../../utils/data/functions';
 import { toast } from 'react-hot-toast';
 import axios, { CancelTokenSource } from 'axios';
 import { SERVER_URL } from '../../utils/data/data';
+//לקחת את הלינקים מאובגקט
 
 function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -24,6 +24,7 @@ function Navbar() {
     setUserDetails,
   } = useGlobalContext();
   //האם לשנות את היוז אפקט?
+  const openLoginModal = () => setIsLoginModal(true);
   const checkUserLoginCookie = async (source: CancelTokenSource) => {
     try {
       const loginResponse = await axios.get(SERVER_URL + '/user/loginCookie', {
@@ -44,7 +45,6 @@ function Navbar() {
   useEffect(() => {
     const verifiedCookie = Cookies.get('verified');
     if (verifiedCookie) {
-      console.log(1);
       if (verifiedCookie === 'Successfully Verified') {
         toast.success(verifiedCookie);
       } else {
@@ -71,7 +71,6 @@ function Navbar() {
       email: '',
       phoneNumber: '',
     });
-    reloadAfterSecond();
   };
   const displayLogin = () => {
     if (isLoggedIn) {
@@ -100,7 +99,7 @@ function Navbar() {
       <button
         className="login"
         onClick={() => {
-          setIsLoginModal(true);
+          openLoginModal();
         }}
       >
         Login
@@ -108,6 +107,31 @@ function Navbar() {
     );
   };
   //לקחת את הלינקים מאובגקט
+  const displayOnlyLoggedInLinks = (child: any, route: string) => {
+    if (isLoggedIn) {
+      return (
+        <Link className="nav-link" to={route}>
+          {child}
+        </Link>
+      );
+    } else {
+      return (
+        <a className="nav-link" onClick={openLoginModal}>
+          {child}
+        </a>
+      );
+    }
+  };
+  const displayAdminLink = () => {
+    const isAdmin = username === 'Admin';
+    if (isLoggedIn && isAdmin) {
+      return (
+        <Link className="nav-link" to={'/admin'}>
+          {'Admin'}
+        </Link>
+      );
+    }
+  };
   return (
     <div className="navbar">
       <div className="nav-left-links">
@@ -117,14 +141,14 @@ function Navbar() {
         <Link className="nav-link" to={'/breeds'}>
           About Breeds
         </Link>
-        <Link className="nav-link" to={'/myDogs'}>
-          My Dogs
-        </Link>
+        {displayOnlyLoggedInLinks('My Dogs', '/myDogs')}
+        {displayAdminLink()}
       </div>
       <div className="nav-right-links">
-        <Link to={'/favorites'}>
-          <VscHeartFilled className="nav-favorite-icon" />
-        </Link>
+        {displayOnlyLoggedInLinks(
+          <VscHeartFilled className="nav-favorite-icon" />,
+          '/favorites'
+        )}
         <span
           onClick={() => {
             setIsDrawerOpen(true);

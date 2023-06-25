@@ -3,8 +3,7 @@ import { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { toast } from 'react-hot-toast';
 import { MdOutlineCancel } from 'react-icons/md';
-import { useMutation, useQueryClient } from 'react-query';
-import { deleteDog } from '../../../utils/data/functions';
+import { useQueryClient } from 'react-query';
 import useDeleteMutation from '../../../hooks/queryCustomHooks/delete/useDeleteMutation';
 
 const DELETE_TITLE_TEXT = 'Are you sure?';
@@ -39,6 +38,7 @@ export default function DeleteModal({
   const onSuccsessDeleteDog = (loadingDogToast: string) => {
     toast.success(`Dog post deleted successfully!`, { id: loadingDogToast });
     queryClient.invalidateQueries(['myDogs'], { exact: true });
+    queryClient.invalidateQueries(['allDogs'], { exact: true });
     closeModal();
   };
 

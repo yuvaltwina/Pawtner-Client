@@ -1,0 +1,51 @@
+.admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+  gap: 2rem;
+  color: var(--special-color);
+  background-color: rgb(26, 23, 21);
+  min-height: 100vh;
+  z-index: 0;
+  /* color: rgb(255, 2, 2); */
+}
+.admin-headline {
+  margin-top: 3rem;
+}
+.admin-search-box {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  gap: 2rem;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.admin-search-bar-container {
+  display: flex;
+  gap: 1.5rem;
+}
+.admin-dogs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+.admin-cards-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.admin-trash {
+  position: absolute;
+  z-index: 100;
+  font-size: 1.5rem;
+  right: 0rem;
+  top: 1rem;
+}
+.admin-trash:hover {
+  color: red;
+}

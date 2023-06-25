@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material';
 import useGetBreeds from '../../hooks/queryCustomHooks/get/useGetBreeds';
+import { LOADING_MESSAGE } from '../../utils/data/data';
 
 const FIRST_DISPLAYED_DOG = 'Samoyed';
 //לשים מאקס וייד בכל האתר
@@ -13,20 +14,30 @@ export function Breeds() {
     setBreed(e.target.value);
   };
   const getBreedsQuery = useGetBreeds();
+  const { isLoading, isError } = getBreedsQuery;
   const dogBreedsArray = getBreedsQuery?.data?.data;
 
-  const displayValues =
-    dogBreedsArray &&
-    dogBreedsArray.map((value: any) => {
+  const displayValues = () => {
+    if (isLoading) {
+      return <MenuItem value={''}>{LOADING_MESSAGE}</MenuItem>;
+    }
+    if (isError) {
+      return <MenuItem value={''}>{"Couldn't fetch breeds"}</MenuItem>;
+    }
+
+    if (dogBreedsArray) {
       if (dogBreedsArray.length === 0) {
         return;
       }
-      return (
-        <MenuItem key={value?.name} value={value?.name}>
-          {value?.name}
-        </MenuItem>
-      );
-    });
+      return dogBreedsArray.map((value: any) => {
+        return (
+          <MenuItem key={value?.name} value={value?.name}>
+            {value?.name}
+          </MenuItem>
+        );
+      });
+    }
+  };
 
   const displayHighlightInfo = (category: string, info: string) => {
     return (
@@ -38,7 +49,7 @@ export function Breeds() {
 
   const displayBreedsInfo = () => {
     if (!dogBreedsArray) {
-      return;
+      return <h1 className="breed-fetch-error">Couldn't fetch breeds</h1>;
     }
     const selectedBreed = breed || FIRST_DISPLAYED_DOG;
     const breedInfo = dogBreedsArray.filter(
@@ -78,7 +89,7 @@ export function Breeds() {
               onChange={handleBreedChange}
               required
             >
-              {displayValues}
+              {displayValues()}
             </Select>
           </FormControl>
         </div>

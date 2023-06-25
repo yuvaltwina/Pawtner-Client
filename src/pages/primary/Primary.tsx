@@ -1,19 +1,27 @@
 import './Primary.css';
-import { MdFavorite, MdOutlineFavoriteBorder } from 'react-icons/md';
+import {
+  MdFavorite,
+  MdOutlineFavoriteBorder,
+  MdReportGmailerrorred,
+} from 'react-icons/md';
 import {
   SingleDogFullData,
   filterDataInitialObjectType,
 } from '../../utils/types/type';
-import { dogFavoriteAction } from '../../utils/data/functions';
 import { useEffect, useState } from 'react';
 import Card from '../../components/card/Card';
 import { SELECT_BUTTONS_DATA } from '../../utils/data/data';
 import SelectButtonList from '../../components/selectButtons/selectButtonList/SelectButtonList';
-import { fetchAllDogs } from '../../utils/apiService/axiosRequests';
 import { useGlobalContext } from '../../hooks/useContext';
-import { useQuery } from 'react-query';
+import { useQueryClient } from 'react-query';
 import useGetBreeds from '../../hooks/queryCustomHooks/get/useGetBreeds';
-
+import LoginModal from '../../components/modals/authModal/AuthModal';
+import useGetAllDogs from '../../hooks/queryCustomHooks/get/useGetAllDogs';
+import useGetFavoriteDogs from '../../hooks/queryCustomHooks/get/useGetFavoriteDogs';
+import { toast } from 'react-hot-toast';
+import useDeleteMutation from '../../hooks/queryCustomHooks/delete/useDeleteMutation';
+import usePostMutation from '../../hooks/queryCustomHooks/post/usePostMutation';
+import ReportModal from '../../components/modals/reportModal/ReportModal';
 const DOG_HEADER_TITLE_TEXT = 'Find your new best friend';
 const DOG_HEADER_SUBTITLE_TEXT =
   'browse dogs from our network and find your new buddy';
@@ -23,7 +31,6 @@ const FAILED_TO_FETCH_DOGS = 'Failed to fetch dogs';
 const LOADING_DOGS_MESSAGE = 'Loading...';
 //להוסיף מינימום גודל מבחינת עיצוב לכלבים למקרה שזה לא מוצא בחחיפוש
 //conditional loading , dont load all the dogs at once
-//לעשות HIGH OREDER COMPONENT ולהזיז את הלב מהעמוד הראשי לקומפנונט ראשי
 const filterDataInitialObject: filterDataInitialObjectType = {
   breed: [],
   gender: [],
@@ -37,33 +44,39 @@ type keyType = keyof filterDataInitialObjectType;
 export function Primary() {
   const [filterData, setFilterData] = useState(filterDataInitialObject);
   const [filteredDogs, setFilteredDogs] = useState<SingleDogFullData[]>([]);
-  const [favoriteDogs, setFavoriteDogs] = useState<string[]>([]);
+  const [favoriteDogsIds, setFavoriteDogsIds] = useState<string[]>([]);
+  const [isLoginModal, setIsLoginModal] = useState(false);
+  const [isReportModal, setIsReportModal] = useState(false);
 
   const {
     userDetails: { username },
   } = useGlobalContext();
-  const { data, isError, isLoading } = useQuery(['allDogs'], fetchAllDogs);
+  const { data, isError, isLoading } = useGetAllDogs();
   const allDogs: SingleDogFullData[] = data?.data?.data?.dogs;
-  // const getFavoriteDogsQuery = useQuery(['favoriteDogs'], fetchFavoriteDogs, {
-  //   enabled: !!userId,
+  const queryClient = useQueryClient();
+  const getFavoriteDogsQuery = useGetFavoriteDogs();
+  const favoriteDogs: SingleDogFullData[] =
+    getFavoriteDogsQuery.data?.data?.data;
 
-  // });
-
-  //האם חייב יוז אפקט
   useEffect(() => {
-    if (!allDogs) {
-      return;
+    if (favoriteDogs) {
+      const favoriteDogsidsArray = favoriteDogs
+        ? favoriteDogs.map((singleDog) => singleDog._id)
+        : [];
+
+      setFavoriteDogsIds(favoriteDogsidsArray);
     }
-    setFilteredDogs(allDogs); //לשנות את זה לקחת את הפייבוריט דוגס מהקוורי
-    const favoriteDogsFiltered = allDogs.filter((dog: SingleDogFullData) =>
-      dog.likedBy.includes(username)
-    );
-    const favoriteDogsIds = favoriteDogsFiltered.map(
-      (dog: SingleDogFullData) => dog._id
-    );
-    setFavoriteDogs(favoriteDogsIds);
+  }, [favoriteDogs, setFavoriteDogsIds]);
+
+  useEffect(() => {
+    if (allDogs) {
+      setFilteredDogs(allDogs);
+    }
   }, [setFilteredDogs, allDogs]);
 
+  const openReportModal = () => {
+    setIsReportModal(true);
+  };
   const filterDogsOnChange = (
     updatedFilterData: filterDataInitialObjectType
   ) => {
@@ -85,6 +98,21 @@ export function Primary() {
     setFilteredDogs(filteredArr);
   };
 
+  const onSucssesFavoriteDogAction = () => {
+    queryClient.invalidateQueries(['favoriteDogs'], { exact: true });
+  };
+  const onErrorFavoriteDogAction = () => {
+    toast.error('Something went wrong');
+  };
+  const { deleteFavoriteMutation } = useDeleteMutation(
+    onSucssesFavoriteDogAction,
+    onErrorFavoriteDogAction
+  );
+  const { addFavoriteMutation } = usePostMutation(
+    onSucssesFavoriteDogAction,
+    onErrorFavoriteDogAction
+  );
+
   const onChange = (value: string[] | string, category: string) => {
     let updatedFilterData: filterDataInitialObjectType = filterData;
     if (Array.isArray(value)) {
@@ -105,7 +133,7 @@ export function Primary() {
   const dogBreedsArray = getBreedsQuery?.data?.data;
   const dogBreedsNamesArray: string[] = dogBreedsArray
     ? dogBreedsArray.map((breed: any) => breed?.name)
-    : [];
+    : ["Couldn't fetch breeds"]; // לבדוק שזה לא עושה באג
 
   const selectButtonsData = [
     ...SELECT_BUTTONS_DATA,
@@ -114,22 +142,29 @@ export function Primary() {
       valuesArray: dogBreedsNamesArray,
     },
   ];
-  //לשנות למיוטיישנס
+
   const favoriteClickHandler = (dogId: string) => {
-    if (favoriteDogs.includes(dogId)) {
-      dogFavoriteAction(dogId, 'delete');
-      const favoriteDogsDelete = favoriteDogs.filter((id) => id !== dogId);
-      setFavoriteDogs(favoriteDogsDelete);
+    const isLoggedIn = !!username;
+    if (!isLoggedIn) {
+      setIsLoginModal(true);
       return;
     }
-    dogFavoriteAction(dogId, 'add');
-    const favoriteDogsAdd = [...favoriteDogs, dogId];
-    setFavoriteDogs(favoriteDogsAdd);
+    if (favoriteDogsIds.includes(dogId)) {
+      const filteredFavoriteDogs = favoriteDogsIds.filter((id) => id !== dogId);
+      setFavoriteDogsIds(filteredFavoriteDogs);
+      deleteFavoriteMutation.mutate(dogId);
+      return;
+    }
+    console.log(1);
+    favoriteDogsIds.push(dogId);
+    setFavoriteDogsIds(favoriteDogsIds);
+
+    addFavoriteMutation.mutate(dogId);
   };
 
   const displayFavoriteIcon = (dogId: string) => {
     let favoriteIcon = <MdOutlineFavoriteBorder />;
-    if (favoriteDogs.includes(dogId)) {
+    if (favoriteDogsIds.includes(dogId)) {
       favoriteIcon = <MdFavorite />;
     }
     return (
@@ -147,6 +182,10 @@ export function Primary() {
   const displayCards = filteredDogs.map((singleDog) => {
     return (
       <span className="card-and-icon-container" key={singleDog._id}>
+        <MdReportGmailerrorred
+          onClick={openReportModal}
+          className="primary-report-icon"
+        />
         {displayFavoriteIcon(singleDog._id)}
         <Card singleDog={singleDog}></Card>
       </span>
@@ -169,33 +208,46 @@ export function Primary() {
       <div className="dogs-cards-container">{displayCards}</div>
     );
   };
+
   return (
-    <div className="primary">
-      {displayHeader}
-      <section className="primary-preferences">
-        <h3 className="primary-preferences-headline">
-          {DOG_PREFENCES_HEADLINE_TEXT}
-        </h3>
-        <div className="primary-form">
-          <SelectButtonList
-            list={selectButtonsData}
-            onChange={onChange}
-            preferencesList={filterData}
+    <>
+      <ReportModal
+        isReportModal={isReportModal}
+        setIsReportModal={setIsReportModal}
+      />
+      <LoginModal
+        isLoginModal={isLoginModal}
+        setIsLoginModal={setIsLoginModal}
+      />
+      <div className="primary">
+        {displayHeader}
+        <section className="primary-preferences">
+          <h3 className="primary-preferences-headline">
+            {DOG_PREFENCES_HEADLINE_TEXT}
+          </h3>
+          <div className="primary-form">
+            <SelectButtonList
+              list={selectButtonsData}
+              onChange={onChange}
+              preferencesList={filterData}
+            />
+          </div>
+          <img
+            className="primary-preferences-img"
+            src="src\utils\images\4253264.png"
           />
-        </div>
-        <img
-          className="primary-preferences-img"
-          src="src\utils\images\4253264.png"
-        />
-      </section>
-      <section className="primary-adoption">
-        <h1 className="primary-adoption-headline">
-          {DOG_CARDS_HEADLINE_TEXT}
-          <span className="primary-adoption-headline-headlight">Adoption</span>
-        </h1>
-        {displayDogCards()}
-      </section>
-    </div>
+        </section>
+        <section className="primary-adoption">
+          <h1 className="primary-adoption-headline">
+            {DOG_CARDS_HEADLINE_TEXT}
+            <span className="primary-adoption-headline-headlight">
+              Adoption
+            </span>
+          </h1>
+          {displayDogCards()}
+        </section>
+      </div>
+    </>
   );
 }
 

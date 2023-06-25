@@ -1,3 +1,7 @@
+.login-modal-container {
+  backdrop-filter: blur(3px);
+  background-color: rgba(255, 255, 255, 0.116);
+}
 .login-modal {
   position: absolute;
   top: 50%;
@@ -6,7 +10,7 @@
   max-height: 90vh;
   overflow-x: hidden;
   overflow-y: auto;
-  width: clamp(22rem, 50vw, 40rem);
+  width: clamp(22rem, 79vw, 40rem);
   background-color: var(--text-secondary);
   border-radius: 15px;
   background-color: var(--text-secondary);

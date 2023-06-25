@@ -9,19 +9,22 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import { FiLogOut } from 'react-icons/fi';
 import { FaRegUser } from 'react-icons/fa';
 import { MdSmartphone } from 'react-icons/md';
+import { TfiPencilAlt } from 'react-icons/tfi';
 import { useGlobalContext } from '../../hooks/useContext';
 import Modal from '@mui/material/Modal';
 import './profileList.css';
+
+interface PropsType {
+  logout: () => void;
+  isProfileList: boolean;
+  setIsProfileList: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 export default function BasicList({
   logout,
   isProfileList,
   setIsProfileList,
-}: {
-  logout: () => void;
-  isProfileList: boolean;
-  setIsProfileList: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+}: PropsType) {
   const {
     userDetails: { username, email, phoneNumber },
   } = useGlobalContext();
@@ -43,6 +46,19 @@ export default function BasicList({
       id: 'phoneNumber',
     },
   ];
+  const actionItemsList = [
+    {
+      text: 'Edit details',
+      activeFunction: logout,
+      icon: <TfiPencilAlt className="profile-list-icon" />,
+    },
+    {
+      text: 'Sign out',
+      activeFunction: logout,
+      icon: <FiLogOut className="profile-list-icon" />,
+    },
+  ];
+
   const displayListItems = () => {
     const displayItems = itemsList.map((singleItem) => {
       const { icon, category, id } = singleItem;
@@ -57,6 +73,19 @@ export default function BasicList({
     });
     return <List>{displayItems}</List>;
   };
+  const displayActionListItems = actionItemsList.map(
+    ({ text, icon, activeFunction }) => {
+      return (
+        <ListItem disablePadding>
+          <ListItemButton onClick={activeFunction}>
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText className="profile-list-signout" primary={text} />
+          </ListItemButton>
+        </ListItem>
+      );
+    }
+  );
+
   return (
     <Modal
       open={isProfileList}
@@ -68,19 +97,7 @@ export default function BasicList({
         <nav className="profile-list-details">{displayListItems()}</nav>
         <Divider />
         <nav aria-label="secondary mailbox folders">
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => logout()}>
-                <ListItemIcon>
-                  <FiLogOut className="profile-list-icon" />
-                </ListItemIcon>
-                <ListItemText
-                  className="profile-list-signout"
-                  primary="Sign out"
-                />
-              </ListItemButton>
-            </ListItem>
-          </List>
+          <List>{displayActionListItems}</List>
         </nav>
       </div>
     </Modal>
