@@ -164,7 +164,7 @@ export default function TemporaryDrawer({
     const displayLinks = DRAWER_ACTION_LINKS.map(
       ({ icon, text, actionFunction }) => {
         return (
-          <ListItem className="drawer-signout">
+          <ListItem className="drawer-signout" key={text}>
             <ListItemButton
               id="drawer-button"
               onClick={() => {

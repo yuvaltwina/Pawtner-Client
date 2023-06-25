@@ -57,7 +57,7 @@ export function Primary() {
   const getFavoriteDogsQuery = useGetFavoriteDogs();
   const favoriteDogs: SingleDogFullData[] =
     getFavoriteDogsQuery.data?.data?.data;
-
+  //לשפר את היוז אפקט ואם אפשר להוריד
   useEffect(() => {
     if (favoriteDogs) {
       const favoriteDogsidsArray = favoriteDogs
@@ -66,7 +66,10 @@ export function Primary() {
 
       setFavoriteDogsIds(favoriteDogsidsArray);
     }
-  }, [favoriteDogs, setFavoriteDogsIds]);
+    if (!username) {
+      setFavoriteDogsIds([]);
+    }
+  }, [favoriteDogs, setFavoriteDogsIds, username]);
 
   useEffect(() => {
     if (allDogs) {
@@ -155,7 +158,6 @@ export function Primary() {
       deleteFavoriteMutation.mutate(dogId);
       return;
     }
-    console.log(1);
     favoriteDogsIds.push(dogId);
     setFavoriteDogsIds(favoriteDogsIds);
 

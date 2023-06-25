@@ -76,7 +76,7 @@ export default function BasicList({
   const displayActionListItems = actionItemsList.map(
     ({ text, icon, activeFunction }) => {
       return (
-        <ListItem disablePadding>
+        <ListItem disablePadding key={text}>
           <ListItemButton onClick={activeFunction}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText className="profile-list-signout" primary={text} />

@@ -13,6 +13,7 @@ import ProfileList from '../profileList/ProfileList';
 import { toast } from 'react-hot-toast';
 import axios, { CancelTokenSource } from 'axios';
 import { SERVER_URL } from '../../utils/data/data';
+import { useQueryClient } from 'react-query';
 //לקחת את הלינקים מאובגקט
 
 function Navbar() {
