@@ -14,6 +14,7 @@ import { toast } from 'react-hot-toast';
 import axios, { CancelTokenSource } from 'axios';
 import { SERVER_URL } from '../../utils/data/data';
 import { useQueryClient } from 'react-query';
+import axiosInstance from '../../utils/apiService/axiosInstance';
 //לקחת את הלינקים מאובגקט
 
 function Navbar() {
@@ -28,9 +29,8 @@ function Navbar() {
   const openLoginModal = () => setIsLoginModal(true);
   const checkUserLoginCookie = async (source: CancelTokenSource) => {
     try {
-      const loginResponse = await axios.get(SERVER_URL + '/user/loginCookie', {
+      const loginResponse = await axiosInstance.get('/user/loginCookie', {
         cancelToken: source.token,
-        withCredentials: true,
       });
       const resMessage = loginResponse.data?.message;
       if (resMessage === 'User exist') {

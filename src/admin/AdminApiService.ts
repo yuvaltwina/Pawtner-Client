@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SERVER_URL } from '../utils/data/data';
+import axiosInstance from '../utils/apiService/axiosInstance';
 
 export async function adminDeleteDog({
   dogId,
@@ -8,12 +8,9 @@ export async function adminDeleteDog({
   dogId: string;
   username: string;
 }) {
-  const serverResponse = await axios.post(
-    SERVER_URL + `/dog/deleteDog`,
-    { id: dogId, adminRequestedUsername: username },
-    {
-      withCredentials: true,
-    }
-  );
+  const serverResponse = await axiosInstance.post(`/dog/deleteDog`, {
+    id: dogId,
+    adminRequestedUsername: username,
+  });
   return serverResponse;
 }
