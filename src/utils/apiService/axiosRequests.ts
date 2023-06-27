@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { SERVER_URL } from '../data/data';
 import { DogFormData, EditDogFormData } from '../types/type';
+import axiosInstance from './axiosInstance';
 //צריך טרי וקאץ אם אני משתמש בריאקט קוורי ???
 //get
 
@@ -12,23 +12,17 @@ interface sendEmailPropsType {
 }
 
 export async function checkLoginCookie() {
-  const serverResponse = await axios.get(SERVER_URL + '/user/loginCookie', {
-    withCredentials: true,
-  });
+  const serverResponse = await axiosInstance.get('/user/loginCookie');
   return serverResponse;
 }
 
 export async function fetchAllDogs() {
-  const serverResponse = await axios.get(SERVER_URL + `/dog/getAllDogs`, {
-    withCredentials: true,
-  });
+  const serverResponse = await axiosInstance.get(`/dog/getAllDogs`);
   return serverResponse;
 }
 
 export async function fetchMyDogs() {
-  const serverResponse = await axios.get(SERVER_URL + `/dog/getMyDogs`, {
-    withCredentials: true,
-  });
+  const serverResponse = await axiosInstance.get(`/dog/getMyDogs`);
   return serverResponse;
 }
 
@@ -38,9 +32,7 @@ export async function fetchAllBreeds() {
 }
 
 export async function fetchFavoriteDogs() {
-  const serverResponse = await axios.get(SERVER_URL + `/dog/getFavoriteDogs`, {
-    withCredentials: true,
-  });
+  const serverResponse = await axiosInstance.get(`/dog/getFavoriteDogs`);
   return serverResponse;
 }
 
@@ -52,13 +44,10 @@ export async function editDog({
   data: EditDogFormData;
   dogId: string;
 }) {
-  const serverResponse = await axios.post(
-    SERVER_URL + `/dog/editDog`,
-    { data, _id: dogId },
-    {
-      withCredentials: true,
-    }
-  );
+  const serverResponse = await axiosInstance.post(`/dog/editDog`, {
+    data,
+    _id: dogId,
+  });
   return serverResponse;
 }
 
@@ -69,7 +58,7 @@ export async function changePassword({
   token: string;
   newPassword: string;
 }) {
-  const serverResponse = await axios.post(SERVER_URL + '/user/changePassword', {
+  const serverResponse = await axiosInstance.post('/user/changePassword', {
     newPassword,
     token,
   });
@@ -84,7 +73,7 @@ export async function checkLoginDetails({
   email: string;
   password: string;
 }) {
-  const serverResponse = await axios.post(SERVER_URL + '/user/login', {
+  const serverResponse = await axiosInstance.post('/user/login', {
     email,
     password,
   });
@@ -97,7 +86,7 @@ export async function sendEmailVerification({
   username,
   phoneNumber,
 }: sendEmailPropsType) {
-  const serverResponse = await axios.post(SERVER_URL + '/user/verification', {
+  const serverResponse = await axiosInstance.post('/user/verification', {
     username,
     password,
     email,
@@ -107,55 +96,39 @@ export async function sendEmailVerification({
 }
 
 export async function sendChangePasswordEmail(email: string) {
-  const serverResponse = await axios.post(SERVER_URL + '/user/forgotPassword', {
+  const serverResponse = await axiosInstance.post('/user/forgotPassword', {
     email,
   });
   return serverResponse;
 }
 
 export async function addDog(data: DogFormData) {
-  const serverResponse = await axios.post(
-    SERVER_URL + `/dog/addDog`,
-    { data },
-    {
-      withCredentials: true,
-    }
-  );
+  const serverResponse = await axiosInstance.post(`/dog/addDog`, {
+    data,
+  });
   return serverResponse;
 }
 
 export async function addFavorteDog(dogId: string) {
-  const serverResponse = await axios.post(
-    SERVER_URL + `/dog/addFavoriteDog`,
-    { dogId },
-    {
-      withCredentials: true,
-    }
-  );
+  const serverResponse = await axiosInstance.post(`/dog/addFavoriteDog`, {
+    dogId,
+  });
   return serverResponse;
 }
 
 //delete
 
 export async function deleteDog(dogId: string) {
-  const serverResponse = await axios.post(
-    SERVER_URL + `/dog/deleteDog`,
-    { id: dogId },
-    {
-      withCredentials: true,
-    }
-  );
+  const serverResponse = await axiosInstance.post(`/dog/deleteDog`, {
+    id: dogId,
+  });
   return serverResponse;
 }
 
 export async function deleteFavoriteDog(dogId: string) {
-  const serverResponse = await axios.post(
-    SERVER_URL + `/dog/deleteFavoriteDog`,
-    { dogId },
-    {
-      withCredentials: true,
-    }
-  );
+  const serverResponse = await axiosInstance.post(`/dog/deleteFavoriteDog`, {
+    dogId,
+  });
   return serverResponse;
 }
 

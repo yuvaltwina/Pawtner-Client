@@ -7,7 +7,7 @@ import Card from '../components/card/Card';
 import { LOADING_MESSAGE } from '../utils/data/data';
 import { HiTrash } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { QueryClient, useQueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 import useDeleteMutation from '../hooks/queryCustomHooks/delete/useDeleteMutation';
 import { capitalizeOnlyFirstChars } from '../utils/data/functions';
 

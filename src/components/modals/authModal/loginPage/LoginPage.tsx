@@ -40,6 +40,7 @@ function LoginPage({ navigate, closeModal }: PropsType) {
       userFrontDetails: { username, email, phoneNumber },
     } = data?.data?.data;
     Cookies.set('login', loginToken, { expires: 7 });
+    console.log(`username on log in: ${username}`);
     setUserDetails({ username, email, phoneNumber, isLoggedIn: true });
     closeModal();
   };
