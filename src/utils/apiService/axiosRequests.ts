@@ -27,9 +27,7 @@ export async function fetchMyDogs() {
 }
 
 export async function fetchAllBreeds() {
-  const serverResponse = await axiosInstance.get(
-    'https://api.thedogapi.com/v1/breeds'
-  );
+  const serverResponse = await axios.get('https://api.thedogapi.com/v1/breeds');
   return serverResponse;
 }
 
