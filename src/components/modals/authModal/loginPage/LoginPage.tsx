@@ -41,6 +41,7 @@ function LoginPage({ navigate, closeModal }: PropsType) {
     } = data?.data?.data;
     Cookies.set('login', loginToken, { expires: 7 });
     setUserDetails({ username, email, phoneNumber, isLoggedIn: true });
+    console.log(username);
     closeModal();
   };
   const onErrorLogin = (error: any) => {
