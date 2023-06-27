@@ -44,6 +44,7 @@ function Navbar() {
     } catch (err) {}
   };
   useEffect(() => {
+    //לשנות את זה  שזה לא יהיה קוקי אלא סתם משתנה שנשלח
     const verifiedCookie = Cookies.get('verified');
     if (verifiedCookie) {
       if (verifiedCookie === 'Successfully Verified') {
