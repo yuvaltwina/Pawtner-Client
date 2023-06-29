@@ -1,7 +1,7 @@
 .favorites {
   background-color: var(--background-color);
   height: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 .favorites-header-headline {
   color: var(--text-secondary);

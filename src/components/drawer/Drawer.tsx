@@ -115,14 +115,15 @@ export default function TemporaryDrawer({
     } else {
       return (
         <List>
-          <ListItem className="drawer-login">
-            <ListItemButton
-              id="drawer-button"
-              onClick={() => {
-                setIsDrawerOpen(false);
-                openLoginModal();
-              }}
-            >
+          <ListItem
+            className="drawer-login"
+            onClick={() => {
+              setIsDrawerOpen(false);
+              openLoginModal();
+            }}
+            disablePadding
+          >
+            <ListItemButton id="drawer-button">
               <span className="drawer-icon">
                 <BiLogInCircle />
               </span>
@@ -183,6 +184,7 @@ export default function TemporaryDrawer({
   };
 
   const displayActionListIfLogged = isLoggedIn && displayActionList();
+
   return (
     <div>
       <Drawer

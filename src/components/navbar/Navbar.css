@@ -129,7 +129,7 @@
     display: inline-block;
     font-size: 1.6rem;
     margin-top: 0.3rem;
-    margin-right: -1rem;
+    margin-right: 0rem;
     padding: 0.8rem 0;
   }
   .nav-hamburger-icon:hover {
@@ -144,6 +144,6 @@
   }
 
   .navbar {
-    padding: 0rem 1.5rem;
+    padding: 0rem 0.7rem;
   }
 }

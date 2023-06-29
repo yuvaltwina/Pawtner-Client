@@ -35,8 +35,8 @@
 }
 @media (max-width: 450px) {
   .login-modal {
-    max-height: 100vh;
-    height: 100vh !important;
+    max-height: 100dvh;
+    height: 100dvh !important;
     width: 100vw !important;
     top: 50%;
   }
