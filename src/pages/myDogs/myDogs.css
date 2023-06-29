@@ -14,7 +14,7 @@
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
-  height: clamp(30rem, 55vw, 35rem);
+  height: clamp(20rem, 55vw, 35rem);
 }
 
 .mydogs-header-headline {
@@ -47,7 +47,7 @@
 .mydogs-dogs-headline {
   /* color: var(--special-color); */
   margin: 1rem;
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2rem, 5vw, 3.5rem);
 }
 .headlight {
   color: var(--special-color);

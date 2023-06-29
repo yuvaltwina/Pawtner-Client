@@ -17,7 +17,7 @@ import useGetBreeds from '../../../hooks/queryCustomHooks/get/useGetBreeds';
 
 const ABOUT_WIDTH = 'clamp(17rem,80%,44rem)';
 const INPUTS_WIDTH = 'clamp(17rem,45%,21rem)';
-const NAME_REGEX = /^(?=.*[a-zA-Z].*[a-zA-Z])[a-zA-Z\s]{2,12}$/; //atleast letters 2-12 can contain whitespace
+const NAME_REGEX = /^(?=.*[a-zA-Z].*[a-zA-Z])[a-zA-Z\s]{2,18}$/; //atleast letters 2-18 can contain whitespace
 const ABOUT_REGEX = /^.{20,500}$/; // 20-500 chars
 
 const DATA_LIST: DogFormData = {
@@ -108,6 +108,9 @@ export default function BasicModal({
     target: { value: string; id: string };
   }) => {
     if (id === 'about' && value.length > 500) {
+      return;
+    }
+    if (id === 'name' && value.length > 18) {
       return;
     }
     setData((prevState) => ({ ...prevState, [id]: value }));

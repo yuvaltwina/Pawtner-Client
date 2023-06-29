@@ -15,7 +15,7 @@
   background-size: cover;
   background-position: 50% 68%;
   background-repeat: no-repeat;
-  height: clamp(25rem, 55vw, 40rem);
+  height: clamp(20rem, 55vw, 40rem);
   text-align: center;
   /* aspect-ratio: 2.3/1; */
 }

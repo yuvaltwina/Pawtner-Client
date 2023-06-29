@@ -25,8 +25,9 @@
   background-size: cover;
   background-position: 50% 48%;
   background-repeat: no-repeat;
-  height: clamp(30rem, 55vw, 35rem);
+  height: clamp(23rem, 55vw, 35rem);
 }
+
 .card-and-icon-container {
   position: relative;
   transition: all 0.4s;
@@ -51,6 +52,11 @@
   height: 30px;
   border-radius: 50%;
   background-color: #ffffff4d;
+}
+.favorites-dogs-headline {
+  /* color: var(--special-color); */
+  margin: 1rem;
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
 }
 .card-favorite-icon:hover {
   background-color: #b5b5b5bb;
