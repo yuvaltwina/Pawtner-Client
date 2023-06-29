@@ -239,14 +239,7 @@ export function Primary() {
               preferencesList={filterData}
             />
           </div>
-<<<<<<< HEAD
           <img className="primary-preferences-img" src={dogIconImage} />
-=======
-          <img
-            className="primary-preferences-img"
-            src="src/utils/images/4253264.png"
-          />
->>>>>>> dev
         </section>
         <section className="primary-adoption">
           <h1 className="primary-adoption-headline">
