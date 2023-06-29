@@ -240,7 +240,7 @@ export function Primary() {
           </div>
           <img
             className="primary-preferences-img"
-            src=".\src\utils\images\4253264.png"
+            src="src/utils/images/4253264.png"
           />
         </section>
         <section className="primary-adoption">
