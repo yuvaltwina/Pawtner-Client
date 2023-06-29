@@ -22,6 +22,7 @@ import { toast } from 'react-hot-toast';
 import useDeleteMutation from '../../hooks/queryCustomHooks/delete/useDeleteMutation';
 import usePostMutation from '../../hooks/queryCustomHooks/post/usePostMutation';
 import ReportModal from '../../components/modals/reportModal/ReportModal';
+import dogIconImage from '../../utils/images/4253264.png';
 const DOG_HEADER_TITLE_TEXT = 'Find your new best friend';
 const DOG_HEADER_SUBTITLE_TEXT =
   'browse dogs from our network and find your new buddy';
@@ -238,10 +239,7 @@ export function Primary() {
               preferencesList={filterData}
             />
           </div>
-          <img
-            className="primary-preferences-img"
-            src="src/utils/images/4253264.png"
-          />
+          <img className="primary-preferences-img" src={dogIconImage} />
         </section>
         <section className="primary-adoption">
           <h1 className="primary-adoption-headline">
