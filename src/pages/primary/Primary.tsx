@@ -45,12 +45,14 @@ export function Primary() {
   const [filterData, setFilterData] = useState(filterDataInitialObject);
   const [filteredDogs, setFilteredDogs] = useState<SingleDogFullData[]>([]);
   const [favoriteDogsIds, setFavoriteDogsIds] = useState<string[]>([]);
+  const [isFavoriteDogsLoaded, setIsFavoriteDogsLoaded] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
-
   const {
     userDetails: { username },
   } = useGlobalContext();
+
+  const isLoggedIn = !!username;
   const { data, isError, isLoading } = useGetAllDogs();
   const allDogs: SingleDogFullData[] = data?.data?.data?.dogs;
   const queryClient = useQueryClient();
@@ -59,12 +61,12 @@ export function Primary() {
     getFavoriteDogsQuery.data?.data?.data;
   //לשפר את היוז אפקט ואם אפשר להוריד
   useEffect(() => {
-    if (favoriteDogs) {
+    if (favoriteDogs && !isFavoriteDogsLoaded) {
       const favoriteDogsidsArray = favoriteDogs
         ? favoriteDogs.map((singleDog) => singleDog._id)
         : [];
-
       setFavoriteDogsIds(favoriteDogsidsArray);
+      setIsFavoriteDogsLoaded(true);
     }
     if (!username) {
       setFavoriteDogsIds([]);
@@ -77,7 +79,11 @@ export function Primary() {
     }
   }, [setFilteredDogs, allDogs]);
 
-  const openReportModal = () => {
+  const openReportModalIfAuth = () => {
+    if (!isLoggedIn) {
+      setIsLoginModal(true);
+      return;
+    }
     setIsReportModal(true);
   };
   const filterDogsOnChange = (
@@ -147,7 +153,6 @@ export function Primary() {
   ];
 
   const favoriteClickHandler = (dogId: string) => {
-    const isLoggedIn = !!username;
     if (!isLoggedIn) {
       setIsLoginModal(true);
       return;
@@ -160,7 +165,6 @@ export function Primary() {
     }
     favoriteDogsIds.push(dogId);
     setFavoriteDogsIds(favoriteDogsIds);
-
     addFavoriteMutation.mutate(dogId);
   };
 
@@ -185,7 +189,7 @@ export function Primary() {
     return (
       <span className="card-and-icon-container" key={singleDog._id}>
         <MdReportGmailerrorred
-          onClick={openReportModal}
+          onClick={openReportModalIfAuth}
           className="primary-report-icon"
         />
         {displayFavoriteIcon(singleDog._id)}

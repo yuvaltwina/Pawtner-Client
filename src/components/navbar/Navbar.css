@@ -1,14 +1,18 @@
 .navbar {
+  position: fixed;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   font-weight: 550;
-  position: absolute;
   padding: 1rem 1.5rem;
   width: 100%;
   z-index: 0;
+  opacity: 1;
+  z-index: 10;
+  transition: all 0.3s;
 }
+
 .nav-left-links {
   display: flex;
   flex-direction: row;
@@ -90,6 +94,27 @@
 .nav-hamburger-icon {
   display: none;
 }
+.scrolled-navbar {
+  transition: all 0.3s;
+  padding: 0.5rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.nav-hamburger-icon {
+  display: none;
+  font-size: 1.6rem;
+  margin-top: 0.3rem;
+  margin-right: -1rem;
+  color: var(--text-secondary);
+  padding: 0.8rem 0;
+}
+.scrolled-nav-headline {
+  color: var(--special-color);
+}
+.scrolled-link {
+  color: rgb(111, 111, 111);
+}
+
 @media (max-width: 770px) {
   .nav-login-and-sign-up {
     display: none;
@@ -105,7 +130,6 @@
     font-size: 1.6rem;
     margin-top: 0.3rem;
     margin-right: -1rem;
-    color: var(--text-secondary);
     padding: 0.8rem 0;
   }
   .nav-hamburger-icon:hover {

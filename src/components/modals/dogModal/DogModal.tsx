@@ -1,9 +1,8 @@
 import './DogModal.css';
-import { useState } from 'react';
 import { Modal } from '@mui/material';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsFillPersonFill } from 'react-icons/bs';
-import { MdLocationOn, MdReportGmailerrorred } from 'react-icons/md';
+import { MdLocationOn } from 'react-icons/md';
 import { MdOutlinePhoneIphone } from 'react-icons/md';
 import { RiCloseFill } from 'react-icons/ri';
 import { SingleDogFullData } from '../../../utils/types/type';
@@ -89,7 +88,6 @@ export default function BasicModal({
       <div key={header} className="dogmodal-dog-footer-info">
         <span className="dogmodal-dog-footer-icon">{icon}</span>
         <div className="dogmodal-dog-footer-details">
-          <h4>{header}</h4>
           <p>{pargraph}</p>
         </div>
       </div>

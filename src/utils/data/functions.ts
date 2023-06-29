@@ -28,12 +28,12 @@ export const phoneNumberFormating = (str: string) => {
     str.slice(0, 3) + '-' + str.slice(3, 6) + '-' + str.slice(6);
   return phoneFormatString;
 };
-
-// export const reloadAfterSecond = () => {
-//   setTimeout(() => {
-//     window.location.reload();
-//   }, 1000);
-// };
+export const scrollToTheTop = () => {
+  window.scrollTo({ top: 0, behavior: 'auto' });
+};
+export const reload = () => {
+  window.location.reload();
+};
 
 export const getDogById = (targetId: string, allDogs: SingleDogFullData[]) => {
   const dog = allDogs.filter((dog) => dog._id === targetId);

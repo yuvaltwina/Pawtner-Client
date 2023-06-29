@@ -33,6 +33,7 @@ export default function DeleteModal({
     } else {
       toast.error('Something went wrong', { id: loadingDogToast });
     }
+    setIsSubmiting(false);
   };
 
   const onSuccsessDeleteDog = (loadingDogToast: string) => {
@@ -40,6 +41,7 @@ export default function DeleteModal({
     queryClient.invalidateQueries(['myDogs'], { exact: true });
     queryClient.invalidateQueries(['allDogs'], { exact: true });
     closeModal();
+    setIsSubmiting(false);
   };
 
   const { deleteDogMutation } = useDeleteMutation(
@@ -50,7 +52,6 @@ export default function DeleteModal({
   const clickHandler = async () => {
     setIsSubmiting(true);
     deleteDogMutation.mutate(dogId);
-    setIsSubmiting(false);
   };
   return (
     <Modal

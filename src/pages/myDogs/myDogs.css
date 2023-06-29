@@ -3,18 +3,6 @@
   height: 100%;
   min-height: 100vh;
 }
-.mydogs-header-headline {
-  color: var(--text-secondary);
-  font-size: clamp(1.4rem, 2.5vw, 5rem);
-}
-.mydogs-header-subtitle {
-  color: var(--text-secondary);
-  font-size: clamp(0.8rem, 1.8vw, 4rem);
-  margin-bottom: 4rem;
-  font-weight: 540;
-}
-
-/*התמונה לא רספנוסיבית מספיק טוב צריך לתקן*/
 .mydogs-header {
   display: flex;
   flex-direction: column;
@@ -28,6 +16,19 @@
   background-repeat: no-repeat;
   height: clamp(30rem, 55vw, 35rem);
 }
+
+.mydogs-header-headline {
+  color: var(--text-secondary);
+  font-size: clamp(1.4rem, 2.5vw, 3rem);
+}
+.mydogs-header-subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(0.8rem, 1.8vw, 2rem);
+  margin-bottom: 4rem;
+  font-weight: 540;
+}
+
+/*התמונה לא רספנוסיבית מספיק טוב צריך לתקן*/
 
 .mydogs-dogs {
   display: flex;

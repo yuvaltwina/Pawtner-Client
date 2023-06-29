@@ -12,6 +12,7 @@
   justify-content: center;
   border: 1px dashed grey;
 }
+
 .dropzone-error {
   border: 1px dashed red;
 }
@@ -21,6 +22,7 @@
   align-items: center;
   margin: auto;
 }
+
 .dropzone-before-icon {
   /* color: var(--special-color); */
   font-size: 2.5rem;
@@ -42,6 +44,9 @@
   top: 0;
   left: 0;
 }
+.dropzone-full-space {
+  cursor: pointer;
+}
 .dropzone-squre {
   width: clamp(5rem, 10vw, 7rem);
   min-width: 4.5rem;
@@ -52,6 +57,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.dropzone-squre {
+  cursor: pointer;
 }
 .dropzone-plus-icon {
   font-size: clamp(2rem, 10vw, 3rem);

@@ -15,6 +15,7 @@ import { FiLogOut } from 'react-icons/fi';
 import { FiBookOpen } from 'react-icons/fi';
 import { useGlobalContext } from '../../hooks/useContext';
 import { TfiPencilAlt } from 'react-icons/tfi';
+import { scrollToTheTop } from '../../utils/data/functions';
 
 interface TemporaryDrawer {
   isDrawerOpen: boolean;
@@ -62,7 +63,18 @@ export default function TemporaryDrawer({
       ),
     },
   ];
-
+  const DRAWER_ACTION_LINKS = [
+    {
+      actionFunction: logout,
+      icon: <TfiPencilAlt />,
+      text: 'Edit details',
+    },
+    {
+      actionFunction: logout,
+      icon: <FiLogOut />,
+      text: 'Sign Out',
+    },
+  ];
   function DRAWER_LINK_GENERATOR(
     link: String,
     name: string,
@@ -98,30 +110,26 @@ export default function TemporaryDrawer({
             <h3 className="drawer-headline-email">{email}</h3>
             <h3 className="drawer-headline-email">{phoneNumber}</h3>
           </span>
-          <Divider />
         </div>
       );
     } else {
       return (
-        <div>
-          <List>
-            <ListItem className="drawer-login">
-              <ListItemButton
-                id="drawer-button"
-                onClick={() => {
-                  setIsDrawerOpen(false);
-                  openLoginModal();
-                }}
-              >
-                <span className="drawer-icon">
-                  <BiLogInCircle />
-                </span>
-                Login
-              </ListItemButton>
-            </ListItem>
-          </List>
-          <Divider />
-        </div>
+        <List>
+          <ListItem className="drawer-login">
+            <ListItemButton
+              id="drawer-button"
+              onClick={() => {
+                setIsDrawerOpen(false);
+                openLoginModal();
+              }}
+            >
+              <span className="drawer-icon">
+                <BiLogInCircle />
+              </span>
+              Login
+            </ListItemButton>
+          </ListItem>
+        </List>
       );
     }
   };
@@ -129,11 +137,11 @@ export default function TemporaryDrawer({
   const Displaylist = () => (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
-        {DRAWER_LINKS.map((linkobject) => {
-          const { link, page } = linkobject;
+        {DRAWER_LINKS.map(({ link, page }) => {
           return (
             <ListItem
               onClick={() => {
+                scrollToTheTop();
                 setIsDrawerOpen(false);
               }}
               key={page}
@@ -146,19 +154,6 @@ export default function TemporaryDrawer({
       </List>
     </Box>
   );
-
-  const DRAWER_ACTION_LINKS = [
-    {
-      actionFunction: logout,
-      icon: <TfiPencilAlt />,
-      text: 'Edit details',
-    },
-    {
-      actionFunction: logout,
-      icon: <FiLogOut />,
-      text: 'Sign Out',
-    },
-  ];
 
   const displayActionList = () => {
     const displayLinks = DRAWER_ACTION_LINKS.map(
@@ -194,8 +189,10 @@ export default function TemporaryDrawer({
         anchor="right"
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+        className="drawer"
       >
         {displayHeadLine()}
+        <Divider />
         {Displaylist()}
         {displayActionListIfLogged}
       </Drawer>

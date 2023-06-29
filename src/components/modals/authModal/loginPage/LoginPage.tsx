@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import { useGlobalContext } from '../../../../hooks/useContext';
 import usePostMutation from '../../../../hooks/queryCustomHooks/post/usePostMutation';
 import { InputAdornment } from '@mui/material';
+import { reload } from '../../../../utils/data/functions';
 
 const LOGIN_BUTTON_TEXT = 'LOGIN';
 const SIGN_UP_TEXT = 'Need an account?';
@@ -28,7 +29,6 @@ function LoginPage({ navigate, closeModal }: PropsType) {
     errorMessage: '',
   });
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { setUserDetails } = useGlobalContext();
 
@@ -40,10 +40,11 @@ function LoginPage({ navigate, closeModal }: PropsType) {
       userFrontDetails: { username, email, phoneNumber },
     } = data?.data?.data;
     Cookies.set('login', loginToken, { expires: 7 });
-    console.log(`username on log in: ${username}`);
     setUserDetails({ username, email, phoneNumber, isLoggedIn: true });
     closeModal();
+    reload();
   };
+
   const onErrorLogin = (error: any) => {
     const resMessage = error.response?.data?.message;
     let errorMessage = 'Something went wrong please try again later';
@@ -58,10 +59,12 @@ function LoginPage({ navigate, closeModal }: PropsType) {
       errorMessage,
     });
   };
+
   const { checkLoginDetailsMutation } = usePostMutation(
     onSuccessLogin,
     onErrorLogin
   );
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmiting(true);

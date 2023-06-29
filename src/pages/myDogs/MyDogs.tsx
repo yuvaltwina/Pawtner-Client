@@ -28,16 +28,14 @@ function MyDogs() {
         </h1>
       );
     }
-
+    if (myDogs.length === 0) {
+      return;
+    }
     return myDogs.map((singleDog) => {
       const { _id: id } = singleDog;
       return (
         <span className="card-and-icon-container" key={id}>
-          <Card
-            singleDog={singleDog}
-            needEditAndTrash={true}
-            // dogsArray={myDogs}
-          ></Card>
+          <Card singleDog={singleDog} needEditAndTrash={true}></Card>
         </span>
       );
     });

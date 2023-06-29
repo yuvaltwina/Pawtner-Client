@@ -1,6 +1,6 @@
 import './addModal.css';
 import { DogFormData, EditDogFormData } from '../../../utils/types/type';
-import { ADD_DOG_SELECT_BUTTONS } from '../../../utils/data/data';
+import { SELECT_BUTTONS_DATA } from '../../../utils/data/data';
 import Autocomplete from '@mui/material/Autocomplete';
 import DropZone from '../../dropZone/DropZone';
 import { Modal } from '@mui/material';
@@ -18,7 +18,7 @@ import useGetBreeds from '../../../hooks/queryCustomHooks/get/useGetBreeds';
 const ABOUT_WIDTH = 'clamp(17rem,80%,44rem)';
 const INPUTS_WIDTH = 'clamp(17rem,45%,21rem)';
 const NAME_REGEX = /^(?=.*[a-zA-Z].*[a-zA-Z])[a-zA-Z\s]{2,12}$/; //atleast letters 2-12 can contain whitespace
-const ABOUT_REGEX = /^.{15,200}$/; // 15-200 chars
+const ABOUT_REGEX = /^.{20,500}$/; // 20-500 chars
 
 const DATA_LIST: DogFormData = {
   breed: '',
@@ -67,7 +67,7 @@ export default function BasicModal({
     category: keyof DogFormData;
     valuesArray: string[];
   }[] = [
-    ...ADD_DOG_SELECT_BUTTONS,
+    ...SELECT_BUTTONS_DATA,
     {
       category: 'breed',
       valuesArray: dogBreedsNamesArray,
@@ -81,6 +81,7 @@ export default function BasicModal({
     );
     queryClient.invalidateQueries(['myDogs'], { exact: true });
     closeModal();
+    setIsSubmiting(false);
   };
   const onErrorCreateOrEditDog = (error: any, loadingDogToast: string) => {
     const serverErrorResponse = error?.response?.data?.message;
@@ -89,6 +90,7 @@ export default function BasicModal({
     } else {
       toast.error('Something went wrong', { id: loadingDogToast });
     }
+    setIsSubmiting(false);
   };
 
   const { createDogMutation } = usePostMutation(
@@ -105,9 +107,11 @@ export default function BasicModal({
   }: {
     target: { value: string; id: string };
   }) => {
+    if (id === 'about' && value.length > 500) {
+      return;
+    }
     setData((prevState) => ({ ...prevState, [id]: value }));
   };
-
   const displaySelectButtons = () => {
     const selectButtons = selectButtonsData.map((selectbutton) => {
       const { category, valuesArray } = selectbutton;
@@ -170,7 +174,7 @@ export default function BasicModal({
       errCategory = 'images';
     }
     if (!about.match(ABOUT_REGEX)) {
-      errorMessage = 'Only letters and digits between 15-200 characters';
+      errorMessage = 'Only letters and digits between 20-500 characters';
       errCategory = 'about';
     }
     if (!name.match(NAME_REGEX)) {
@@ -203,7 +207,6 @@ export default function BasicModal({
       createDogMutation.mutate(data);
     }
     setErrors(DATA_ERROR_LIST);
-    setIsSubmiting(false);
   };
   const displayDropZoneOrSpace = isEditing ? (
     ''

@@ -15,17 +15,17 @@
   background-size: cover;
   background-position: 50% 68%;
   background-repeat: no-repeat;
-  height: clamp(25rem, 55vw, 52rem);
+  height: clamp(25rem, 55vw, 40rem);
   text-align: center;
   /* aspect-ratio: 2.3/1; */
 }
 .primary-header-headline {
   color: var(--text-secondary);
-  font-size: clamp(1.4rem, 2.5vw, 5rem);
+  font-size: clamp(1.4rem, 2.5vw, 3rem);
 }
 .primary-header-pargraph {
   color: var(--text-secondary);
-  font-size: clamp(0.8rem, 1.8vw, 4rem);
+  font-size: clamp(0.8rem, 1.8vw, 2rem);
   margin-bottom: 4rem;
   font-weight: 540;
 }

@@ -60,6 +60,9 @@ export function Favorites() {
     if (isLoading) {
       return <h1 className="favorite-fetch-loading">{LOADING_MESSAGE}</h1>;
     }
+    if (favoriteDogs.length === 0) {
+      return;
+    }
     return favoriteDogs.map((favoriteDog) => {
       if (!favoriteDog._id) {
         return;
