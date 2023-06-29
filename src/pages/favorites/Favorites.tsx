@@ -94,7 +94,7 @@ export function Favorites() {
         </p>
       </section>
       <section className="mydogs-dogs">
-        <h1 className="mydogs-dogs-headline">
+        <h1 className="favorites-dogs-headline">
           My Favorites (
           <span className="headlight">
             {favoriteDogs ? favoriteDogs.length : '0'}
