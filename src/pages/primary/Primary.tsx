@@ -240,7 +240,7 @@ export function Primary() {
           </div>
           <img
             className="primary-preferences-img"
-            src="/4253264.png"
+            src="./4253264.png"
             alt="Dog"
           />
         </section>
