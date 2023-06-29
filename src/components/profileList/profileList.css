@@ -32,7 +32,7 @@
 }
 
 .profile-list-modal .css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
-  opacity: 0 !important;
+  background-color: transparent !important;
 }
 
 @media (max-width: 770px) {
