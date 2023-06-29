@@ -6,7 +6,7 @@
   gap: 2rem;
   color: var(--special-color);
   background-color: rgb(26, 23, 21);
-  min-height: 100vh;
+  min-height: 100dvh;
   z-index: 0;
   /* color: rgb(255, 2, 2); */
 }

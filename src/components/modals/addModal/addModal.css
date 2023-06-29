@@ -106,8 +106,8 @@
 
 @media (max-width: 450px) {
   .addmodal {
-    max-height: 100vh;
-    height: 100vh;
+    max-height: 100dvh;
+    height: 100dvh;
     width: 100vw;
   }
 }
