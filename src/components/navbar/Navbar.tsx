@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { RxHamburgerMenu } from 'react-icons/rx';
@@ -13,46 +13,56 @@ import axios, { CancelTokenSource } from 'axios';
 import axiosInstance from '../../utils/apiService/axiosInstance';
 import { scrollToTheTop } from '../../utils/data/functions';
 
-//לקחת את הלינקים מאובגקט
-
+//האם לשנות את היוז אפקט?
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
   const [isProfileList, setIsProfileList] = useState(false);
+  const isFirstRender = useRef(true);
+
   const {
     userDetails: { username, isLoggedIn },
     setUserDetails,
   } = useGlobalContext();
-  //האם לשנות את היוז אפקט?
+  const params = new URLSearchParams(window.location.search);
   const openLoginModal = () => setIsLoginModal(true);
-  const checkUserLoginCookie = async (source: CancelTokenSource) => {
-    try {
-      const loginResponse = await axiosInstance.get('/user/loginCookie', {
-        cancelToken: source.token,
-      });
-      const resMessage = loginResponse.data?.message;
-      if (resMessage === 'User exist') {
-        setUserDetails((prev) => {
-          return {
-            ...prev,
-            isLoggedIn: true,
-          };
-        });
-      }
-    } catch (err) {}
-  };
+  //זה עושה פעמיים
   useEffect(() => {
-    //לשנות את זה  שזה לא יהיה קוקי אלא סתם משתנה שנשלח
-    const verifiedCookie = Cookies.get('verified');
-    if (verifiedCookie) {
-      if (verifiedCookie === 'Successfully Verified') {
-        toast.success(verifiedCookie);
-      } else {
-        verifiedCookie && toast.error(verifiedCookie);
-      }
-      Cookies.remove('verified');
+    if (!isFirstRender?.current) {
+      return;
     }
+    isFirstRender.current = false;
+    const verifiedMessage = params.get('message');
+    if (verifiedMessage) {
+      if (verifiedMessage === 'Successfully Verified') {
+        toast.success(verifiedMessage);
+      } else {
+        console.log('now');
+        verifiedMessage && toast.error(verifiedMessage);
+      }
+      const url = new URL(window.location.href);
+      url.searchParams.delete('message');
+      window.history.replaceState({}, '', url.toString());
+    }
+  }, [params]);
+  useEffect(() => {
+    const checkUserLoginCookie = async (source: CancelTokenSource) => {
+      try {
+        const loginResponse = await axiosInstance.get('/user/loginCookie', {
+          cancelToken: source.token,
+        });
+        const resMessage = loginResponse.data?.message;
+        if (resMessage === 'User exist') {
+          setUserDetails((prev) => {
+            return {
+              ...prev,
+              isLoggedIn: true,
+            };
+          });
+        }
+      } catch (err) {}
+    };
     let source = axios.CancelToken.source();
     const loginToken = Cookies.get('login');
     if (loginToken) {
@@ -61,7 +71,7 @@ function Navbar() {
         source.cancel();
       };
     }
-  }, [setUserDetails, Cookies]);
+  }, [setUserDetails, Cookies, params]);
 
   useEffect(() => {
     const handleScroll = () => {
