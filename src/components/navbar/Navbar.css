@@ -36,6 +36,7 @@
   text-decoration: none;
   color: var(--text-secondary);
   font-size: 1.6rem;
+  margin-bottom: 0.25rem;
 }
 
 .nav-right-links {
