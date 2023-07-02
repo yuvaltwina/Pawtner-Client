@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   font-weight: 550;
   padding: 1rem 1.5rem;
   width: 100%;
@@ -11,6 +10,7 @@
   opacity: 1;
   z-index: 10;
   transition: all 0.3s;
+  align-items: center;
 }
 
 .nav-left-links {
@@ -18,14 +18,11 @@
   flex-direction: row;
   gap: 2rem;
   list-style: none;
-  align-items: center;
-  margin-bottom: 0.3rem;
 }
 .nav-link {
   text-decoration: none;
   color: var(--text-secondary);
-  font-size: 1rem;
-  margin-top: 0.36rem;
+  font-size: 1.25rem;
 }
 .nav-link:hover {
   transition: all 0.1s;
@@ -36,7 +33,7 @@
 .nav-headline {
   text-decoration: none;
   color: var(--text-secondary);
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 
 .nav-right-links {
@@ -69,7 +66,7 @@
   gap: 0.4rem;
   color: white;
   align-items: center;
-  font-size: 1rem;
+  font-size: 1.15rem;
 }
 .nav-user:hover {
   color: var(--special-color);

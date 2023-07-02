@@ -56,7 +56,7 @@
 .favorites-dogs-headline {
   /* color: var(--special-color); */
   margin: 1rem;
-  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  font-size: clamp(1.95rem, 5vw, 3.5rem);
 }
 .card-favorite-icon:hover {
   background-color: #b5b5b5bb;

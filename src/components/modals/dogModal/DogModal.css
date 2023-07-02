@@ -31,7 +31,6 @@
   padding: 1rem 3.3rem 1rem 3.3rem;
   font-size: 1.25rem;
   overflow-wrap: break-word;
-  /* min-height: 10rem; */
   line-height: 2.3rem;
 }
 .dogmodal-headline {
@@ -87,8 +86,8 @@
 .dog-modal-exit-icon {
   position: absolute;
   z-index: 100;
-  top: 1rem;
-  right: 1.5%;
+  top: 0.5rem;
+  right: 1%;
   font-size: 2.5rem;
   color: var(--special-color);
   opacity: 0.7;
@@ -101,13 +100,9 @@
 
 @media (max-width: 450px) {
   .dogmodal {
-    margin-top: 0.3rem;
     height: 100dvh;
     max-height: 100dvh;
     width: 100vw;
     top: 50%;
-  }
-  .dog-modal-exit-icon {
-    top: 1.2rem;
   }
 }

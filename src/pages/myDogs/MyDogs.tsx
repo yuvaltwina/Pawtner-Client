@@ -5,6 +5,7 @@ import Card from '../../components/card/Card';
 import { SingleDogFullData } from '../../utils/types/type';
 import { useQuery } from 'react-query';
 import { fetchMyDogs } from '../../utils/apiService/axiosRequests';
+import Loading from '../../components/loading/Loading';
 
 const FETCH_MY_DOGS_ERROR_MESSEAGE =
   "Couldn't fetch dogs please try again later";
@@ -22,11 +23,7 @@ function MyDogs() {
       );
     }
     if (isLoading) {
-      return (
-        <h1 className="mydogs-fetch-loading">
-          {FETCH_MY_DOGS_LOADING_MESSEAGE}
-        </h1>
-      );
+      return <Loading />;
     }
     if (myDogs.length === 0) {
       return;

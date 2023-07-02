@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast';
 import useDeleteMutation from '../../hooks/queryCustomHooks/delete/useDeleteMutation';
 import { useQueryClient, useQuery } from 'react-query';
 import useGetFavoriteDogs from '../../hooks/queryCustomHooks/get/useGetFavoriteDogs';
+import Loading from '../../components/loading/Loading';
 const FETCH_FAVORITES_ERROR_MESSEAGE =
   "Couldn't fetch favorite dogs please try again later";
 
@@ -58,7 +59,7 @@ export function Favorites() {
       );
     }
     if (isLoading) {
-      return <h1 className="favorite-fetch-loading">{LOADING_MESSAGE}</h1>;
+      return <Loading />;
     }
     if (favoriteDogs.length === 0) {
       return;

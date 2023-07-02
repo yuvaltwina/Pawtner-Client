@@ -34,7 +34,9 @@
 .profile-list-modal .css-919eu4 {
   background-color: transparent !important;
 }
-
+.profile-list-modal .css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+  background-color: transparent !important;
+}
 @media (max-width: 770px) {
   .profile-list {
     right: 2rem;
