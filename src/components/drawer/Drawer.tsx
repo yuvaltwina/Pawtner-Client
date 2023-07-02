@@ -64,11 +64,11 @@ export default function TemporaryDrawer({
     },
   ];
   const DRAWER_ACTION_LINKS = [
-    {
-      actionFunction: logout,
-      icon: <TfiPencilAlt />,
-      text: 'Edit details',
-    },
+    // {
+    //   actionFunction: logout,
+    //   icon: <TfiPencilAlt />,
+    //   text: 'Edit details',
+    // },
     {
       actionFunction: logout,
       icon: <FiLogOut />,

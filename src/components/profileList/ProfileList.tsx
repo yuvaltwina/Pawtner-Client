@@ -47,11 +47,11 @@ export default function BasicList({
     },
   ];
   const actionItemsList = [
-    {
-      text: 'Edit details',
-      activeFunction: logout,
-      icon: <TfiPencilAlt className="profile-list-icon" />,
-    },
+    // {
+    //   text: 'Edit details',
+    //   activeFunction: logout,
+    //   icon: <TfiPencilAlt className="profile-list-icon" />,
+    // },
     {
       text: 'Sign out',
       activeFunction: logout,
