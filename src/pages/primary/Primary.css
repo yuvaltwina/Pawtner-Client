@@ -87,7 +87,8 @@
   width: 100%;
 }
 .primary-adoption-headline {
-  font-size: clamp(1.4rem, 5vw, 2.8rem);
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  text-align: center;
 }
 .primary-adoption-headline-headlight {
   color: var(--special-color);

@@ -22,6 +22,7 @@ import { toast } from 'react-hot-toast';
 import useDeleteMutation from '../../hooks/queryCustomHooks/delete/useDeleteMutation';
 import usePostMutation from '../../hooks/queryCustomHooks/post/usePostMutation';
 import ReportModal from '../../components/modals/reportModal/ReportModal';
+import Loading from '../../components/loading/Loading';
 const DOG_HEADER_TITLE_TEXT = 'Find your new best friend';
 const DOG_HEADER_SUBTITLE_TEXT =
   'browse dogs from our network and find your new buddy';
@@ -206,7 +207,7 @@ export function Primary() {
 
   const displayDogCards = () => {
     if (isLoading) {
-      return <h1>{LOADING_DOGS_MESSAGE}</h1>;
+      return <Loading />;
     }
     return isError ? (
       <h1 className="primary-failed-fetch-dogs">{FAILED_TO_FETCH_DOGS}</h1>

@@ -4,6 +4,7 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material';
 import useGetBreeds from '../../hooks/queryCustomHooks/get/useGetBreeds';
 import { LOADING_MESSAGE } from '../../utils/data/data';
+import Loading from '../../components/loading/Loading';
 
 const FIRST_DISPLAYED_DOG = 'Samoyed';
 //לשים מאקס וייד בכל האתר
@@ -48,6 +49,13 @@ export function Breeds() {
   };
 
   const displayBreedsInfo = () => {
+    if (isLoading) {
+      return (
+        <span className="breeds-loading">
+          <Loading />
+        </span>
+      );
+    }
     if (!dogBreedsArray) {
       return <h1 className="breed-fetch-error">Couldn't fetch breeds</h1>;
     }
