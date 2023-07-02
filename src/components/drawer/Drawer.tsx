@@ -160,7 +160,7 @@ export default function TemporaryDrawer({
     const displayLinks = DRAWER_ACTION_LINKS.map(
       ({ icon, text, actionFunction }) => {
         return (
-          <ListItem className="drawer-signout" key={text}>
+          <ListItem className="drawer-signout" key={text} disablePadding>
             <ListItemButton
               id="drawer-button"
               onClick={() => {

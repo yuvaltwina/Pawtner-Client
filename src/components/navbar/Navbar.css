@@ -117,6 +117,9 @@
   .nav-login-and-sign-up-button {
     display: none;
   }
+  .login {
+    display: none;
+  }
   .nav-favorite-icon {
     display: none;
   }
