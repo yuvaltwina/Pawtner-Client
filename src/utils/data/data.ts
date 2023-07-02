@@ -12,7 +12,15 @@ export const SELECT_BUTTONS_DATA: {
   valuesArray: string[];
 }[] = [
   { category: 'gender', valuesArray: ['Male', 'Female'] },
-  { category: 'age', valuesArray: ['Puppy', 'Young', 'Adult', 'Senior'] },
+  {
+    category: 'age',
+    valuesArray: [
+      'Puppy (0-1 years)',
+      'Young (1-3 years)',
+      'Adult (3-7 years)',
+      'Senior (7+ years)',
+    ],
+  },
   {
     category: 'size',
     valuesArray: [

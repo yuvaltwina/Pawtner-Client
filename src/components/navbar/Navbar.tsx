@@ -211,8 +211,8 @@ function Navbar() {
           {displayLink.pawtner}
           {displayLink.aboutBreeds}
           {displayLink.myDogs}
-          {displayLink.admin}
           {displayLink.favorites}
+          {displayLink.admin}
         </div>
         <div className="nav-right-links">
           {displayLink.hamburger}
