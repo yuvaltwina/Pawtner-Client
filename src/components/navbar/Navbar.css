@@ -117,9 +117,7 @@
   .nav-login-and-sign-up-button {
     display: none;
   }
-  .login {
-    display: none;
-  }
+
   .nav-favorite-icon {
     display: none;
   }
@@ -139,9 +137,7 @@
     transition: all 0.1s;
   }
   .nav-login-and-sign-up {
-    gap: 0rem;
-    padding: 1.5rem 0rem 1.5rem 0rem;
-    margin-right: 0rem;
+    display: none;
   }
 
   .navbar {
