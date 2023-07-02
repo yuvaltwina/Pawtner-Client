@@ -3,7 +3,7 @@
   "projectId": "prj_AGMAWLTxh5TDSGWAfPam41AWptE0",
   "rewrites": [
     {
-      "source": "/pawtner-client.vercel.app/:path*",
+      "source": "pawtner-client.vercel.app/:path*",
       "destination": "https://pawtner-client.vercel.app/:path*"
     }
   ]
