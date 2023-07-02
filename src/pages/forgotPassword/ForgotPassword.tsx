@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { PASSWORD_REGEX } from '../../utils/data/data';
 import { toast } from 'react-hot-toast';
 import useUpdateMutation from '../../hooks/queryCustomHooks/update/useUpdateMutation';
-
+const SUBMIT_TEXT = 'SUBMIT';
 const CONFIRMPASS_ERROR_MESSAGE = 'Passwords not match';
 const PASSWORD_ERROR_MESSAGE =
   ' Atleast 8 characters , Needs to contain letters and numbers.';
@@ -125,7 +125,7 @@ function ForgotPassword() {
             disabled={isSubmiting}
             className="forpass-submit-button"
           >
-            SUBMIT
+            {SUBMIT_TEXT}
           </button>
         </form>
       </div>
