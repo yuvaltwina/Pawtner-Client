@@ -89,7 +89,7 @@ function Navbar() {
     if (isLoggedIn) {
       return (
         <span
-          className="nav-user-and-list"
+          className="nav-login-and-sign-up"
           onClick={() => {
             setIsProfileList(!isProfileList);
           }}
@@ -110,7 +110,9 @@ function Navbar() {
     }
     return (
       <button
-        className="login"
+        className={`login nav-login-and-sign-up-button ${
+          isScrolled ? 'scrolled-link' : ''
+        }`}
         onClick={() => {
           openLoginModal();
         }}
@@ -214,7 +216,7 @@ function Navbar() {
         </div>
         <div className="nav-right-links">
           {displayLink.hamburger}
-          <div className="nav-login-and-sign-up">{displayLink.login}</div>
+          {displayLink.login}
         </div>
       </div>
     </>
