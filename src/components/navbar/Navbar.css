@@ -114,7 +114,7 @@
 }
 
 @media (max-width: 770px) {
-  .nav-login-and-sign-up {
+  .nav-login-and-sign-up-button {
     display: none;
   }
   .nav-favorite-icon {
