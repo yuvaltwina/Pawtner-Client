@@ -30,7 +30,6 @@ const DOG_HEADER_SUBTITLE_TEXT =
 const DOG_PREFENCES_HEADLINE_TEXT = 'What are you looking for ?';
 const DOG_CARDS_HEADLINE_TEXT = 'Dogs Available for ';
 const FAILED_TO_FETCH_DOGS = 'Failed to fetch dogs';
-const LOADING_DOGS_MESSAGE = 'Loading...';
 //להוסיף מינימום גודל מבחינת עיצוב לכלבים למקרה שזה לא מוצא בחחיפוש
 //conditional loading , dont load all the dogs at once
 const filterDataInitialObject: filterDataInitialObjectType = {

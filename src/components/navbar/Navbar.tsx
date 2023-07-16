@@ -71,7 +71,7 @@ function Navbar() {
         source.cancel();
       };
     }
-  }, [setUserDetails, Cookies, params]);
+  }, [setUserDetails]);
 
   useEffect(() => {
     const handleScroll = () => {
