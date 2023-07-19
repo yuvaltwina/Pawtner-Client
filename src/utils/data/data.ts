@@ -1,6 +1,6 @@
 import { DogFormData } from '../types/type';
 export const SERVER_URL = 'https://pawtner-server.onrender.com';
-export const WEBSITE_URL = 'https://pawtner.vercel.app/';
+export const WEBSITE_URL = 'https://pawtner.vercel.app';
 // export const WEBSITE_URL = 'http://localhost:5173';
 // export const SERVER_URL = 'http://localhost:3000';
 export const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // atleast 8 characters , must one letter, must one number
