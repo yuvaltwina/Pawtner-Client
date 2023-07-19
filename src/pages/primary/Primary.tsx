@@ -144,11 +144,11 @@ export function Primary() {
     : ["Couldn't fetch breeds"];
 
   const selectButtonsData = [
-    ...SELECT_BUTTONS_DATA,
     {
       category: 'breed',
       valuesArray: dogBreedsNamesArray,
     },
+    ...SELECT_BUTTONS_DATA,
   ];
 
   const favoriteClickHandler = (dogId: string) => {
