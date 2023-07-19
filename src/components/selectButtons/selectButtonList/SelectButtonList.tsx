@@ -4,8 +4,6 @@ import SelectButton from '../selectButton/SelectButton';
 import { Autocomplete, TextField } from '@mui/material';
 import { cityOptions } from '../../../utils/data/cities';
 
-//להחליף את האני בטייפ הנכון
-
 function SelectButtonList({
   list,
   onChange,

@@ -30,8 +30,7 @@ const DOG_HEADER_SUBTITLE_TEXT =
 const DOG_PREFENCES_HEADLINE_TEXT = 'What are you looking for ?';
 const DOG_CARDS_HEADLINE_TEXT = 'Dogs Available for ';
 const FAILED_TO_FETCH_DOGS = 'Failed to fetch dogs';
-//להוסיף מינימום גודל מבחינת עיצוב לכלבים למקרה שזה לא מוצא בחחיפוש
-//conditional loading , dont load all the dogs at once
+
 const filterDataInitialObject: filterDataInitialObjectType = {
   breed: [],
   gender: [],
@@ -60,7 +59,6 @@ export function Primary() {
   const getFavoriteDogsQuery = useGetFavoriteDogs();
   const favoriteDogs: SingleDogFullData[] =
     getFavoriteDogsQuery.data?.data?.data;
-  //לשפר את היוז אפקט ואם אפשר להוריד
   useEffect(() => {
     if (favoriteDogs && !isFavoriteDogsLoaded) {
       const favoriteDogsidsArray = favoriteDogs
@@ -143,7 +141,7 @@ export function Primary() {
   const dogBreedsArray = getBreedsQuery?.data?.data;
   const dogBreedsNamesArray: string[] = dogBreedsArray
     ? dogBreedsArray.map((breed: any) => breed?.name)
-    : ["Couldn't fetch breeds"]; // לבדוק שזה לא עושה באג
+    : ["Couldn't fetch breeds"];
 
   const selectButtonsData = [
     ...SELECT_BUTTONS_DATA,

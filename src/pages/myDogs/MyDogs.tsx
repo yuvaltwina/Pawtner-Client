@@ -9,8 +9,7 @@ import Loading from '../../components/loading/Loading';
 
 const FETCH_MY_DOGS_ERROR_MESSEAGE =
   "Couldn't fetch dogs please try again later";
-const FETCH_MY_DOGS_LOADING_MESSEAGE = 'Loading...';
-//לעשות high order component  ברגע שלוחצים על משהו ללא גישה זה מעביר חזרה ללוגין
+
 function MyDogs() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const { data, isError, isLoading, error } = useQuery(['myDogs'], fetchMyDogs);

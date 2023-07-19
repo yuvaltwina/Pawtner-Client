@@ -7,7 +7,7 @@ import { LOADING_MESSAGE } from '../../utils/data/data';
 import Loading from '../../components/loading/Loading';
 
 const FIRST_DISPLAYED_DOG = 'Samoyed';
-//לשים מאקס וייד בכל האתר
+
 export function Breeds() {
   const [breed, setBreed] = useState('');
 
@@ -102,7 +102,6 @@ export function Breeds() {
           </FormControl>
         </div>
       </section>
-      {/* <paralax></paralax> */}
       {displayBreedsInfo()}
     </div>
   );

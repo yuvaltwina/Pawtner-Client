@@ -37,7 +37,7 @@ function useUpdateMutation(
   const updateDogMutation = useMutation({
     mutationFn: editDog,
     onError: (error, variabels, context) => {
-      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+      onError(error, context as string);
     },
     onSuccess: (data, variabels, context) => {
       onSuccess(context as string);
@@ -51,7 +51,7 @@ function useUpdateMutation(
   const changePasswordMutation = useMutation({
     mutationFn: changePassword,
     onError: (error, variabels, context) => {
-      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+      onError(error, context as string);
     },
     onSuccess: (data, variabels, context) => {
       onSuccess(context as string);

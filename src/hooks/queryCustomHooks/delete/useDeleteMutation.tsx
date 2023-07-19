@@ -39,7 +39,7 @@ function useDeleteMutation(
   const deleteDogMutation = useMutation({
     mutationFn: deleteDog,
     onError: (error, variabels, context) => {
-      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+      onError(error, context as string);
     },
     onSuccess: (data, variabels, context) => {
       onSuccess(context as string);
@@ -61,7 +61,7 @@ function useDeleteMutation(
   const adminDeleteDogMutation = useMutation({
     mutationFn: adminDeleteDog,
     onError: (error, variabels, context) => {
-      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+      onError(error, context as string);
     },
     onSuccess: (data, variabels, context) => {
       onSuccess(context as string);

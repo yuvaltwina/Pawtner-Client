@@ -13,7 +13,6 @@ import axios, { CancelTokenSource } from 'axios';
 import axiosInstance from '../../utils/apiService/axiosInstance';
 import { scrollToTheTop } from '../../utils/data/functions';
 
-//האם לשנות את היוז אפקט?
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -27,7 +26,6 @@ function Navbar() {
   } = useGlobalContext();
   const params = new URLSearchParams(window.location.search);
   const openLoginModal = () => setIsLoginModal(true);
-  //זה עושה פעמיים
   useEffect(() => {
     if (!isFirstRender?.current) {
       return;
@@ -86,7 +84,6 @@ function Navbar() {
   }, []);
 
   const logout = () => {
-    //need to clear also the jwt?
     Cookies.remove('login');
     setUserDetails({
       username: '',

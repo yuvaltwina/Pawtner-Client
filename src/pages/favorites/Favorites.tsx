@@ -12,7 +12,6 @@ import Loading from '../../components/loading/Loading';
 const FETCH_FAVORITES_ERROR_MESSEAGE =
   "Couldn't fetch favorite dogs please try again later";
 
-//האם עדיף עם היוז אפקט ולא לבטל את הבקשה כדי לא ליצור מלא רינדורים
 export function Favorites() {
   const [favoriteDogs, setFavoriteDogs] = useState<SingleDogFullData[]>([]);
 
@@ -46,7 +45,6 @@ export function Favorites() {
       (dog) => dog._id !== favoriteDogId
     );
     setFavoriteDogs(afterRemoveFavorite);
-    // dogFavoriteAction(favoriteDogId, 'delete');
     deleteFavoriteMutation.mutate(favoriteDogId);
   };
 

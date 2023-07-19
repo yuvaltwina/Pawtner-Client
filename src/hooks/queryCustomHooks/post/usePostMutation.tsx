@@ -60,7 +60,7 @@ function usePostMutation(
   const sendVerificationEmailMutation = useMutation({
     mutationFn: sendEmailVerification,
     onError: (error, variabels, context) => {
-      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+      onError(error, context as string);
     },
     onSuccess: (data, variabels, context) => {
       onSuccess(context as string);
@@ -82,7 +82,7 @@ function usePostMutation(
   const sendForgotPasswordEmailMutation = useMutation({
     mutationFn: sendChangePasswordEmail,
     onError: (error, variabels, context) => {
-      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+      onError(error, context as string);
     },
     onSuccess: (data, variabels, context) => {
       onSuccess(context as string);
@@ -96,7 +96,7 @@ function usePostMutation(
   const createDogMutation = useMutation({
     mutationFn: addDog,
     onError: (error, variabels, context) => {
-      onError(error, context as string); //לפתור את זה למה זה יכול להיות אנדפייינד
+      onError(error, context as string);
     },
     onSuccess: (data, variabels, context) => {
       onSuccess(context as string);

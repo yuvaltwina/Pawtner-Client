@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { DogFormData, EditDogFormData } from '../types/type';
 import axiosInstance from './axiosInstance';
-//צריך טרי וקאץ אם אני משתמש בריאקט קוורי ???
-//get
 
 interface sendEmailPropsType {
   email: string;

@@ -12,9 +12,6 @@ import RequireAuth from './HOCS/RequireAuth';
 import Admin from './admin/Admin';
 import RequireAdmin from './HOCS/RequireAdmin';
 
-//missions
-// 2 - change the look of the logout
-//3 change the fonts
 function App() {
   return (
     <div className="App">

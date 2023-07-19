@@ -8,7 +8,6 @@ import { getBase64 } from '../../utils/data/functions';
 import { DogFormData, EditDogFormData } from '../../utils/types/type';
 
 const MAX_SIZE = 5 * 1024 * 1024;
-//לשנות לאיקס גדול ולעשות פיל לריבוע
 
 function DropZone({
   data,
@@ -19,13 +18,11 @@ function DropZone({
   setData: React.Dispatch<React.SetStateAction<DogFormData>>;
   isError: boolean;
 }) {
-  // const imagesUrl = isEditing ? (data as EditDogFormData).imagesUrl : null;
   const { images } = data;
   const isImageExist = images.length > 0;
 
   const addNewImage = (result: string, isError: boolean, file: File) => {
     if (isError) {
-      //איך לטפל בארור בצורה טובה יותר?
       toast.error(`error: ${result}`);
     } else {
       const newImage = {
