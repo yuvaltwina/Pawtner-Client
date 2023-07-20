@@ -95,7 +95,7 @@
 .scrolled-navbar {
   transition: all 0.3s;
   padding: 0.5rem 1.5rem;
-  background-color: rgba(255, 255, 255, 0.843);
+  background-color: rgba(255, 255, 255, 0.91);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .nav-hamburger-icon {
