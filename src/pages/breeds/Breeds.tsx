@@ -68,16 +68,20 @@ export function Breeds() {
     }
     return (
       <section className="breeds-info-container">
-        <h1 className="breeds-info-title">{breedInfo.name}</h1>
+        <h1 className="breeds-info-title">{breedInfo?.name}</h1>
         <div className="breeds-info-data-and-img">
           <div className="breeds-info-data">
-            {displayHighlightInfo('Life span', breedInfo.life_span)}
-            {displayHighlightInfo('Weight', breedInfo.weight.metric + ' kg')}
-            {displayHighlightInfo('Height', breedInfo.height.metric + ' cm')}
-            {displayHighlightInfo('Temperament', breedInfo.temperament)}
+            {displayHighlightInfo('Life span', breedInfo?.life_span)}
+            {displayHighlightInfo('Weight', breedInfo?.weight?.metric + ' kg')}
+            {displayHighlightInfo('Height', breedInfo?.height?.metric + ' cm')}
+            {displayHighlightInfo('Temperament', breedInfo?.temperament)}
           </div>
           <span className="breed-info-img-container">
-            <img src={breedInfo.image.url} className="breed-info-img" />
+            <img
+              src={`https://cdn2.thedogapi.com/images/${breedInfo?.reference_image_id}_1280.jpg`}
+              alt={'Dog Image'}
+              className="breed-info-img"
+            />
           </span>
         </div>
       </section>
