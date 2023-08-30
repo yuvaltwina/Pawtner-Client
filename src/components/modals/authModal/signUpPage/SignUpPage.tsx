@@ -10,7 +10,7 @@ import {
 import { toast } from 'react-hot-toast';
 import usePostMutation from '../../../../hooks/queryCustomHooks/post/usePostMutation';
 const PHONE_NUMBER_REGEX = /^[0-9]{10}$/;
-const USER_NAME_REGEX = /^[a-zA-Z][a-zA-Z0-9]{3,11}$/; //allows only letters and numbers in the string, and the first character must be a letter 4-12 charcters.
+const USER_NAME_REGEX = /^[a-zA-Z][a-zA-Z0-9]{3,11}$/; //allows only letters and numbers in the string, and the first character must be a letter 3-11 charcters.
 const USER_NAME_ERROR_MESSAGE =
   ' Only letters and numbers, first character must be a letter. 4-12 charcters long';
 const PASSWORD_ERROR_MESSAGE =

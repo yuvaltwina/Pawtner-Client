@@ -1,6 +1,9 @@
 import './addModal.css';
 import { DogFormData, EditDogFormData } from '../../../utils/types/type';
-import { SELECT_BUTTONS_DATA } from '../../../utils/data/data';
+import {
+  SELECT_BUTTONS_DATA,
+  SUBMIT_BUTTON_TEXT,
+} from '../../../utils/data/data';
 import Autocomplete from '@mui/material/Autocomplete';
 import DropZone from '../../dropZone/DropZone';
 import { Modal } from '@mui/material';
@@ -19,7 +22,7 @@ const ABOUT_WIDTH = 'clamp(17rem,80%,44rem)';
 const INPUTS_WIDTH = 'clamp(17rem,45%,21rem)';
 const NAME_REGEX = /^(?=.*[a-zA-Z].*[a-zA-Z])[a-zA-Z\s]{2,18}$/; //atleast letters 2-18 can contain whitespace
 const ABOUT_REGEX = /^.{20,500}$/; // 20-500 chars
-
+const TITLE_TEXT = 'Dog Adoption Details';
 const DATA_LIST: DogFormData = {
   breed: '',
   gender: '',
@@ -153,7 +156,7 @@ export default function BasicModal({
           options={cityOptions}
           value={data.city || null}
           sx={{ width: INPUTS_WIDTH }}
-          onChange={(event, value) => {
+          onChange={(_, value) => {
             value && onChange({ target: { id: 'city', value } });
           }}
           renderInput={(params) => (
@@ -200,7 +203,6 @@ export default function BasicModal({
       setIsSubmiting(false);
       return;
     }
-    // לתקן את הas
     if (isEditing) {
       updateDogMutation.mutate({ data, dogId } as {
         data: EditDogFormData;
@@ -231,7 +233,7 @@ export default function BasicModal({
       className="addmodal-container"
     >
       <div className="addmodal">
-        <h1 className="addmodal-headline"> Dog Adoption Details</h1>
+        <h1 className="addmodal-headline"> {TITLE_TEXT}</h1>
         <form className="addmodal-form" onSubmit={handleSubmit}>
           {displayDataFields()}
           <TextField
@@ -260,7 +262,7 @@ export default function BasicModal({
             className="addmodal-submit"
             disabled={isSubmiting}
           >
-            SUBMIT
+            {SUBMIT_BUTTON_TEXT}
           </button>
         </form>
       </div>

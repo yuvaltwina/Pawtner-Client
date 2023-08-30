@@ -1,14 +1,23 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { RiCloseFill, RiFolderAddLine } from 'react-icons/ri';
 import './DropZone.css';
 import { toast } from 'react-hot-toast';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { getBase64 } from '../../utils/data/functions';
-import { DogFormData, EditDogFormData } from '../../utils/types/type';
+import { DogFormData } from '../../utils/types/type';
 
 const MAX_SIZE = 5 * 1024 * 1024;
-
+const IMAGE_FAILED_TEXT = `File exceeded the maximum size - ${MAX_SIZE} MB , or not one of the types:jpeg, jpg, png, avif`;
+const ACCEPTED_IMAGES_TYPES = {
+  'image/jpeg': ['.jpeg'],
+  'image/jpg': ['.jpg'],
+  'image/png': ['.png'],
+  'image/avif': ['.avif'],
+};
+const DROPZONE_TEXT = 'Upload your dog photos here';
+const DROPZONE_ON_DROP_TEXT = 'Drop the dog photo here';
+const DROPZONE_INSTRUCTIONS_TEXT = 'Drag and drop,or click to select';
 function DropZone({
   data,
   setData,
@@ -43,7 +52,7 @@ function DropZone({
         return;
       }
       if (!newFile) {
-        toast.error(' File exceeded the maximum size or not an image');
+        toast.error(IMAGE_FAILED_TEXT);
         return;
       }
       getBase64(newFile, addNewImage);
@@ -58,12 +67,7 @@ function DropZone({
     isDragReject,
   } = useDropzone({
     onDrop,
-    accept: {
-      'image/jpeg': ['.jpeg'],
-      'image/jpg': ['.jpg'],
-      'image/png': ['.png'],
-      'image/avif': ['.avif'],
-    },
+    accept: ACCEPTED_IMAGES_TYPES,
     multiple: true,
     disabled: images.length > 2,
     maxSize: MAX_SIZE,
@@ -72,9 +76,7 @@ function DropZone({
     if (isImageExist) {
       return;
     }
-    const titleText = isDragActive
-      ? 'Drop the dog photo here'
-      : ' Upload your dog photos here';
+    const titleText = isDragActive ? DROPZONE_ON_DROP_TEXT : DROPZONE_TEXT;
     return (
       <div className="dropzone-before-drop">
         <span className="dropzone-before-icon">
@@ -82,7 +84,7 @@ function DropZone({
         </span>
         <h1 className="dropzone-before-title">{titleText}</h1>
         <h3 className="dropzone-before-subtitle">
-          Drag and drop,or click to select
+          {DROPZONE_INSTRUCTIONS_TEXT}
         </h3>
       </div>
     );

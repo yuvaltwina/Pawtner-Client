@@ -14,9 +14,9 @@ import { BiLogInCircle } from 'react-icons/bi';
 import { FiLogOut } from 'react-icons/fi';
 import { FiBookOpen } from 'react-icons/fi';
 import { useGlobalContext } from '../../hooks/useContext';
-import { TfiPencilAlt } from 'react-icons/tfi';
 import { scrollToTheTop } from '../../utils/data/functions';
 
+const LOGIN_BUTTON_TEXT = 'Login';
 interface TemporaryDrawer {
   isDrawerOpen: boolean;
   setIsDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -64,11 +64,6 @@ export default function TemporaryDrawer({
     },
   ];
   const DRAWER_ACTION_LINKS = [
-    // {
-    //   actionFunction: logout,
-    //   icon: <TfiPencilAlt />,
-    //   text: 'Edit details',
-    // },
     {
       actionFunction: logout,
       icon: <FiLogOut />,
@@ -127,7 +122,7 @@ export default function TemporaryDrawer({
               <span className="drawer-icon">
                 <BiLogInCircle />
               </span>
-              Login
+              {LOGIN_BUTTON_TEXT}
             </ListItemButton>
           </ListItem>
         </List>

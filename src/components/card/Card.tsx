@@ -18,7 +18,7 @@ function Card({ singleDog, needEditAndTrash = false }: PropsType) {
   const [openEditModal, setOpenEditModal] = useState(false);
   const { name, breed, gender, age, size, about, city, imagesUrl, _id } =
     singleDog;
-
+  const mainImageUrl = imagesUrl[0];
   const editDogData: EditDogFormData = {
     name,
     breed,
@@ -83,7 +83,7 @@ function Card({ singleDog, needEditAndTrash = false }: PropsType) {
         >
           <div
             className="card-image"
-            style={{ backgroundImage: `url(${imagesUrl[0]})` }}
+            style={{ backgroundImage: `url(${mainImageUrl})` }}
           ></div>
           <div className="card-name">{name}</div>
         </div>
